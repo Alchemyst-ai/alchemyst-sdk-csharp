@@ -17,7 +17,7 @@ The REST API documentation can be found on [docs.getalchemystai.com](https://doc
 
 ```bash
 git clone git@github.com:stainless-sdks/alchemyst-ai-sdk-csharp.git
-dotnet add reference alchemyst-ai-sdk-csharp/src/AlchemystAISDK
+dotnet add reference alchemyst-ai-sdk-csharp/src/AlchemystAI
 ```
 
 ## Requirements
@@ -33,7 +33,7 @@ See the [`examples`](examples) directory for complete and runnable examples.
 
 ```csharp
 using System;
-using AlchemystAISDK;
+using AlchemystAI;
 
 // Configured using the ALCHEMYST_AI_API_KEY and ALCHEMYST_AI_BASE_URL environment variables
 AlchemystAIClient client = new();
@@ -48,7 +48,7 @@ Console.WriteLine(response);
 Configure the client using environment variables:
 
 ```csharp
-using AlchemystAISDK;
+using AlchemystAI;
 
 // Configured using the ALCHEMYST_AI_API_KEY and ALCHEMYST_AI_BASE_URL environment variables
 AlchemystAIClient client = new();
@@ -57,7 +57,7 @@ AlchemystAIClient client = new();
 Or manually:
 
 ```csharp
-using AlchemystAISDK;
+using AlchemystAI;
 
 AlchemystAIClient client = new() { APIKey = "My API Key" };
 ```
