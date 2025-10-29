@@ -6,6 +6,11 @@ namespace Alchemystai.Services.V1.Context.Memory;
 public interface IMemoryService
 {
     /// <summary>
+    /// This endpoint updates memory context data.
+    /// </summary>
+    Task Update(MemoryUpdateParams? parameters = null);
+
+    /// <summary>
     /// Deletes memory context data based on provided parameters
     /// </summary>
     Task Delete(MemoryDeleteParams? parameters = null);
