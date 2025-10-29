@@ -5,6 +5,12 @@ namespace Alchemystai.Tests.Services.V1.Context.Memory;
 public class MemoryServiceTest : TestBase
 {
     [Fact(Skip = "Prism tests are disabled")]
+    public async Task Update_Works()
+    {
+        await this.client.V1.Context.Memory.Update();
+    }
+
+    [Fact(Skip = "Prism tests are disabled")]
     public async Task Delete_Works()
     {
         await this.client.V1.Context.Memory.Delete();

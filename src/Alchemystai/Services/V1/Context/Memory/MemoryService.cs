@@ -14,6 +14,19 @@ public sealed class MemoryService : IMemoryService
         _client = client;
     }
 
+    public async Task Update(MemoryUpdateParams? parameters = null)
+    {
+        parameters ??= new();
+
+        HttpRequest<MemoryUpdateParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        return;
+    }
+
     public async Task Delete(MemoryDeleteParams? parameters = null)
     {
         parameters ??= new();
