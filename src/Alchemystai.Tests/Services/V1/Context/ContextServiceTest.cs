@@ -7,15 +7,13 @@ public class ContextServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Delete_Works()
     {
-        var context = await this.client.V1.Context.Delete();
-        _ = context;
+        await this.client.V1.Context.Delete();
     }
 
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Add_Works()
     {
-        var response = await this.client.V1.Context.Add();
-        _ = response;
+        await this.client.V1.Context.Add();
     }
 
     [Fact(Skip = "Prism tests are disabled")]

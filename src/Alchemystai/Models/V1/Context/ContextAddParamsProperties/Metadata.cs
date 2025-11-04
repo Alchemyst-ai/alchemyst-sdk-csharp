@@ -122,10 +122,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         _ = this.FileName;
         _ = this.FileSize;
         _ = this.FileType;
-        foreach (var item in this.GroupName ?? [])
-        {
-            _ = item;
-        }
+        _ = this.GroupName;
         _ = this.LastModified;
     }
 

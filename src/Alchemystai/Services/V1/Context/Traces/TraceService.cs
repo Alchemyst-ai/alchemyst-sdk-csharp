@@ -24,7 +24,12 @@ public sealed class TraceService : ITraceService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<TraceListResponse>().ConfigureAwait(false);
+        var traces = await response.Deserialize<TraceListResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            traces.Validate();
+        }
+        return traces;
     }
 
     public async Task<TraceDeleteResponse> Delete(TraceDeleteParams parameters)
@@ -35,6 +40,11 @@ public sealed class TraceService : ITraceService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<TraceDeleteResponse>().ConfigureAwait(false);
+        var trace = await response.Deserialize<TraceDeleteResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            trace.Validate();
+        }
+        return trace;
     }
 }
