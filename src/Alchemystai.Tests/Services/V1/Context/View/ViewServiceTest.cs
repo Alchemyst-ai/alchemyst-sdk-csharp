@@ -14,7 +14,6 @@ public class ViewServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Docs_Works()
     {
-        var response = await this.client.V1.Context.View.Docs();
-        _ = response;
+        await this.client.V1.Context.View.Docs();
     }
 }

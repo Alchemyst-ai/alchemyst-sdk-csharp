@@ -35,10 +35,7 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
 
     public override void Validate()
     {
-        foreach (var item in this.Context ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Context;
     }
 
     public ViewRetrieveResponse() { }

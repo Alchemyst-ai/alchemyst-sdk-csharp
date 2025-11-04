@@ -25,7 +25,12 @@ public sealed class ViewService : IViewService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<ViewRetrieveResponse>().ConfigureAwait(false);
+        var view = await response.Deserialize<ViewRetrieveResponse>().ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            view.Validate();
+        }
+        return view;
     }
 
     public async Task<JsonElement> Docs(ViewDocsParams? parameters = null)

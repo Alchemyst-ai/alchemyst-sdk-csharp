@@ -24,7 +24,6 @@ public sealed class MemoryService : IMemoryService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return;
     }
 
     public async Task Delete(MemoryDeleteParams? parameters = null)
@@ -37,7 +36,6 @@ public sealed class MemoryService : IMemoryService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return;
     }
 
     public async Task Add(MemoryAddParams? parameters = null)
@@ -50,6 +48,5 @@ public sealed class MemoryService : IMemoryService
             Params = parameters,
         };
         using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return;
     }
 }
