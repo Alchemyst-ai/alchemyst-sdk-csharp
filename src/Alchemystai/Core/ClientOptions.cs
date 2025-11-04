@@ -19,6 +19,8 @@ public struct ClientOptions()
         set { _baseUrl = new(() => value); }
     }
 
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes(1);
+
     Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ALCHEMYST_AI_API_KEY"));
     public string? APIKey
     {

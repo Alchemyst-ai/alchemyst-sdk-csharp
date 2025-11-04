@@ -12,6 +12,8 @@ public interface IAlchemystAIClient
 
     Uri BaseUrl { get; init; }
 
+    TimeSpan Timeout { get; init; }
+
     string? APIKey { get; init; }
 
     IV1Service V1 { get; }
