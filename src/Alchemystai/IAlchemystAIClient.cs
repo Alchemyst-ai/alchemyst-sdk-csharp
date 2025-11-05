@@ -18,6 +18,8 @@ public interface IAlchemystAIClient
 
     string? APIKey { get; init; }
 
+    IAlchemystAIClient WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     IV1Service V1 { get; }
 
     Task<HttpResponse> Execute<T>(HttpRequest<T> request)

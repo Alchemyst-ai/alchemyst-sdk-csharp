@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,6 +9,11 @@ namespace Alchemystai.Services.V1.Context.View;
 
 public sealed class ViewService : IViewService
 {
+    public IViewService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new ViewService(this._client.WithOptions(modifier));
+    }
+
     readonly IAlchemystAIClient _client;
 
     public ViewService(IAlchemystAIClient client)

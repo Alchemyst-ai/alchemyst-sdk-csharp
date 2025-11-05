@@ -1,5 +1,7 @@
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Alchemystai.Core;
 using Alchemystai.Models.V1.Context;
 using Alchemystai.Services.V1.Context.Memory;
 using Alchemystai.Services.V1.Context.Traces;
@@ -9,6 +11,8 @@ namespace Alchemystai.Services.V1.Context;
 
 public interface IContextService
 {
+    IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     ITraceService Traces { get; }
 
     IViewService View { get; }

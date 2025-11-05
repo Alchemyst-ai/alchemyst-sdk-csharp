@@ -12,6 +12,11 @@ namespace Alchemystai.Services.V1.Context;
 
 public sealed class ContextService : IContextService
 {
+    public IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new ContextService(this._client.WithOptions(modifier));
+    }
+
     readonly IAlchemystAIClient _client;
 
     public ContextService(IAlchemystAIClient client)

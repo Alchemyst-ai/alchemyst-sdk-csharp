@@ -10,7 +10,7 @@ namespace Alchemystai;
 
 public sealed class AlchemystAIClient : IAlchemystAIClient
 {
-    readonly ClientOptions _options = new();
+    readonly ClientOptions _options;
 
     public HttpClient HttpClient
     {
@@ -40,6 +40,11 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
     {
         get { return this._options.APIKey; }
         init { this._options.APIKey = value; }
+    }
+
+    public IAlchemystAIClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AlchemystAIClient(modifier(this._options));
     }
 
     readonly Lazy<IV1Service> _v1;
@@ -95,6 +100,14 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
 
     public AlchemystAIClient()
     {
+        _options = new();
+
         _v1 = new(() => new V1Service(this));
+    }
+
+    public AlchemystAIClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
     }
 }

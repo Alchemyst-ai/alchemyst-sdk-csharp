@@ -1,10 +1,14 @@
+using System;
 using System.Threading.Tasks;
+using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.Traces;
 
 namespace Alchemystai.Services.V1.Context.Traces;
 
 public interface ITraceService
 {
+    ITraceService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// Retrieves a list of traces for the authenticated user
     /// </summary>

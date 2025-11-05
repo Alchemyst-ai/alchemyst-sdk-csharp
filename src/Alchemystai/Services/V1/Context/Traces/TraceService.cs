@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Alchemystai.Core;
@@ -7,6 +8,11 @@ namespace Alchemystai.Services.V1.Context.Traces;
 
 public sealed class TraceService : ITraceService
 {
+    public ITraceService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new TraceService(this._client.WithOptions(modifier));
+    }
+
     readonly IAlchemystAIClient _client;
 
     public TraceService(IAlchemystAIClient client)

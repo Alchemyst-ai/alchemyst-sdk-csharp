@@ -1,11 +1,15 @@
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.View;
 
 namespace Alchemystai.Services.V1.Context.View;
 
 public interface IViewService
 {
+    IViewService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// Gets the context information for the authenticated user
     /// </summary>

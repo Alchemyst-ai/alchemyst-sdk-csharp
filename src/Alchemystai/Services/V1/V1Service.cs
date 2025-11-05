@@ -1,4 +1,5 @@
 using System;
+using Alchemystai.Core;
 using Alchemystai.Services.V1.Context;
 using Alchemystai.Services.V1.Org;
 
@@ -6,8 +7,16 @@ namespace Alchemystai.Services.V1;
 
 public sealed class V1Service : IV1Service
 {
+    public IV1Service WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new V1Service(this._client.WithOptions(modifier));
+    }
+
+    readonly IAlchemystAIClient _client;
+
     public V1Service(IAlchemystAIClient client)
     {
+        _client = client;
         _context = new(() => new ContextService(client));
         _org = new(() => new OrgService(client));
     }
