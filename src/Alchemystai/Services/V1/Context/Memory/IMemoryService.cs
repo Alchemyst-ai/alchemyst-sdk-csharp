@@ -1,10 +1,14 @@
+using System;
 using System.Threading.Tasks;
+using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.Memory;
 
 namespace Alchemystai.Services.V1.Context.Memory;
 
 public interface IMemoryService
 {
+    IMemoryService WithOptions(Func<ClientOptions, ClientOptions> modifier);
+
     /// <summary>
     /// This endpoint updates memory context data.
     /// </summary>

@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Alchemystai.Core;
@@ -7,6 +8,11 @@ namespace Alchemystai.Services.V1.Org.Context;
 
 public sealed class ContextService : IContextService
 {
+    public IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new ContextService(this._client.WithOptions(modifier));
+    }
+
     readonly IAlchemystAIClient _client;
 
     public ContextService(IAlchemystAIClient client)
