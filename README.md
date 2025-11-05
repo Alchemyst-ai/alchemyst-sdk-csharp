@@ -35,7 +35,6 @@ See the [`examples`](examples) directory for complete and runnable examples.
 using System;
 using Alchemystai;
 
-// Configured using the ALCHEMYST_AI_API_KEY and ALCHEMYST_AI_BASE_URL environment variables
 AlchemystAIClient client = new();
 
 var response = await client.V1.Context.Add();
@@ -43,7 +42,7 @@ var response = await client.V1.Context.Add();
 Console.WriteLine(response);
 ```
 
-## Client Configuration
+## Client configuration
 
 Configure the client using environment variables:
 
@@ -77,15 +76,18 @@ To temporarily use a modified client configuration, while reusing the same conne
 
 ```csharp
 using System;
-using Alchemystai;
 
-IAlchemystAIClient clientWithOptions = client.WithOptions(options =>
-    options with
-    {
-        BaseUrl = new("https://example.com"),
-        Timeout = TimeSpan.FromSeconds(42),
-    }
-);
+var response = await client
+    .WithOptions(options =>
+        options with
+        {
+            BaseUrl = new("https://example.com"),
+            Timeout = TimeSpan.FromSeconds(42),
+        }
+    )
+    .V1.Context.Add();
+
+Console.WriteLine(response);
 ```
 
 Using a [`with` expression](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/with-expression) makes it easy to construct the modified options.
@@ -124,6 +126,38 @@ false
 - `AlchemystAIInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - `AlchemystAIException`: Base class for all exceptions.
+
+## Network options
+
+### Timeouts
+
+Requests time out after 1 minute by default.
+
+To set a custom timeout, configure the client using the `Timeout` option:
+
+```csharp
+using System;
+using Alchemystai;
+
+AlchemystAIClient client = new() { Timeout = TimeSpan.FromSeconds(42) };
+```
+
+Or configure a single method call using [`WithOptions`](#modifying-configuration):
+
+```csharp
+using System;
+
+var response = await client
+    .WithOptions(options =>
+        options with
+        {
+            Timeout = TimeSpan.FromSeconds(42)
+        }
+    )
+    .V1.Context.Add();
+
+Console.WriteLine(response);
+```
 
 ## Semantic versioning
 
