@@ -1,4 +1,6 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -15,7 +17,11 @@ namespace Alchemystai.Models.V1.Context;
 /// </summary>
 public sealed record class ContextSearchParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
+    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    {
+        get { return this._bodyProperties.Freeze(); }
+    }
 
     /// <summary>
     /// Minimum similarity threshold
@@ -25,7 +31,7 @@ public sealed record class ContextSearchParams : ParamsBase
         get
         {
             if (
-                !this.BodyProperties.TryGetValue(
+                !this._bodyProperties.TryGetValue(
                     "minimum_similarity_threshold",
                     out JsonElement element
                 )
@@ -40,12 +46,10 @@ public sealed record class ContextSearchParams : ParamsBase
 
             return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["minimum_similarity_threshold"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            this._bodyProperties["minimum_similarity_threshold"] =
+                JsonSerializer.SerializeToElement(value, ModelBase.SerializerOptions);
         }
     }
 
@@ -56,7 +60,7 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("query", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("query", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'query' cannot be null",
                     new System::ArgumentOutOfRangeException("query", "Missing required argument")
@@ -68,9 +72,9 @@ public sealed record class ContextSearchParams : ParamsBase
                     new System::ArgumentNullException("query")
                 );
         }
-        set
+        init
         {
-            this.BodyProperties["query"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["query"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -84,7 +88,7 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("similarity_threshold", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("similarity_threshold", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'similarity_threshold' cannot be null",
                     new System::ArgumentOutOfRangeException(
@@ -95,9 +99,9 @@ public sealed record class ContextSearchParams : ParamsBase
 
             return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["similarity_threshold"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["similarity_threshold"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -111,14 +115,14 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("metadata", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["metadata"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -132,7 +136,7 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("scope", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("scope", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, ScopeModel>?>(
@@ -140,9 +144,9 @@ public sealed record class ContextSearchParams : ParamsBase
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.BodyProperties["scope"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["scope"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -156,18 +160,58 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("user_id", out JsonElement element))
+            if (!this._bodyProperties.TryGetValue("user_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["user_id"] = JsonSerializer.SerializeToElement(
+            this._bodyProperties["user_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
+    }
+
+    public ContextSearchParams() { }
+
+    public ContextSearchParams(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    ContextSearchParams(
+        FrozenDictionary<string, JsonElement> headerProperties,
+        FrozenDictionary<string, JsonElement> queryProperties,
+        FrozenDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        this._headerProperties = [.. headerProperties];
+        this._queryProperties = [.. queryProperties];
+        this._bodyProperties = [.. bodyProperties];
+    }
+#pragma warning restore CS8618
+
+    public static ContextSearchParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> headerProperties,
+        IReadOnlyDictionary<string, JsonElement> queryProperties,
+        IReadOnlyDictionary<string, JsonElement> bodyProperties
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(headerProperties),
+            FrozenDictionary.ToFrozenDictionary(queryProperties),
+            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+        );
     }
 
     public override System::Uri Url(IAlchemystAIClient client)
