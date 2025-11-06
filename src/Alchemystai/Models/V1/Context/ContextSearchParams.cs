@@ -1,11 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alchemystai.Core;
 using Alchemystai.Exceptions;
-using Alchemystai.Models.V1.Context.ContextSearchParamsProperties;
+using System = System;
 
 namespace Alchemystai.Models.V1.Context;
 
@@ -32,7 +32,7 @@ public sealed record class ContextSearchParams : ParamsBase
             )
                 throw new AlchemystAIInvalidDataException(
                     "'minimum_similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "minimum_similarity_threshold",
                         "Missing required argument"
                     )
@@ -59,13 +59,13 @@ public sealed record class ContextSearchParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("query", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'query' cannot be null",
-                    new ArgumentOutOfRangeException("query", "Missing required argument")
+                    new System::ArgumentOutOfRangeException("query", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AlchemystAIInvalidDataException(
                     "'query' cannot be null",
-                    new ArgumentNullException("query")
+                    new System::ArgumentNullException("query")
                 );
         }
         set
@@ -87,7 +87,7 @@ public sealed record class ContextSearchParams : ParamsBase
             if (!this.BodyProperties.TryGetValue("similarity_threshold", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
+                    new System::ArgumentOutOfRangeException(
                         "similarity_threshold",
                         "Missing required argument"
                     )
@@ -128,14 +128,14 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// Search scope
     /// </summary>
-    public ApiEnum<string, Scope>? Scope
+    public ApiEnum<string, ScopeModel>? Scope
     {
         get
         {
             if (!this.BodyProperties.TryGetValue("scope", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<ApiEnum<string, Scope>?>(
+            return JsonSerializer.Deserialize<ApiEnum<string, ScopeModel>?>(
                 element,
                 ModelBase.SerializerOptions
             );
@@ -170,9 +170,11 @@ public sealed record class ContextSearchParams : ParamsBase
         }
     }
 
-    public override Uri Url(IAlchemystAIClient client)
+    public override System::Uri Url(IAlchemystAIClient client)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search")
+        return new System::UriBuilder(
+            client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search"
+        )
         {
             Query = this.QueryString(client),
         }.Uri;
@@ -197,5 +199,52 @@ public sealed record class ContextSearchParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+/// <summary>
+/// Search scope
+/// </summary>
+[JsonConverter(typeof(ScopeModelConverter))]
+public enum ScopeModel
+{
+    Internal,
+    External,
+}
+
+sealed class ScopeModelConverter : JsonConverter<ScopeModel>
+{
+    public override ScopeModel Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "internal" => ScopeModel.Internal,
+            "external" => ScopeModel.External,
+            _ => (ScopeModel)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ScopeModel value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ScopeModel.Internal => "internal",
+                ScopeModel.External => "external",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

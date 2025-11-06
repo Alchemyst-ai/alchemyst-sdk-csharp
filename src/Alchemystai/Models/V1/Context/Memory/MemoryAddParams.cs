@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alchemystai.Core;
-using Alchemystai.Models.V1.Context.Memory.MemoryAddParamsProperties;
 
 namespace Alchemystai.Models.V1.Context.Memory;
 
@@ -18,14 +19,17 @@ public sealed record class MemoryAddParams : ParamsBase
     /// <summary>
     /// Array of content objects with additional properties allowed
     /// </summary>
-    public List<Content>? Contents
+    public List<ContentModel>? Contents
     {
         get
         {
             if (!this.BodyProperties.TryGetValue("contents", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<List<Content>?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<List<ContentModel>?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         set
         {
@@ -84,5 +88,47 @@ public sealed record class MemoryAddParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+[JsonConverter(typeof(ModelConverter<ContentModel>))]
+public sealed record class ContentModel : ModelBase, IFromRaw<ContentModel>
+{
+    public string? Content
+    {
+        get
+        {
+            if (!this.Properties.TryGetValue("content", out JsonElement element))
+                return null;
+
+            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
+        }
+        set
+        {
+            this.Properties["content"] = JsonSerializer.SerializeToElement(
+                value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public override void Validate()
+    {
+        _ = this.Content;
+    }
+
+    public ContentModel() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    ContentModel(Dictionary<string, JsonElement> properties)
+    {
+        Properties = properties;
+    }
+#pragma warning restore CS8618
+
+    public static ContentModel FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    {
+        return new(properties);
     }
 }
