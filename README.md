@@ -149,10 +149,7 @@ using System;
 
 var response = await client
     .WithOptions(options =>
-        options with
-        {
-            Timeout = TimeSpan.FromSeconds(42)
-        }
+        options with { Timeout = TimeSpan.FromSeconds(42) }
     )
     .V1.Context.Add();
 
@@ -191,10 +188,7 @@ using System;
 
 var response = await client
     .WithOptions(options =>
-        options with
-        {
-            ResponseValidation = true
-        }
+        options with { ResponseValidation = true }
     )
     .V1.Context.Search(parameters);
 
