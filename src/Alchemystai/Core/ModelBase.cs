@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Alchemystai.Models.V1.Context.ContextAddParamsProperties;
-using ContextSearchParamsProperties = Alchemystai.Models.V1.Context.ContextSearchParamsProperties;
+using Alchemystai.Models.V1.Context;
 
 namespace Alchemystai.Core;
 
@@ -15,7 +14,7 @@ public abstract record class ModelBase
         {
             new ApiEnumConverter<string, ContextType>(),
             new ApiEnumConverter<string, Scope>(),
-            new ApiEnumConverter<string, ContextSearchParamsProperties::Scope>(),
+            new ApiEnumConverter<string, ScopeModel>(),
         },
     };
 
