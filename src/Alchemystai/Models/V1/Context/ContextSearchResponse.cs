@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -14,7 +15,7 @@ public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSe
     {
         get
         {
-            if (!this.Properties.TryGetValue("contexts", out JsonElement element))
+            if (!this._properties.TryGetValue("contexts", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<ContextModel>?>(
@@ -22,9 +23,9 @@ public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSe
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["contexts"] = JsonSerializer.SerializeToElement(
+            this._properties["contexts"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -41,17 +42,24 @@ public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSe
 
     public ContextSearchResponse() { }
 
+    public ContextSearchResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContextSearchResponse(Dictionary<string, JsonElement> properties)
+    ContextSearchResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ContextSearchResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ContextSearchResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
 
@@ -62,14 +70,14 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         get
         {
-            if (!this.Properties.TryGetValue("content", out JsonElement element))
+            if (!this._properties.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["content"] = JsonSerializer.SerializeToElement(
+            this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -80,14 +88,14 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         get
         {
-            if (!this.Properties.TryGetValue("createdAt", out JsonElement element))
+            if (!this._properties.TryGetValue("createdAt", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["createdAt"] = JsonSerializer.SerializeToElement(
+            this._properties["createdAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -98,14 +106,14 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         get
         {
-            if (!this.Properties.TryGetValue("metadata", out JsonElement element))
+            if (!this._properties.TryGetValue("metadata", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["metadata"] = JsonSerializer.SerializeToElement(
+            this._properties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -116,14 +124,14 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         get
         {
-            if (!this.Properties.TryGetValue("score", out JsonElement element))
+            if (!this._properties.TryGetValue("score", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["score"] = JsonSerializer.SerializeToElement(
+            this._properties["score"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -134,14 +142,14 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         get
         {
-            if (!this.Properties.TryGetValue("updatedAt", out JsonElement element))
+            if (!this._properties.TryGetValue("updatedAt", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["updatedAt"] = JsonSerializer.SerializeToElement(
+            this._properties["updatedAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -159,16 +167,21 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
 
     public ContextModel() { }
 
+    public ContextModel(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContextModel(Dictionary<string, JsonElement> properties)
+    ContextModel(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ContextModel FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ContextModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }

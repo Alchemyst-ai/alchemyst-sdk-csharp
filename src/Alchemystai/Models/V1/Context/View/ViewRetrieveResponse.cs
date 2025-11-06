@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -16,7 +17,7 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
     {
         get
         {
-            if (!this.Properties.TryGetValue("context", out JsonElement element))
+            if (!this._properties.TryGetValue("context", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<JsonElement>?>(
@@ -24,9 +25,9 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
                 ModelBase.SerializerOptions
             );
         }
-        set
+        init
         {
-            this.Properties["context"] = JsonSerializer.SerializeToElement(
+            this._properties["context"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,16 +41,23 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
 
     public ViewRetrieveResponse() { }
 
+    public ViewRetrieveResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    {
+        this._properties = [.. properties];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ViewRetrieveResponse(Dictionary<string, JsonElement> properties)
+    ViewRetrieveResponse(FrozenDictionary<string, JsonElement> properties)
     {
-        Properties = properties;
+        this._properties = [.. properties];
     }
 #pragma warning restore CS8618
 
-    public static ViewRetrieveResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static ViewRetrieveResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> properties
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(properties));
     }
 }
