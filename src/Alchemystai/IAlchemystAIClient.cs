@@ -17,6 +17,8 @@ public interface IAlchemystAIClient
 
     TimeSpan Timeout { get; init; }
 
+    int MaxRetries { get; init; }
+
     string? APIKey { get; init; }
 
     IAlchemystAIClient WithOptions(Func<ClientOptions, ClientOptions> modifier);
