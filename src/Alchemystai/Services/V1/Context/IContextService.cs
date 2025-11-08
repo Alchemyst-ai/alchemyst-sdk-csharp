@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context;
@@ -22,18 +23,27 @@ public interface IContextService
     /// <summary>
     /// Deletes context data based on provided parameters
     /// </summary>
-    Task<JsonElement> Delete(ContextDeleteParams? parameters = null);
+    Task<JsonElement> Delete(
+        ContextDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// This endpoint accepts context data and sends it to a context processor for
     /// further handling. It returns a success or error response depending on the
     /// result from the context processor.
     /// </summary>
-    Task<JsonElement> Add(ContextAddParams? parameters = null);
+    Task<JsonElement> Add(
+        ContextAddParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// This endpoint sends a search request to the context processor to retrieve
     /// relevant context data based on the provided query.
     /// </summary>
-    Task<ContextSearchResponse> Search(ContextSearchParams parameters);
+    Task<ContextSearchResponse> Search(
+        ContextSearchParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }

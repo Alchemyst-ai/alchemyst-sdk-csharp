@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.View;
@@ -21,7 +22,10 @@ public sealed class ViewService : IViewService
         _client = client;
     }
 
-    public async Task<ViewRetrieveResponse> Retrieve(ViewRetrieveParams? parameters = null)
+    public async Task<ViewRetrieveResponse> Retrieve(
+        ViewRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -30,8 +34,12 @@ public sealed class ViewService : IViewService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var view = await response.Deserialize<ViewRetrieveResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var view = await response
+            .Deserialize<ViewRetrieveResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             view.Validate();
@@ -39,7 +47,10 @@ public sealed class ViewService : IViewService
         return view;
     }
 
-    public async Task<JsonElement> Docs(ViewDocsParams? parameters = null)
+    public async Task<JsonElement> Docs(
+        ViewDocsParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -48,7 +59,9 @@ public sealed class ViewService : IViewService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<JsonElement>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
     }
 }

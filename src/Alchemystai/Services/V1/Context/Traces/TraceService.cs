@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.Traces;
@@ -20,7 +21,10 @@ public sealed class TraceService : ITraceService
         _client = client;
     }
 
-    public async Task<TraceListResponse> List(TraceListParams? parameters = null)
+    public async Task<TraceListResponse> List(
+        TraceListParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -29,8 +33,12 @@ public sealed class TraceService : ITraceService
             Method = HttpMethod.Get,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var traces = await response.Deserialize<TraceListResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var traces = await response
+            .Deserialize<TraceListResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             traces.Validate();
@@ -38,15 +46,22 @@ public sealed class TraceService : ITraceService
         return traces;
     }
 
-    public async Task<TraceDeleteResponse> Delete(TraceDeleteParams parameters)
+    public async Task<TraceDeleteResponse> Delete(
+        TraceDeleteParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<TraceDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        var trace = await response.Deserialize<TraceDeleteResponse>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var trace = await response
+            .Deserialize<TraceDeleteResponse>(cancellationToken)
+            .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {
             trace.Validate();
