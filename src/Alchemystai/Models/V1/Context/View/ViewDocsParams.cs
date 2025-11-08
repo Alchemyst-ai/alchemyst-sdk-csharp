@@ -47,20 +47,17 @@ public sealed record class ViewDocsParams : ParamsBase
         );
     }
 
-    public override Uri Url(IAlchemystAIClient client)
+    public override Uri Url(ClientOptions options)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/view/docs")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/view/docs")
         {
-            Query = this.QueryString(client),
+            Query = this.QueryString(options),
         }.Uri;
     }
 
-    internal override void AddHeadersToRequest(
-        HttpRequestMessage request,
-        IAlchemystAIClient client
-    )
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, options);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

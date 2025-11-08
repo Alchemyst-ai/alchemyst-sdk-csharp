@@ -86,11 +86,11 @@ public sealed record class ContextViewParams : ParamsBase
         );
     }
 
-    public override Uri Url(IAlchemystAIClient client)
+    public override Uri Url(ClientOptions options)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/org/context/view")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/org/context/view")
         {
-            Query = this.QueryString(client),
+            Query = this.QueryString(options),
         }.Uri;
     }
 
@@ -103,12 +103,9 @@ public sealed record class ContextViewParams : ParamsBase
         );
     }
 
-    internal override void AddHeadersToRequest(
-        HttpRequestMessage request,
-        IAlchemystAIClient client
-    )
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
+        ParamsBase.AddDefaultHeaders(request, options);
         foreach (var item in this.HeaderProperties)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
