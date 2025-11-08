@@ -24,6 +24,11 @@ public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDelete
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["trace"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

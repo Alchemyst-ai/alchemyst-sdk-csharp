@@ -21,6 +21,11 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["contexts"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

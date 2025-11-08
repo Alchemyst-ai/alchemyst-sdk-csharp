@@ -34,6 +34,11 @@ public sealed record class MemoryDeleteParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["memoryId"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
