@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Org.Context;
@@ -12,5 +13,8 @@ public interface IContextService
     /// <summary>
     /// View organization context
     /// </summary>
-    Task<ContextViewResponse> View(ContextViewParams parameters);
+    Task<ContextViewResponse> View(
+        ContextViewParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }

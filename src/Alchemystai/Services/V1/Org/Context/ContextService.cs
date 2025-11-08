@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Org.Context;
@@ -20,16 +21,21 @@ public sealed class ContextService : IContextService
         _client = client;
     }
 
-    public async Task<ContextViewResponse> View(ContextViewParams parameters)
+    public async Task<ContextViewResponse> View(
+        ContextViewParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<ContextViewParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
         var deserializedResponse = await response
-            .Deserialize<ContextViewResponse>()
+            .Deserialize<ContextViewResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

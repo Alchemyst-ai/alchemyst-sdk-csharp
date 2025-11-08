@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Services.V1;
@@ -22,6 +23,9 @@ public interface IAlchemystAIClient
 
     IV1Service V1 { get; }
 
-    Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+    Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
         where T : ParamsBase;
 }

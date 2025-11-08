@@ -53,7 +53,10 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
         get { return _v1.Value; }
     }
 
-    public async Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+    public async Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
         where T : ParamsBase
     {
         using HttpRequestMessage requestMessage = new(request.Method, request.Params.Url(this))
@@ -61,7 +64,11 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
             Content = request.Params.BodyContent(),
         };
         request.Params.AddHeadersToRequest(requestMessage, this);
-        using CancellationTokenSource cts = new(this.Timeout);
+        using CancellationTokenSource timeoutCts = new(this.Timeout);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            timeoutCts.Token,
+            cancellationToken
+        );
         HttpResponseMessage responseMessage;
         try
         {
@@ -83,7 +90,7 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
             {
                 throw AlchemystAIExceptionFactory.CreateApiException(
                     responseMessage.StatusCode,
-                    await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false)
+                    await responseMessage.Content.ReadAsStringAsync(cts.Token).ConfigureAwait(false)
                 );
             }
             catch (HttpRequestException e)
@@ -95,7 +102,7 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
                 responseMessage.Dispose();
             }
         }
-        return new() { Message = responseMessage };
+        return new() { Message = responseMessage, CancellationToken = cts.Token };
     }
 
     public AlchemystAIClient()

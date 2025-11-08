@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context;
@@ -45,7 +46,10 @@ public sealed class ContextService : IContextService
         get { return _memory.Value; }
     }
 
-    public async Task<JsonElement> Delete(ContextDeleteParams? parameters = null)
+    public async Task<JsonElement> Delete(
+        ContextDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -54,11 +58,16 @@ public sealed class ContextService : IContextService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<JsonElement>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<JsonElement> Add(ContextAddParams? parameters = null)
+    public async Task<JsonElement> Add(
+        ContextAddParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -67,20 +76,27 @@ public sealed class ContextService : IContextService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
-        return await response.Deserialize<JsonElement>().ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<ContextSearchResponse> Search(ContextSearchParams parameters)
+    public async Task<ContextSearchResponse> Search(
+        ContextSearchParams parameters,
+        CancellationToken cancellationToken = default
+    )
     {
         HttpRequest<ContextSearchParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
         var deserializedResponse = await response
-            .Deserialize<ContextSearchResponse>()
+            .Deserialize<ContextSearchResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

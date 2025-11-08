@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context.Memory;
@@ -20,7 +21,10 @@ public sealed class MemoryService : IMemoryService
         _client = client;
     }
 
-    public async Task Update(MemoryUpdateParams? parameters = null)
+    public async Task Update(
+        MemoryUpdateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -29,10 +33,15 @@ public sealed class MemoryService : IMemoryService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
     }
 
-    public async Task Delete(MemoryDeleteParams? parameters = null)
+    public async Task Delete(
+        MemoryDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -41,10 +50,15 @@ public sealed class MemoryService : IMemoryService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
     }
 
-    public async Task Add(MemoryAddParams? parameters = null)
+    public async Task Add(
+        MemoryAddParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
     {
         parameters ??= new();
 
@@ -53,6 +67,8 @@ public sealed class MemoryService : IMemoryService
             Method = HttpMethod.Post,
             Params = parameters,
         };
-        using var response = await this._client.Execute(request).ConfigureAwait(false);
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
     }
 }
