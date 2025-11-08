@@ -22,6 +22,11 @@ public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResp
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["traces"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -74,6 +79,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -92,6 +102,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["createdAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -110,6 +125,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -128,6 +148,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -146,6 +171,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["updatedAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -164,6 +194,11 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["userId"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

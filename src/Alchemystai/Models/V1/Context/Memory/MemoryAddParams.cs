@@ -38,6 +38,11 @@ public sealed record class MemoryAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["contents"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -59,6 +64,11 @@ public sealed record class MemoryAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["memoryId"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -150,6 +160,11 @@ public sealed record class ContentModel : ModelBase, IFromRaw<ContentModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

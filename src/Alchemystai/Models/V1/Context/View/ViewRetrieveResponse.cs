@@ -27,6 +27,11 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["context"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

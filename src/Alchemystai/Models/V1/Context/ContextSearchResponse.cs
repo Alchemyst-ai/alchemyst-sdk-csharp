@@ -25,6 +25,11 @@ public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSe
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["contexts"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -77,6 +82,11 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -95,6 +105,11 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["createdAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -113,6 +128,11 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -131,6 +151,11 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["score"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -149,6 +174,11 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["updatedAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

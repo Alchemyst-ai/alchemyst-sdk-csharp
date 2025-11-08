@@ -41,6 +41,11 @@ public sealed record class ContextAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["context_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -65,6 +70,11 @@ public sealed record class ContextAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["documents"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -86,6 +96,11 @@ public sealed record class ContextAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -110,6 +125,11 @@ public sealed record class ContextAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["scope"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -131,6 +151,11 @@ public sealed record class ContextAddParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -277,6 +302,11 @@ public sealed record class Document : ModelBase, IFromRaw<Document>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -330,6 +360,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["fileName"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -351,6 +386,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["fileSize"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -372,6 +412,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["fileType"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -393,6 +438,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["groupName"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
@@ -414,6 +464,11 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._properties["lastModified"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions

@@ -97,6 +97,11 @@ public sealed record class ContextDeleteParams : ParamsBase
         }
         init
         {
+            if (value == null)
+            {
+                return;
+            }
+
             this._bodyProperties["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
