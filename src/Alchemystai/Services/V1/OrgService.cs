@@ -1,8 +1,8 @@
 using System;
 using Alchemystai.Core;
-using Alchemystai.Services.V1.Org.Context;
+using Org = Alchemystai.Services.V1.Org;
 
-namespace Alchemystai.Services.V1.Org;
+namespace Alchemystai.Services.V1;
 
 public sealed class OrgService : IOrgService
 {
@@ -16,11 +16,11 @@ public sealed class OrgService : IOrgService
     public OrgService(IAlchemystAIClient client)
     {
         _client = client;
-        _context = new(() => new ContextService(client));
+        _context = new(() => new Org::ContextService(client));
     }
 
-    readonly Lazy<IContextService> _context;
-    public IContextService Context
+    readonly Lazy<Org::IContextService> _context;
+    public Org::IContextService Context
     {
         get { return _context.Value; }
     }

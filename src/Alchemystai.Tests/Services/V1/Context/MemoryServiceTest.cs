@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Alchemystai.Tests.Services.V1.Context.Memory;
+namespace Alchemystai.Tests.Services.V1.Context;
 
 public class MemoryServiceTest : TestBase
 {
