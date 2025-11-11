@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Alchemystai.Tests.Services.V1.Context.View;
+namespace Alchemystai.Tests.Services.V1.Context;
 
 public class ViewServiceTest : TestBase
 {

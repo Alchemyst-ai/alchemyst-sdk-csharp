@@ -4,11 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Context;
-using Alchemystai.Services.V1.Context.Memory;
-using Alchemystai.Services.V1.Context.Traces;
-using Alchemystai.Services.V1.Context.View;
+using Alchemystai.Services.V1.Context;
 
-namespace Alchemystai.Services.V1.Context;
+namespace Alchemystai.Services.V1;
 
 public interface IContextService
 {

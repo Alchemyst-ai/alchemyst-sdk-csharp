@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Exceptions;
-using Alchemystai.Services.V1;
+using Alchemystai.Services;
 
 namespace Alchemystai;
 

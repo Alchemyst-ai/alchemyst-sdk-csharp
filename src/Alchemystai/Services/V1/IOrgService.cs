@@ -1,12 +1,12 @@
 using System;
 using Alchemystai.Core;
-using Alchemystai.Services.V1.Org.Context;
+using Org = Alchemystai.Services.V1.Org;
 
-namespace Alchemystai.Services.V1.Org;
+namespace Alchemystai.Services.V1;
 
 public interface IOrgService
 {
     IOrgService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
-    IContextService Context { get; }
+    Org::IContextService Context { get; }
 }

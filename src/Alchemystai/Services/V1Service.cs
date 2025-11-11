@@ -1,9 +1,8 @@
 using System;
 using Alchemystai.Core;
-using Alchemystai.Services.V1.Context;
-using Alchemystai.Services.V1.Org;
+using Alchemystai.Services.V1;
 
-namespace Alchemystai.Services.V1;
+namespace Alchemystai.Services;
 
 public sealed class V1Service : IV1Service
 {

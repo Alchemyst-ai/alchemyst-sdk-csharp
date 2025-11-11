@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Alchemystai.Tests.Services.V1.Context;
+namespace Alchemystai.Tests.Services.V1;
 
 public class ContextServiceTest : TestBase
 {

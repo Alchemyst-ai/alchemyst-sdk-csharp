@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Models.V1.Org.Context;
 
-namespace Alchemystai.Services.V1.Org.Context;
+namespace Alchemystai.Services.V1.Org;
 
-public sealed class ContextService : IContextService
+public sealed class ContextService : global::Alchemystai.Services.V1.Org.IContextService
 {
-    public IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    public global::Alchemystai.Services.V1.Org.IContextService WithOptions(
+        Func<ClientOptions, ClientOptions> modifier
+    )
     {
-        return new ContextService(this._client.WithOptions(modifier));
+        return new global::Alchemystai.Services.V1.Org.ContextService(
+            this._client.WithOptions(modifier)
+        );
     }
 
     readonly IAlchemystAIClient _client;

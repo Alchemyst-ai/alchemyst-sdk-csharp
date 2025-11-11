@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Alchemystai.Tests.Services.V1.Context.Traces;
+namespace Alchemystai.Tests.Services.V1.Context;
 
 public class TraceServiceTest : TestBase
 {
