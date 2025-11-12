@@ -91,14 +91,17 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
     }
 
-    public DateTime? CreatedAt
+    public DateTimeOffset? CreatedAt
     {
         get
         {
             if (!this._properties.TryGetValue("createdAt", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<DateTimeOffset?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         init
         {
@@ -160,14 +163,17 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
         }
     }
 
-    public DateTime? UpdatedAt
+    public DateTimeOffset? UpdatedAt
     {
         get
         {
             if (!this._properties.TryGetValue("updatedAt", out JsonElement element))
                 return null;
 
-            return JsonSerializer.Deserialize<DateTime?>(element, ModelBase.SerializerOptions);
+            return JsonSerializer.Deserialize<DateTimeOffset?>(
+                element,
+                ModelBase.SerializerOptions
+            );
         }
         init
         {
