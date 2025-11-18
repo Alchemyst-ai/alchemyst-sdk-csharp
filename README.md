@@ -34,10 +34,29 @@ See the [`examples`](examples) directory for complete and runnable examples.
 ```csharp
 using System;
 using Alchemystai;
+using Alchemystai.Models.V1.Context;
 
 AlchemystAIClient client = new();
 
-var response = await client.V1.Context.Add();
+ContextAddParams parameters = new()
+{
+    ContextType = ContextType.Resource,
+    Documents =
+    [
+        new() { Content = "The content of the document" }
+    ],
+    Metadata = new()
+    {
+        FileName = "notes.txt",
+        FileType = "text/plain",
+        LastModified = "2025-10-01T18:42:40.419Z",
+        FileSize = 1024,
+    },
+    Scope = Scope.Internal,
+    Source = "platform.api.context.add",
+};
+
+var response = await client.V1.Context.Add(parameters);
 
 Console.WriteLine(response);
 ```
@@ -85,7 +104,7 @@ var response = await client
             Timeout = TimeSpan.FromSeconds(42),
         }
     )
-    .V1.Context.Add();
+    .V1.Context.Add(parameters);
 
 Console.WriteLine(response);
 ```
@@ -160,7 +179,7 @@ var response = await client
     .WithOptions(options =>
         options with { MaxRetries = 3 }
     )
-    .V1.Context.Add();
+    .V1.Context.Add(parameters);
 
 Console.WriteLine(response);
 ```
@@ -187,7 +206,7 @@ var response = await client
     .WithOptions(options =>
         options with { Timeout = TimeSpan.FromSeconds(42) }
     )
-    .V1.Context.Add();
+    .V1.Context.Add(parameters);
 
 Console.WriteLine(response);
 ```
