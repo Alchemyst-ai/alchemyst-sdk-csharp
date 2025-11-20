@@ -30,4 +30,13 @@ public interface ITraceService
         TraceDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Deletes a data trace for the authenticated user with the specified trace ID
+    /// </summary>
+    Task<TraceDeleteResponse> Delete(
+        string traceID,
+        TraceDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
 }

@@ -14,7 +14,7 @@ public class TraceServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Delete_Works()
     {
-        var trace = await this.client.V1.Context.Traces.Delete(new() { TraceID = "traceId" });
+        var trace = await this.client.V1.Context.Traces.Delete("traceId");
         trace.Validate();
     }
 }

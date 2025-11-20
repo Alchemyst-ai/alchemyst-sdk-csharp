@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
+using Alchemystai.Exceptions;
 using Alchemystai.Models.V1.Context.Traces;
 
 namespace Alchemystai.Services.V1.Context;
@@ -51,6 +52,11 @@ public sealed class TraceService : ITraceService
         CancellationToken cancellationToken = default
     )
     {
+        if (parameters.TraceID == null)
+        {
+            throw new AlchemystAIInvalidDataException("'parameters.TraceID' cannot be null");
+        }
+
         HttpRequest<TraceDeleteParams> request = new()
         {
             Method = HttpMethod.Delete,
@@ -67,5 +73,16 @@ public sealed class TraceService : ITraceService
             trace.Validate();
         }
         return trace;
+    }
+
+    public async Task<TraceDeleteResponse> Delete(
+        string traceID,
+        TraceDeleteParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return await this.Delete(parameters with { TraceID = traceID }, cancellationToken);
     }
 }
