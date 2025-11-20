@@ -13,7 +13,7 @@ namespace Alchemystai.Models.V1.Context.Traces;
 /// </summary>
 public sealed record class TraceDeleteParams : ParamsBase
 {
-    public required string TraceID { get; init; }
+    public string? TraceID { get; init; }
 
     public TraceDeleteParams() { }
 
