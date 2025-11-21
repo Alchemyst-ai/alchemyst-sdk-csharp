@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -16,14 +17,19 @@ public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDelete
     {
         get
         {
-            if (!this.Properties.TryGetValue("trace", out JsonElement element))
+            if (!this._rawData.TryGetValue("trace", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.Properties["trace"] = JsonSerializer.SerializeToElement(
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawData["trace"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -37,16 +43,23 @@ public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDelete
 
     public TraceDeleteResponse() { }
 
+    public TraceDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    TraceDeleteResponse(Dictionary<string, JsonElement> properties)
+    TraceDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        Properties = properties;
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static TraceDeleteResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    public static TraceDeleteResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

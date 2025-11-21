@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -12,7 +14,11 @@ namespace Alchemystai.Models.V1.Context.Memory;
 /// </summary>
 public sealed record class MemoryDeleteParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
+    {
+        get { return this._rawBodyData.Freeze(); }
+    }
 
     /// <summary>
     /// The ID of the memory to delete
@@ -21,14 +27,19 @@ public sealed record class MemoryDeleteParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("memoryId", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("memoryId", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["memoryId"] = JsonSerializer.SerializeToElement(
+            if (value == null)
+            {
+                return;
+            }
+
+            this._rawBodyData["memoryId"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -42,14 +53,14 @@ public sealed record class MemoryDeleteParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("organization_id", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("organization_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["organization_id"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["organization_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -63,46 +74,79 @@ public sealed record class MemoryDeleteParams : ParamsBase
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("user_id", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("user_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
         }
-        set
+        init
         {
-            this.BodyProperties["user_id"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["user_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
         }
     }
 
-    public override Uri Url(IAlchemystAIClient client)
+    public MemoryDeleteParams() { }
+
+    public MemoryDeleteParams(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    MemoryDeleteParams(
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
+    }
+#pragma warning restore CS8618
+
+    public static MemoryDeleteParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
+        );
+    }
+
+    public override Uri Url(ClientOptions options)
     {
         return new UriBuilder(
-            client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/memory/delete"
+            options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/memory/delete"
         )
         {
-            Query = this.QueryString(client),
+            Query = this.QueryString(options),
         }.Uri;
     }
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
-    internal override void AddHeadersToRequest(
-        HttpRequestMessage request,
-        IAlchemystAIClient client
-    )
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
-        foreach (var item in this.HeaderProperties)
+        ParamsBase.AddDefaultHeaders(request, options);
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }

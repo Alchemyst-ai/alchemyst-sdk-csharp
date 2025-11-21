@@ -14,17 +14,18 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         JsonSerializerOptions options
     )
     {
-        Dictionary<string, JsonElement>? properties = JsonSerializer.Deserialize<
-            Dictionary<string, JsonElement>
-        >(ref reader, options);
-        if (properties == null)
+        var rawData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+            ref reader,
+            options
+        );
+        if (rawData == null)
             return null;
 
-        return TModel.FromRawUnchecked(properties);
+        return TModel.FromRawUnchecked(rawData);
     }
 
     public override void Write(Utf8JsonWriter writer, TModel value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value.Properties, options);
+        JsonSerializer.Serialize(writer, value.RawData, options);
     }
 }
