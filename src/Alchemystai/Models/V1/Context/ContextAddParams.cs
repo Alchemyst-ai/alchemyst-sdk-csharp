@@ -18,10 +18,10 @@ namespace Alchemystai.Models.V1.Context;
 /// </summary>
 public sealed record class ContextAddParams : ParamsBase
 {
-    readonly FreezableDictionary<string, JsonElement> _bodyProperties = [];
-    public IReadOnlyDictionary<string, JsonElement> BodyProperties
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
-        get { return this._bodyProperties.Freeze(); }
+        get { return this._rawBodyData.Freeze(); }
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("context_type", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("context_type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, ContextType>?>(
@@ -46,7 +46,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["context_type"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["context_type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -60,7 +60,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("documents", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("documents", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<Document>?>(
@@ -75,7 +75,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["documents"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["documents"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -89,7 +89,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("metadata", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("metadata", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<Metadata?>(element, ModelBase.SerializerOptions);
@@ -101,7 +101,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["metadata"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["metadata"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -115,7 +115,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("scope", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("scope", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<ApiEnum<string, Scope>?>(
@@ -130,7 +130,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["scope"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["scope"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -144,7 +144,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._bodyProperties.TryGetValue("source", out JsonElement element))
+            if (!this._rawBodyData.TryGetValue("source", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -156,7 +156,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._bodyProperties["source"] = JsonSerializer.SerializeToElement(
+            this._rawBodyData["source"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -166,40 +166,40 @@ public sealed record class ContextAddParams : ParamsBase
     public ContextAddParams() { }
 
     public ContextAddParams(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
     ContextAddParams(
-        FrozenDictionary<string, JsonElement> headerProperties,
-        FrozenDictionary<string, JsonElement> queryProperties,
-        FrozenDictionary<string, JsonElement> bodyProperties
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
     )
     {
-        this._headerProperties = [.. headerProperties];
-        this._queryProperties = [.. queryProperties];
-        this._bodyProperties = [.. bodyProperties];
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
     }
 #pragma warning restore CS8618
 
     public static ContextAddParams FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> headerProperties,
-        IReadOnlyDictionary<string, JsonElement> queryProperties,
-        IReadOnlyDictionary<string, JsonElement> bodyProperties
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
     )
     {
         return new(
-            FrozenDictionary.ToFrozenDictionary(headerProperties),
-            FrozenDictionary.ToFrozenDictionary(queryProperties),
-            FrozenDictionary.ToFrozenDictionary(bodyProperties)
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
         );
     }
 
@@ -215,17 +215,13 @@ public sealed record class ContextAddParams : ParamsBase
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
         ParamsBase.AddDefaultHeaders(request, options);
-        foreach (var item in this.HeaderProperties)
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
@@ -292,7 +288,7 @@ public sealed record class Document : ModelBase, IFromRaw<Document>
     {
         get
         {
-            if (!this._properties.TryGetValue("content", out JsonElement element))
+            if (!this._rawData.TryGetValue("content", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -304,7 +300,7 @@ public sealed record class Document : ModelBase, IFromRaw<Document>
                 return;
             }
 
-            this._properties["content"] = JsonSerializer.SerializeToElement(
+            this._rawData["content"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -318,22 +314,22 @@ public sealed record class Document : ModelBase, IFromRaw<Document>
 
     public Document() { }
 
-    public Document(IReadOnlyDictionary<string, JsonElement> properties)
+    public Document(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Document(FrozenDictionary<string, JsonElement> properties)
+    Document(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -350,7 +346,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("fileName", out JsonElement element))
+            if (!this._rawData.TryGetValue("fileName", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -362,7 +358,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
                 return;
             }
 
-            this._properties["fileName"] = JsonSerializer.SerializeToElement(
+            this._rawData["fileName"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -376,7 +372,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("fileSize", out JsonElement element))
+            if (!this._rawData.TryGetValue("fileSize", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
@@ -388,7 +384,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
                 return;
             }
 
-            this._properties["fileSize"] = JsonSerializer.SerializeToElement(
+            this._rawData["fileSize"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -402,7 +398,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("fileType", out JsonElement element))
+            if (!this._rawData.TryGetValue("fileType", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -414,7 +410,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
                 return;
             }
 
-            this._properties["fileType"] = JsonSerializer.SerializeToElement(
+            this._rawData["fileType"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -428,7 +424,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("groupName", out JsonElement element))
+            if (!this._rawData.TryGetValue("groupName", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
@@ -440,7 +436,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
                 return;
             }
 
-            this._properties["groupName"] = JsonSerializer.SerializeToElement(
+            this._rawData["groupName"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -454,7 +450,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         get
         {
-            if (!this._properties.TryGetValue("lastModified", out JsonElement element))
+            if (!this._rawData.TryGetValue("lastModified", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -466,7 +462,7 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
                 return;
             }
 
-            this._properties["lastModified"] = JsonSerializer.SerializeToElement(
+            this._rawData["lastModified"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -484,22 +480,22 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
 
     public Metadata() { }
 
-    public Metadata(IReadOnlyDictionary<string, JsonElement> properties)
+    public Metadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Metadata(FrozenDictionary<string, JsonElement> properties)
+    Metadata(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 

@@ -15,7 +15,7 @@ public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResp
     {
         get
         {
-            if (!this._properties.TryGetValue("traces", out JsonElement element))
+            if (!this._rawData.TryGetValue("traces", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<List<Trace>?>(element, ModelBase.SerializerOptions);
@@ -27,7 +27,7 @@ public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResp
                 return;
             }
 
-            this._properties["traces"] = JsonSerializer.SerializeToElement(
+            this._rawData["traces"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -44,24 +44,24 @@ public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResp
 
     public TraceListResponse() { }
 
-    public TraceListResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public TraceListResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    TraceListResponse(FrozenDictionary<string, JsonElement> properties)
+    TraceListResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static TraceListResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
@@ -72,7 +72,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("_id", out JsonElement element))
+            if (!this._rawData.TryGetValue("_id", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -84,7 +84,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["_id"] = JsonSerializer.SerializeToElement(
+            this._rawData["_id"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -95,7 +95,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("createdAt", out JsonElement element))
+            if (!this._rawData.TryGetValue("createdAt", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<DateTimeOffset?>(
@@ -110,7 +110,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["createdAt"] = JsonSerializer.SerializeToElement(
+            this._rawData["createdAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -121,7 +121,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("data", out JsonElement element))
+            if (!this._rawData.TryGetValue("data", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
@@ -133,7 +133,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["data"] = JsonSerializer.SerializeToElement(
+            this._rawData["data"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -144,7 +144,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("type", out JsonElement element))
+            if (!this._rawData.TryGetValue("type", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -156,7 +156,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["type"] = JsonSerializer.SerializeToElement(
+            this._rawData["type"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -167,7 +167,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("updatedAt", out JsonElement element))
+            if (!this._rawData.TryGetValue("updatedAt", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<DateTimeOffset?>(
@@ -182,7 +182,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["updatedAt"] = JsonSerializer.SerializeToElement(
+            this._rawData["updatedAt"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -193,7 +193,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         get
         {
-            if (!this._properties.TryGetValue("userId", out JsonElement element))
+            if (!this._rawData.TryGetValue("userId", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
@@ -205,7 +205,7 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
                 return;
             }
 
-            this._properties["userId"] = JsonSerializer.SerializeToElement(
+            this._rawData["userId"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -224,21 +224,21 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
 
     public Trace() { }
 
-    public Trace(IReadOnlyDictionary<string, JsonElement> properties)
+    public Trace(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    Trace(FrozenDictionary<string, JsonElement> properties)
+    Trace(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> properties)
+    public static Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }

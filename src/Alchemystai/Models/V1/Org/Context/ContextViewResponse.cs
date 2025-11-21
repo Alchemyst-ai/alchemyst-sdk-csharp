@@ -14,7 +14,7 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
     {
         get
         {
-            if (!this._properties.TryGetValue("contexts", out JsonElement element))
+            if (!this._rawData.TryGetValue("contexts", out JsonElement element))
                 return null;
 
             return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
@@ -26,7 +26,7 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
                 return;
             }
 
-            this._properties["contexts"] = JsonSerializer.SerializeToElement(
+            this._rawData["contexts"] = JsonSerializer.SerializeToElement(
                 value,
                 ModelBase.SerializerOptions
             );
@@ -40,23 +40,23 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
 
     public ContextViewResponse() { }
 
-    public ContextViewResponse(IReadOnlyDictionary<string, JsonElement> properties)
+    public ContextViewResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContextViewResponse(FrozenDictionary<string, JsonElement> properties)
+    ContextViewResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        this._properties = [.. properties];
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
     public static ContextViewResponse FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> properties
+        IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
-        return new(FrozenDictionary.ToFrozenDictionary(properties));
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
