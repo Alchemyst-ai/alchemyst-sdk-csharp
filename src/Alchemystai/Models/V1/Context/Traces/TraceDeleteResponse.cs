@@ -7,8 +7,8 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.Traces;
 
-[JsonConverter(typeof(ModelConverter<TraceDeleteResponse>))]
-public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDeleteResponse>
+[JsonConverter(typeof(ModelConverter<TraceDeleteResponse, TraceDeleteResponseFromRaw>))]
+public sealed record class TraceDeleteResponse : ModelBase
 {
     /// <summary>
     /// The deleted trace data
@@ -62,4 +62,10 @@ public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDelete
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class TraceDeleteResponseFromRaw : IFromRaw<TraceDeleteResponse>
+{
+    public TraceDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        TraceDeleteResponse.FromRawUnchecked(rawData);
 }

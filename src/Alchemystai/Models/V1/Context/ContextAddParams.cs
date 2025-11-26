@@ -278,8 +278,8 @@ sealed class ContextTypeConverter : JsonConverter<ContextType>
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Document>))]
-public sealed record class Document : ModelBase, IFromRaw<Document>
+[JsonConverter(typeof(ModelConverter<Document, DocumentFromRaw>))]
+public sealed record class Document : ModelBase
 {
     /// <summary>
     /// The content of the document
@@ -333,11 +333,17 @@ public sealed record class Document : ModelBase, IFromRaw<Document>
     }
 }
 
+class DocumentFromRaw : IFromRaw<Document>
+{
+    public Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Document.FromRawUnchecked(rawData);
+}
+
 /// <summary>
 /// Additional metadata for the context
 /// </summary>
-[JsonConverter(typeof(ModelConverter<Metadata>))]
-public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
+[JsonConverter(typeof(ModelConverter<Metadata, MetadataFromRaw>))]
+public sealed record class Metadata : ModelBase
 {
     /// <summary>
     /// Name of the file
@@ -497,6 +503,12 @@ public sealed record class Metadata : ModelBase, IFromRaw<Metadata>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class MetadataFromRaw : IFromRaw<Metadata>
+{
+    public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Metadata.FromRawUnchecked(rawData);
 }
 
 /// <summary>

@@ -8,8 +8,8 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.Traces;
 
-[JsonConverter(typeof(ModelConverter<TraceListResponse>))]
-public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResponse>
+[JsonConverter(typeof(ModelConverter<TraceListResponse, TraceListResponseFromRaw>))]
+public sealed record class TraceListResponse : ModelBase
 {
     public List<Trace>? Traces
     {
@@ -65,8 +65,14 @@ public sealed record class TraceListResponse : ModelBase, IFromRaw<TraceListResp
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Trace>))]
-public sealed record class Trace : ModelBase, IFromRaw<Trace>
+class TraceListResponseFromRaw : IFromRaw<TraceListResponse>
+{
+    public TraceListResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        TraceListResponse.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ModelConverter<Trace, TraceFromRaw>))]
+public sealed record class Trace : ModelBase
 {
     public string? _ID
     {
@@ -241,4 +247,10 @@ public sealed record class Trace : ModelBase, IFromRaw<Trace>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class TraceFromRaw : IFromRaw<Trace>
+{
+    public Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        Trace.FromRawUnchecked(rawData);
 }

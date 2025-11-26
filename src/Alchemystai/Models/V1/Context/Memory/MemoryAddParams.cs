@@ -141,8 +141,8 @@ public sealed record class MemoryAddParams : ParamsBase
     }
 }
 
-[JsonConverter(typeof(ModelConverter<ContentModel>))]
-public sealed record class ContentModel : ModelBase, IFromRaw<ContentModel>
+[JsonConverter(typeof(ModelConverter<ContentModel, ContentModelFromRaw>))]
+public sealed record class ContentModel : ModelBase
 {
     public string? Content
     {
@@ -191,4 +191,10 @@ public sealed record class ContentModel : ModelBase, IFromRaw<ContentModel>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ContentModelFromRaw : IFromRaw<ContentModel>
+{
+    public ContentModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ContentModel.FromRawUnchecked(rawData);
 }
