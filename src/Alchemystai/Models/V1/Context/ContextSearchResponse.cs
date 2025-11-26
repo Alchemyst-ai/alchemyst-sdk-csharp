@@ -8,8 +8,8 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context;
 
-[JsonConverter(typeof(ModelConverter<ContextSearchResponse>))]
-public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSearchResponse>
+[JsonConverter(typeof(ModelConverter<ContextSearchResponse, ContextSearchResponseFromRaw>))]
+public sealed record class ContextSearchResponse : ModelBase
 {
     public List<ContextModel>? Contexts
     {
@@ -68,8 +68,15 @@ public sealed record class ContextSearchResponse : ModelBase, IFromRaw<ContextSe
     }
 }
 
-[JsonConverter(typeof(ModelConverter<ContextModel>))]
-public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
+class ContextSearchResponseFromRaw : IFromRaw<ContextSearchResponse>
+{
+    public ContextSearchResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ContextSearchResponse.FromRawUnchecked(rawData);
+}
+
+[JsonConverter(typeof(ModelConverter<ContextModel, ContextModelFromRaw>))]
+public sealed record class ContextModel : ModelBase
 {
     public string? Content
     {
@@ -220,4 +227,10 @@ public sealed record class ContextModel : ModelBase, IFromRaw<ContextModel>
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ContextModelFromRaw : IFromRaw<ContextModel>
+{
+    public ContextModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ContextModel.FromRawUnchecked(rawData);
 }

@@ -7,8 +7,8 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.View;
 
-[JsonConverter(typeof(ModelConverter<ViewRetrieveResponse>))]
-public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrieveResponse>
+[JsonConverter(typeof(ModelConverter<ViewRetrieveResponse, ViewRetrieveResponseFromRaw>))]
+public sealed record class ViewRetrieveResponse : ModelBase
 {
     /// <summary>
     /// List of context items
@@ -65,4 +65,11 @@ public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrie
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ViewRetrieveResponseFromRaw : IFromRaw<ViewRetrieveResponse>
+{
+    public ViewRetrieveResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ViewRetrieveResponse.FromRawUnchecked(rawData);
 }

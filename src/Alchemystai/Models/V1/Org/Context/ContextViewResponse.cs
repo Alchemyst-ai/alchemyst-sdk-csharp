@@ -7,8 +7,8 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Org.Context;
 
-[JsonConverter(typeof(ModelConverter<ContextViewResponse>))]
-public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextViewResponse>
+[JsonConverter(typeof(ModelConverter<ContextViewResponse, ContextViewResponseFromRaw>))]
+public sealed record class ContextViewResponse : ModelBase
 {
     public JsonElement? Contexts
     {
@@ -59,4 +59,10 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ContextViewResponseFromRaw : IFromRaw<ContextViewResponse>
+{
+    public ContextViewResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ContextViewResponse.FromRawUnchecked(rawData);
 }
