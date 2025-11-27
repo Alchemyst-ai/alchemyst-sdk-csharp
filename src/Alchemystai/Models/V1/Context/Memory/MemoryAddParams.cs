@@ -24,7 +24,7 @@ public sealed record class MemoryAddParams : ParamsBase
     /// <summary>
     /// Array of content objects with additional properties allowed
     /// </summary>
-    public List<ContentModel>? Contents
+    public IReadOnlyList<ContentModel>? Contents
     {
         get
         {

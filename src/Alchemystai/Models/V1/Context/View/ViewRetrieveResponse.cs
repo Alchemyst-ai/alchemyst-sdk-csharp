@@ -13,7 +13,7 @@ public sealed record class ViewRetrieveResponse : ModelBase
     /// <summary>
     /// List of context items
     /// </summary>
-    public List<JsonElement>? Context
+    public IReadOnlyList<JsonElement>? Context
     {
         get
         {

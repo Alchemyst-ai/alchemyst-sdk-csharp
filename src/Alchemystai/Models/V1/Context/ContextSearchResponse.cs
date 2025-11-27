@@ -11,7 +11,7 @@ namespace Alchemystai.Models.V1.Context;
 [JsonConverter(typeof(ModelConverter<ContextSearchResponse, ContextSearchResponseFromRaw>))]
 public sealed record class ContextSearchResponse : ModelBase
 {
-    public List<ContextModel>? Contexts
+    public IReadOnlyList<ContextModel>? Contexts
     {
         get
         {
