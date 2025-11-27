@@ -24,7 +24,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
     /// <summary>
     /// Array of updated content objects
     /// </summary>
-    public List<Content>? Contents
+    public IReadOnlyList<Content>? Contents
     {
         get
         {

@@ -56,7 +56,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// <summary>
     /// Array of documents with content and additional metadata
     /// </summary>
-    public List<Document>? Documents
+    public IReadOnlyList<Document>? Documents
     {
         get
         {
@@ -426,7 +426,7 @@ public sealed record class Metadata : ModelBase
     /// <summary>
     /// Array of Group Name to which the file belongs to
     /// </summary>
-    public List<string>? GroupName
+    public IReadOnlyList<string>? GroupName
     {
         get
         {

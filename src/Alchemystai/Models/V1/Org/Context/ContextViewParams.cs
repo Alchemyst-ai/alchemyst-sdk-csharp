@@ -21,7 +21,7 @@ public sealed record class ContextViewParams : ParamsBase
         get { return this._rawBodyData.Freeze(); }
     }
 
-    public required List<string> UserIDs
+    public required IReadOnlyList<string> UserIDs
     {
         get
         {

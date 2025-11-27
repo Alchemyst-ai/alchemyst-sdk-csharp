@@ -11,7 +11,7 @@ namespace Alchemystai.Models.V1.Context.Traces;
 [JsonConverter(typeof(ModelConverter<TraceListResponse, TraceListResponseFromRaw>))]
 public sealed record class TraceListResponse : ModelBase
 {
-    public List<Trace>? Traces
+    public IReadOnlyList<Trace>? Traces
     {
         get
         {
