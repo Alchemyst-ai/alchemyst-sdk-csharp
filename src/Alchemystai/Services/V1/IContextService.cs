@@ -15,6 +15,11 @@ namespace Alchemystai.Services.V1;
 /// </summary>
 public interface IContextService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     ITraceService Traces { get; }

@@ -4,8 +4,10 @@ using Alchemystai.Services.V1;
 
 namespace Alchemystai.Services;
 
+/// <inheritdoc />
 public sealed class V1Service : IV1Service
 {
+    /// <inheritdoc/>
     public IV1Service WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new V1Service(this._client.WithOptions(modifier));

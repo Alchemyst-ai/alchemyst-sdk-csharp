@@ -8,8 +8,10 @@ using Alchemystai.Models.V1.Context.View;
 
 namespace Alchemystai.Services.V1.Context;
 
+/// <inheritdoc />
 public sealed class ViewService : IViewService
 {
+    /// <inheritdoc/>
     public IViewService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new ViewService(this._client.WithOptions(modifier));
@@ -22,6 +24,7 @@ public sealed class ViewService : IViewService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<ViewRetrieveResponse> Retrieve(
         ViewRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -47,6 +50,7 @@ public sealed class ViewService : IViewService
         return view;
     }
 
+    /// <inheritdoc/>
     public async Task<JsonElement> Docs(
         ViewDocsParams? parameters = null,
         CancellationToken cancellationToken = default

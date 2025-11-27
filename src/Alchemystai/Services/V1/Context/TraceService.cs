@@ -8,8 +8,10 @@ using Alchemystai.Models.V1.Context.Traces;
 
 namespace Alchemystai.Services.V1.Context;
 
+/// <inheritdoc />
 public sealed class TraceService : ITraceService
 {
+    /// <inheritdoc/>
     public ITraceService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new TraceService(this._client.WithOptions(modifier));
@@ -22,6 +24,7 @@ public sealed class TraceService : ITraceService
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<TraceListResponse> List(
         TraceListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -47,6 +50,7 @@ public sealed class TraceService : ITraceService
         return traces;
     }
 
+    /// <inheritdoc/>
     public async Task<TraceDeleteResponse> Delete(
         TraceDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -75,6 +79,7 @@ public sealed class TraceService : ITraceService
         return trace;
     }
 
+    /// <inheritdoc/>
     public async Task<TraceDeleteResponse> Delete(
         string traceID,
         TraceDeleteParams? parameters = null,

@@ -9,8 +9,10 @@ using Alchemystai.Services.V1.Context;
 
 namespace Alchemystai.Services.V1;
 
+/// <inheritdoc />
 public sealed class ContextService : IContextService
 {
+    /// <inheritdoc/>
     public IContextService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new ContextService(this._client.WithOptions(modifier));
@@ -44,6 +46,7 @@ public sealed class ContextService : IContextService
         get { return _memory.Value; }
     }
 
+    /// <inheritdoc/>
     public async Task<JsonElement> Delete(
         ContextDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -62,6 +65,7 @@ public sealed class ContextService : IContextService
         return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc/>
     public async Task<JsonElement> Add(
         ContextAddParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -80,6 +84,7 @@ public sealed class ContextService : IContextService
         return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc/>
     public async Task<ContextSearchResponse> Search(
         ContextSearchParams parameters,
         CancellationToken cancellationToken = default

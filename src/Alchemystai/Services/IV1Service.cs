@@ -11,6 +11,11 @@ namespace Alchemystai.Services;
 /// </summary>
 public interface IV1Service
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IV1Service WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     IContextService Context { get; }

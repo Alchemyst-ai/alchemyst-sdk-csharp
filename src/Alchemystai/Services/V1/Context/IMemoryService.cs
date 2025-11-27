@@ -13,6 +13,11 @@ namespace Alchemystai.Services.V1.Context;
 /// </summary>
 public interface IMemoryService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     IMemoryService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
