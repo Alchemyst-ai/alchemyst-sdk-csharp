@@ -4,8 +4,10 @@ using Org = Alchemystai.Services.V1.Org;
 
 namespace Alchemystai.Services.V1;
 
+/// <inheritdoc />
 public sealed class OrgService : IOrgService
 {
+    /// <inheritdoc/>
     public IOrgService WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
         return new OrgService(this._client.WithOptions(modifier));

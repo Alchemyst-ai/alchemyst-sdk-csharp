@@ -7,8 +7,10 @@ using Alchemystai.Models.V1.Org.Context;
 
 namespace Alchemystai.Services.V1.Org;
 
+/// <inheritdoc />
 public sealed class ContextService : global::Alchemystai.Services.V1.Org.IContextService
 {
+    /// <inheritdoc/>
     public global::Alchemystai.Services.V1.Org.IContextService WithOptions(
         Func<ClientOptions, ClientOptions> modifier
     )
@@ -25,6 +27,7 @@ public sealed class ContextService : global::Alchemystai.Services.V1.Org.IContex
         _client = client;
     }
 
+    /// <inheritdoc/>
     public async Task<ContextViewResponse> View(
         ContextViewParams parameters,
         CancellationToken cancellationToken = default

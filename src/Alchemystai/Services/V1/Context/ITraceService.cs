@@ -13,6 +13,11 @@ namespace Alchemystai.Services.V1.Context;
 /// </summary>
 public interface ITraceService
 {
+    /// <summary>
+    /// Returns a view of this service with the given option modifications applied.
+    ///
+    /// <para>The original service is not modified.</para>
+    /// </summary>
     ITraceService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
@@ -31,9 +36,7 @@ public interface ITraceService
         CancellationToken cancellationToken = default
     );
 
-    /// <summary>
-    /// Deletes a data trace for the authenticated user with the specified trace ID
-    /// </summary>
+    /// <inheritdoc cref="Delete(TraceDeleteParams, CancellationToken)"/>
     Task<TraceDeleteResponse> Delete(
         string traceID,
         TraceDeleteParams? parameters = null,
