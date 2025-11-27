@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -7,7 +8,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Alchemystai.Core;
 using Alchemystai.Exceptions;
-using System = System;
 
 namespace Alchemystai.Models.V1.Context;
 
@@ -38,7 +38,7 @@ public sealed record class ContextSearchParams : ParamsBase
             )
                 throw new AlchemystAIInvalidDataException(
                     "'minimum_similarity_threshold' cannot be null",
-                    new System::ArgumentOutOfRangeException(
+                    new ArgumentOutOfRangeException(
                         "minimum_similarity_threshold",
                         "Missing required argument"
                     )
@@ -65,13 +65,13 @@ public sealed record class ContextSearchParams : ParamsBase
             if (!this._rawBodyData.TryGetValue("query", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'query' cannot be null",
-                    new System::ArgumentOutOfRangeException("query", "Missing required argument")
+                    new ArgumentOutOfRangeException("query", "Missing required argument")
                 );
 
             return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
                 ?? throw new AlchemystAIInvalidDataException(
                     "'query' cannot be null",
-                    new System::ArgumentNullException("query")
+                    new ArgumentNullException("query")
                 );
         }
         init
@@ -93,7 +93,7 @@ public sealed record class ContextSearchParams : ParamsBase
             if (!this._rawBodyData.TryGetValue("similarity_threshold", out JsonElement element))
                 throw new AlchemystAIInvalidDataException(
                     "'similarity_threshold' cannot be null",
-                    new System::ArgumentOutOfRangeException(
+                    new ArgumentOutOfRangeException(
                         "similarity_threshold",
                         "Missing required argument"
                     )
@@ -231,11 +231,9 @@ public sealed record class ContextSearchParams : ParamsBase
         );
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
-        return new System::UriBuilder(
-            options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search"
-        )
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search")
         {
             Query = this.QueryString(options),
         }.Uri;
@@ -270,7 +268,7 @@ sealed class ScopeModelConverter : JsonConverter<ScopeModel>
 {
     public override ScopeModel Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
