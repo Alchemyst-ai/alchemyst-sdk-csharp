@@ -15,13 +15,7 @@ public sealed record class TraceDeleteResponse : ModelBase
     /// </summary>
     public JsonElement? Trace
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("trace", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "trace"); }
         init
         {
             if (value == null)
@@ -29,10 +23,7 @@ public sealed record class TraceDeleteResponse : ModelBase
                 return;
             }
 
-            this._rawData["trace"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "trace", value);
         }
     }
 

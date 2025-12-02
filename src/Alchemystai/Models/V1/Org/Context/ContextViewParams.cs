@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using Alchemystai.Core;
-using Alchemystai.Exceptions;
 
 namespace Alchemystai.Models.V1.Org.Context;
 
@@ -23,27 +22,8 @@ public sealed record class ContextViewParams : ParamsBase
 
     public required IReadOnlyList<string> UserIDs
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("userIds", out JsonElement element))
-                throw new AlchemystAIInvalidDataException(
-                    "'userIds' cannot be null",
-                    new ArgumentOutOfRangeException("userIds", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<List<string>>(element, ModelBase.SerializerOptions)
-                ?? throw new AlchemystAIInvalidDataException(
-                    "'userIds' cannot be null",
-                    new ArgumentNullException("userIds")
-                );
-        }
-        init
-        {
-            this._rawBodyData["userIds"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<List<string>>(this.RawBodyData, "userIds"); }
+        init { ModelBase.Set(this._rawBodyData, "userIds", value); }
     }
 
     public ContextViewParams() { }

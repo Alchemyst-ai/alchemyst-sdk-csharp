@@ -30,29 +30,12 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (
-                !this._rawBodyData.TryGetValue(
-                    "minimum_similarity_threshold",
-                    out JsonElement element
-                )
-            )
-                throw new AlchemystAIInvalidDataException(
-                    "'minimum_similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "minimum_similarity_threshold",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["minimum_similarity_threshold"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullStruct<double>(
+                this.RawBodyData,
+                "minimum_similarity_threshold"
             );
         }
+        init { ModelBase.Set(this._rawBodyData, "minimum_similarity_threshold", value); }
     }
 
     /// <summary>
@@ -60,27 +43,8 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required string Query
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("query", out JsonElement element))
-                throw new AlchemystAIInvalidDataException(
-                    "'query' cannot be null",
-                    new ArgumentOutOfRangeException("query", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AlchemystAIInvalidDataException(
-                    "'query' cannot be null",
-                    new ArgumentNullException("query")
-                );
-        }
-        init
-        {
-            this._rawBodyData["query"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawBodyData, "query"); }
+        init { ModelBase.Set(this._rawBodyData, "query", value); }
     }
 
     /// <summary>
@@ -88,26 +52,8 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required double SimilarityThreshold
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("similarity_threshold", out JsonElement element))
-                throw new AlchemystAIInvalidDataException(
-                    "'similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "similarity_threshold",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["similarity_threshold"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullStruct<double>(this.RawBodyData, "similarity_threshold"); }
+        init { ModelBase.Set(this._rawBodyData, "similarity_threshold", value); }
     }
 
     /// <summary>
@@ -115,13 +61,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public JsonElement? Metadata
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("metadata", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
         init
         {
             if (value == null)
@@ -129,10 +69,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "metadata", value);
         }
     }
 
@@ -143,12 +80,9 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("scope", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, ScopeModel>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, ScopeModel>>(
+                this.RawBodyData,
+                "scope"
             );
         }
         init
@@ -158,10 +92,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["scope"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "scope", value);
         }
     }
 
@@ -170,13 +101,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public string? UserID
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("user_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
         init
         {
             if (value == null)
@@ -184,10 +109,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["user_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "user_id", value);
         }
     }
 

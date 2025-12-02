@@ -13,16 +13,7 @@ public sealed record class ContextSearchResponse : ModelBase
 {
     public IReadOnlyList<ContextModel>? Contexts
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("contexts", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<ContextModel>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<ContextModel>>(this.RawData, "contexts"); }
         init
         {
             if (value == null)
@@ -30,10 +21,7 @@ public sealed record class ContextSearchResponse : ModelBase
                 return;
             }
 
-            this._rawData["contexts"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "contexts", value);
         }
     }
 
@@ -80,13 +68,7 @@ public sealed record class ContextModel : ModelBase
 {
     public string? Content
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -94,25 +76,13 @@ public sealed record class ContextModel : ModelBase
                 return;
             }
 
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "content", value);
         }
     }
 
     public DateTimeOffset? CreatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("createdAt", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
         init
         {
             if (value == null)
@@ -120,22 +90,13 @@ public sealed record class ContextModel : ModelBase
                 return;
             }
 
-            this._rawData["createdAt"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "createdAt", value);
         }
     }
 
     public JsonElement? Metadata
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("metadata", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "metadata"); }
         init
         {
             if (value == null)
@@ -143,22 +104,13 @@ public sealed record class ContextModel : ModelBase
                 return;
             }
 
-            this._rawData["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "metadata", value);
         }
     }
 
     public double? Score
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("score", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawData, "score"); }
         init
         {
             if (value == null)
@@ -166,25 +118,13 @@ public sealed record class ContextModel : ModelBase
                 return;
             }
 
-            this._rawData["score"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "score", value);
         }
     }
 
     public DateTimeOffset? UpdatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("updatedAt", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
         init
         {
             if (value == null)
@@ -192,10 +132,7 @@ public sealed record class ContextModel : ModelBase
                 return;
             }
 
-            this._rawData["updatedAt"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "updatedAt", value);
         }
     }
 

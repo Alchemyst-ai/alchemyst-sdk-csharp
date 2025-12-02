@@ -26,13 +26,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Content>? Contents
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("contents", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<Content>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<Content>>(this.RawBodyData, "contents"); }
         init
         {
             if (value == null)
@@ -40,10 +34,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["contents"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "contents", value);
         }
     }
 
@@ -52,13 +43,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
     /// </summary>
     public string? MemoryID
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("memoryId", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
         init
         {
             if (value == null)
@@ -66,10 +51,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["memoryId"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "memoryId", value);
         }
     }
 
@@ -143,13 +125,7 @@ public sealed record class Content : ModelBase
 {
     public string? Content1
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -157,10 +133,7 @@ public sealed record class Content : ModelBase
                 return;
             }
 
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "content", value);
         }
     }
 
