@@ -12,13 +12,7 @@ public sealed record class ContextViewResponse : ModelBase
 {
     public JsonElement? Contexts
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("contexts", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "contexts"); }
         init
         {
             if (value == null)
@@ -26,10 +20,7 @@ public sealed record class ContextViewResponse : ModelBase
                 return;
             }
 
-            this._rawData["contexts"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "contexts", value);
         }
     }
 

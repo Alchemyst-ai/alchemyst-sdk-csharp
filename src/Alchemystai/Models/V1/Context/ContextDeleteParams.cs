@@ -25,20 +25,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public bool? ByDoc
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("by_doc", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["by_doc"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawBodyData, "by_doc"); }
+        init { ModelBase.Set(this._rawBodyData, "by_doc", value); }
     }
 
     /// <summary>
@@ -46,20 +34,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public bool? ByID
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("by_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<bool?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["by_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<bool>(this.RawBodyData, "by_id"); }
+        init { ModelBase.Set(this._rawBodyData, "by_id", value); }
     }
 
     /// <summary>
@@ -67,20 +43,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public string? OrganizationID
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("organization_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["organization_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
+        init { ModelBase.Set(this._rawBodyData, "organization_id", value); }
     }
 
     /// <summary>
@@ -88,13 +52,7 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public string? Source
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("source", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "source"); }
         init
         {
             if (value == null)
@@ -102,10 +60,7 @@ public sealed record class ContextDeleteParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["source"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "source", value);
         }
     }
 
@@ -114,20 +69,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public string? UserID
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("user_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        init
-        {
-            this._rawBodyData["user_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
+        init { ModelBase.Set(this._rawBodyData, "user_id", value); }
     }
 
     public ContextDeleteParams() { }

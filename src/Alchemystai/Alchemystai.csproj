@@ -39,6 +39,7 @@
     <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Alchemystai.Tests" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     <InternalsVisibleTo Include="Alchemystai.Tests" />
     <PackageReference Include="System.Text.Json" Version="9.0.9" />

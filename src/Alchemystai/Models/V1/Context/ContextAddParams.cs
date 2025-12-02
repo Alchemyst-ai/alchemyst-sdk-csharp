@@ -31,12 +31,9 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("context_type", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, ContextType>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, ContextType>>(
+                this.RawBodyData,
+                "context_type"
             );
         }
         init
@@ -46,10 +43,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["context_type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "context_type", value);
         }
     }
 
@@ -58,16 +52,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Document>? Documents
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("documents", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<Document>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<Document>>(this.RawBodyData, "documents"); }
         init
         {
             if (value == null)
@@ -75,10 +60,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["documents"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "documents", value);
         }
     }
 
@@ -87,13 +69,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public Metadata? Metadata
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("metadata", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<Metadata?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<Metadata>(this.RawBodyData, "metadata"); }
         init
         {
             if (value == null)
@@ -101,10 +77,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "metadata", value);
         }
     }
 
@@ -115,13 +88,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            if (!this._rawBodyData.TryGetValue("scope", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, Scope>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
+            return ModelBase.GetNullableClass<ApiEnum<string, Scope>>(this.RawBodyData, "scope");
         }
         init
         {
@@ -130,10 +97,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["scope"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "scope", value);
         }
     }
 
@@ -142,13 +106,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public string? Source
     {
-        get
-        {
-            if (!this._rawBodyData.TryGetValue("source", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "source"); }
         init
         {
             if (value == null)
@@ -156,10 +114,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            this._rawBodyData["source"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "source", value);
         }
     }
 
@@ -284,13 +239,7 @@ public sealed record class Document : ModelBase
     /// </summary>
     public string? Content
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("content", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -298,10 +247,7 @@ public sealed record class Document : ModelBase
                 return;
             }
 
-            this._rawData["content"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "content", value);
         }
     }
 
@@ -348,13 +294,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? FileName
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("fileName", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "fileName"); }
         init
         {
             if (value == null)
@@ -362,10 +302,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            this._rawData["fileName"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "fileName", value);
         }
     }
 
@@ -374,13 +311,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public double? FileSize
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("fileSize", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<double?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<double>(this.RawData, "fileSize"); }
         init
         {
             if (value == null)
@@ -388,10 +319,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            this._rawData["fileSize"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "fileSize", value);
         }
     }
 
@@ -400,13 +328,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? FileType
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("fileType", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "fileType"); }
         init
         {
             if (value == null)
@@ -414,10 +336,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            this._rawData["fileType"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "fileType", value);
         }
     }
 
@@ -426,13 +345,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public IReadOnlyList<string>? GroupName
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("groupName", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<string>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "groupName"); }
         init
         {
             if (value == null)
@@ -440,10 +353,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            this._rawData["groupName"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "groupName", value);
         }
     }
 
@@ -452,13 +362,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? LastModified
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("lastModified", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "lastModified"); }
         init
         {
             if (value == null)
@@ -466,10 +370,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            this._rawData["lastModified"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "lastModified", value);
         }
     }
 

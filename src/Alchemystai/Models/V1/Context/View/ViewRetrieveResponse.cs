@@ -15,16 +15,7 @@ public sealed record class ViewRetrieveResponse : ModelBase
     /// </summary>
     public IReadOnlyList<JsonElement>? Context
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("context", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<JsonElement>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableClass<List<JsonElement>>(this.RawData, "context"); }
         init
         {
             if (value == null)
@@ -32,10 +23,7 @@ public sealed record class ViewRetrieveResponse : ModelBase
                 return;
             }
 
-            this._rawData["context"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "context", value);
         }
     }
 

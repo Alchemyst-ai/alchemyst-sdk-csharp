@@ -13,13 +13,7 @@ public sealed record class TraceListResponse : ModelBase
 {
     public IReadOnlyList<Trace>? Traces
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("traces", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<List<Trace>?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<List<Trace>>(this.RawData, "traces"); }
         init
         {
             if (value == null)
@@ -27,10 +21,7 @@ public sealed record class TraceListResponse : ModelBase
                 return;
             }
 
-            this._rawData["traces"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "traces", value);
         }
     }
 
@@ -76,13 +67,7 @@ public sealed record class Trace : ModelBase
 {
     public string? _ID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("_id", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "_id"); }
         init
         {
             if (value == null)
@@ -90,25 +75,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "_id", value);
         }
     }
 
     public DateTimeOffset? CreatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("createdAt", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
         init
         {
             if (value == null)
@@ -116,22 +89,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["createdAt"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "createdAt", value);
         }
     }
 
     public JsonElement? Data
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("data", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "data"); }
         init
         {
             if (value == null)
@@ -139,22 +103,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["data"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "data", value);
         }
     }
 
     public string? Type
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("type", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "type"); }
         init
         {
             if (value == null)
@@ -162,25 +117,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["type"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "type", value);
         }
     }
 
     public DateTimeOffset? UpdatedAt
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("updatedAt", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<DateTimeOffset?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
         init
         {
             if (value == null)
@@ -188,22 +131,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["updatedAt"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "updatedAt", value);
         }
     }
 
     public string? UserID
     {
-        get
-        {
-            if (!this._rawData.TryGetValue("userId", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
+        get { return ModelBase.GetNullableClass<string>(this.RawData, "userId"); }
         init
         {
             if (value == null)
@@ -211,10 +145,7 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            this._rawData["userId"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "userId", value);
         }
     }
 
