@@ -71,7 +71,7 @@ public class TraceTest : TestBase
 
         Assert.Equal(expected_ID, model._ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
-        Assert.True(JsonElement.DeepEquals(expectedData, model.Data));
+        Assert.True(model.Data.HasValue && JsonElement.DeepEquals(expectedData, model.Data.Value));
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedUserID, model.UserID);

@@ -67,7 +67,10 @@ public class ContextModelTest : TestBase
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
-        Assert.True(JsonElement.DeepEquals(expectedMetadata, model.Metadata));
+        Assert.True(
+            model.Metadata.HasValue
+                && JsonElement.DeepEquals(expectedMetadata, model.Metadata.Value)
+        );
         Assert.Equal(expectedScore, model.Score);
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }

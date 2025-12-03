@@ -15,6 +15,9 @@ public class ContextViewResponseTest : TestBase
 
         JsonElement expectedContexts = JsonSerializer.Deserialize<JsonElement>("{}");
 
-        Assert.True(JsonElement.DeepEquals(expectedContexts, model.Contexts));
+        Assert.True(
+            model.Contexts.HasValue
+                && JsonElement.DeepEquals(expectedContexts, model.Contexts.Value)
+        );
     }
 }
