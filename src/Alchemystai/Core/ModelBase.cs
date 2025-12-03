@@ -20,6 +20,8 @@ public abstract record class ModelBase
         {
             new ApiEnumConverter<string, ContextType>(),
             new ApiEnumConverter<string, Scope>(),
+            new ApiEnumConverter<string, MetadataModel>(),
+            new ApiEnumConverter<string, Mode>(),
             new ApiEnumConverter<string, ScopeModel>(),
         },
     };

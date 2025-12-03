@@ -20,6 +20,7 @@ public sealed record class ContextViewParams : ParamsBase
         get { return this._rawBodyData.Freeze(); }
     }
 
+    [Obsolete("deprecated")]
     public required IReadOnlyList<string> UserIDs
     {
         get { return ModelBase.GetNotNullClass<List<string>>(this.RawBodyData, "userIds"); }

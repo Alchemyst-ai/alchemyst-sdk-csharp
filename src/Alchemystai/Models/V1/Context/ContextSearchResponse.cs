@@ -94,6 +94,9 @@ public sealed record class ContextModel : ModelBase
         }
     }
 
+    /// <summary>
+    /// Only included when query parameter metadata=true
+    /// </summary>
     public JsonElement? Metadata
     {
         get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "metadata"); }

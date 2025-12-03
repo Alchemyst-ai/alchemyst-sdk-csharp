@@ -23,7 +23,7 @@ public class ContextServiceTest : TestBase
             new()
             {
                 MinimumSimilarityThreshold = 0.5,
-                Query = "search query for user preferences",
+                Query = "What did the customer ask about pricing for the Scale plan?",
                 SimilarityThreshold = 0.8,
             }
         );
