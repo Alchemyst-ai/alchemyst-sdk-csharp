@@ -57,9 +57,52 @@ public sealed record class ContextSearchParams : ParamsBase
     }
 
     /// <summary>
+    /// Controls whether metadata is included in the response: - metadata=true → metadata
+    /// will be included in each context item in the response. - metadata=false (or
+    /// omitted) → metadata will be excluded from the response for better performance.
+    /// </summary>
+    public ApiEnum<string, MetadataModel>? Metadata
+    {
+        get
+        {
+            return ModelBase.GetNullableClass<ApiEnum<string, MetadataModel>>(
+                this.RawQueryData,
+                "metadata"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "metadata", value);
+        }
+    }
+
+    /// <summary>
+    /// Controls the search mode: - mode=fast → prioritizes speed over completeness.
+    /// - mode=standard → performs a comprehensive search (default if omitted).
+    /// </summary>
+    public ApiEnum<string, Mode>? Mode
+    {
+        get { return ModelBase.GetNullableClass<ApiEnum<string, Mode>>(this.RawQueryData, "mode"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "mode", value);
+        }
+    }
+
+    /// <summary>
     /// Additional metadata for the search
     /// </summary>
-    public JsonElement? Metadata
+    public JsonElement? Metadata1
     {
         get { return ModelBase.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
         init
@@ -99,6 +142,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// The ID of the user making the request
     /// </summary>
+    [Obsolete("deprecated")]
     public string? UserID
     {
         get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
@@ -173,6 +217,99 @@ public sealed record class ContextSearchParams : ParamsBase
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+/// <summary>
+/// Controls whether metadata is included in the response: - metadata=true → metadata
+/// will be included in each context item in the response. - metadata=false (or omitted)
+/// → metadata will be excluded from the response for better performance.
+/// </summary>
+[JsonConverter(typeof(MetadataModelConverter))]
+public enum MetadataModel
+{
+    True,
+    False,
+}
+
+sealed class MetadataModelConverter : JsonConverter<MetadataModel>
+{
+    public override MetadataModel Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "true" => MetadataModel.True,
+            "false" => MetadataModel.False,
+            _ => (MetadataModel)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        MetadataModel value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                MetadataModel.True => "true",
+                MetadataModel.False => "false",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// Controls the search mode: - mode=fast → prioritizes speed over completeness. -
+/// mode=standard → performs a comprehensive search (default if omitted).
+/// </summary>
+[JsonConverter(typeof(ModeConverter))]
+public enum Mode
+{
+    Fast,
+    Standard,
+}
+
+sealed class ModeConverter : JsonConverter<Mode>
+{
+    public override Mode Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "fast" => Mode.Fast,
+            "standard" => Mode.Standard,
+            _ => (Mode)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Mode value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Mode.Fast => "fast",
+                Mode.Standard => "standard",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

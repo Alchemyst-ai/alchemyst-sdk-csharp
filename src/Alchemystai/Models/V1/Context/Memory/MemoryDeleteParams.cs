@@ -49,6 +49,7 @@ public sealed record class MemoryDeleteParams : ParamsBase
     /// <summary>
     /// Optional user ID
     /// </summary>
+    [Obsolete("deprecated")]
     public string? UserID
     {
         get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
