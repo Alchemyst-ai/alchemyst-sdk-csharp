@@ -25,7 +25,7 @@ public class ContextSearchResponseTest : TestBase
             ],
         };
 
-        List<ContextModel> expectedContexts =
+        List<ContextSearchResponseContext> expectedContexts =
         [
             new()
             {
@@ -90,7 +90,7 @@ public class ContextSearchResponseTest : TestBase
         var deserialized = JsonSerializer.Deserialize<ContextSearchResponse>(json);
         Assert.NotNull(deserialized);
 
-        List<ContextModel> expectedContexts =
+        List<ContextSearchResponseContext> expectedContexts =
         [
             new()
             {
@@ -173,12 +173,12 @@ public class ContextSearchResponseTest : TestBase
     }
 }
 
-public class ContextModelTest : TestBase
+public class ContextSearchResponseContextTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             Content = "content",
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -206,7 +206,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             Content = "content",
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -216,7 +216,7 @@ public class ContextModelTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContextModel>(json);
+        var deserialized = JsonSerializer.Deserialize<ContextSearchResponseContext>(json);
 
         Assert.Equal(model, deserialized);
     }
@@ -224,7 +224,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             Content = "content",
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -234,7 +234,7 @@ public class ContextModelTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContextModel>(json);
+        var deserialized = JsonSerializer.Deserialize<ContextSearchResponseContext>(json);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
@@ -256,7 +256,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             Content = "content",
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -271,7 +271,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new ContextModel { };
+        var model = new ContextSearchResponseContext { };
 
         Assert.Null(model.Content);
         Assert.False(model.RawData.ContainsKey("content"));
@@ -288,7 +288,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new ContextModel { };
+        var model = new ContextSearchResponseContext { };
 
         model.Validate();
     }
@@ -296,7 +296,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -321,7 +321,7 @@ public class ContextModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new ContextModel
+        var model = new ContextSearchResponseContext
         {
             // Null should be interpreted as omitted for these properties
             Content = null,

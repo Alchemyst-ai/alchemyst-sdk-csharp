@@ -8,17 +8,17 @@ public class ContentTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Content { Content1 = "content" };
+        var model = new Content { ContentValue = "content" };
 
-        string expectedContent1 = "content";
+        string expectedContentValue = "content";
 
-        Assert.Equal(expectedContent1, model.Content1);
+        Assert.Equal(expectedContentValue, model.ContentValue);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Content { Content1 = "content" };
+        var model = new Content { ContentValue = "content" };
 
         string json = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<Content>(json);
@@ -29,21 +29,21 @@ public class ContentTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Content { Content1 = "content" };
+        var model = new Content { ContentValue = "content" };
 
         string json = JsonSerializer.Serialize(model);
         var deserialized = JsonSerializer.Deserialize<Content>(json);
         Assert.NotNull(deserialized);
 
-        string expectedContent1 = "content";
+        string expectedContentValue = "content";
 
-        Assert.Equal(expectedContent1, deserialized.Content1);
+        Assert.Equal(expectedContentValue, deserialized.ContentValue);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new Content { Content1 = "content" };
+        var model = new Content { ContentValue = "content" };
 
         model.Validate();
     }
@@ -53,7 +53,7 @@ public class ContentTest : TestBase
     {
         var model = new Content { };
 
-        Assert.Null(model.Content1);
+        Assert.Null(model.ContentValue);
         Assert.False(model.RawData.ContainsKey("content"));
     }
 
@@ -71,10 +71,10 @@ public class ContentTest : TestBase
         var model = new Content
         {
             // Null should be interpreted as omitted for these properties
-            Content1 = null,
+            ContentValue = null,
         };
 
-        Assert.Null(model.Content1);
+        Assert.Null(model.ContentValue);
         Assert.False(model.RawData.ContainsKey("content"));
     }
 
@@ -84,7 +84,7 @@ public class ContentTest : TestBase
         var model = new Content
         {
             // Null should be interpreted as omitted for these properties
-            Content1 = null,
+            ContentValue = null,
         };
 
         model.Validate();

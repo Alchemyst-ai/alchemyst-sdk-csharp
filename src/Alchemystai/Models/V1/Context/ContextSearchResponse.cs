@@ -11,9 +11,15 @@ namespace Alchemystai.Models.V1.Context;
 [JsonConverter(typeof(ModelConverter<ContextSearchResponse, ContextSearchResponseFromRaw>))]
 public sealed record class ContextSearchResponse : ModelBase
 {
-    public IReadOnlyList<ContextModel>? Contexts
+    public IReadOnlyList<ContextSearchResponseContext>? Contexts
     {
-        get { return ModelBase.GetNullableClass<List<ContextModel>>(this.RawData, "contexts"); }
+        get
+        {
+            return ModelBase.GetNullableClass<List<ContextSearchResponseContext>>(
+                this.RawData,
+                "contexts"
+            );
+        }
         init
         {
             if (value == null)
@@ -63,8 +69,10 @@ class ContextSearchResponseFromRaw : IFromRaw<ContextSearchResponse>
     ) => ContextSearchResponse.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ModelConverter<ContextModel, ContextModelFromRaw>))]
-public sealed record class ContextModel : ModelBase
+[JsonConverter(
+    typeof(ModelConverter<ContextSearchResponseContext, ContextSearchResponseContextFromRaw>)
+)]
+public sealed record class ContextSearchResponseContext : ModelBase
 {
     public string? Content
     {
@@ -148,29 +156,32 @@ public sealed record class ContextModel : ModelBase
         _ = this.UpdatedAt;
     }
 
-    public ContextModel() { }
+    public ContextSearchResponseContext() { }
 
-    public ContextModel(IReadOnlyDictionary<string, JsonElement> rawData)
+    public ContextSearchResponseContext(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContextModel(FrozenDictionary<string, JsonElement> rawData)
+    ContextSearchResponseContext(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ContextModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
+    public static ContextSearchResponseContext FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
-class ContextModelFromRaw : IFromRaw<ContextModel>
+class ContextSearchResponseContextFromRaw : IFromRaw<ContextSearchResponseContext>
 {
-    public ContextModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        ContextModel.FromRawUnchecked(rawData);
+    public ContextSearchResponseContext FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ContextSearchResponseContext.FromRawUnchecked(rawData);
 }

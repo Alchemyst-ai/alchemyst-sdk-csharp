@@ -3,12 +3,12 @@ using Alchemystai.Models.V1.Context.Memory;
 
 namespace Alchemystai.Tests.Models.V1.Context.Memory;
 
-public class ContentModelTest : TestBase
+public class MemoryAddParamsContentTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ContentModel { Content = "content" };
+        var model = new MemoryAddParamsContent { Content = "content" };
 
         string expectedContent = "content";
 
@@ -18,10 +18,10 @@ public class ContentModelTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ContentModel { Content = "content" };
+        var model = new MemoryAddParamsContent { Content = "content" };
 
         string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContentModel>(json);
+        var deserialized = JsonSerializer.Deserialize<MemoryAddParamsContent>(json);
 
         Assert.Equal(model, deserialized);
     }
@@ -29,10 +29,10 @@ public class ContentModelTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ContentModel { Content = "content" };
+        var model = new MemoryAddParamsContent { Content = "content" };
 
         string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContentModel>(json);
+        var deserialized = JsonSerializer.Deserialize<MemoryAddParamsContent>(json);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
@@ -43,7 +43,7 @@ public class ContentModelTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ContentModel { Content = "content" };
+        var model = new MemoryAddParamsContent { Content = "content" };
 
         model.Validate();
     }
@@ -51,7 +51,7 @@ public class ContentModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new ContentModel { };
+        var model = new MemoryAddParamsContent { };
 
         Assert.Null(model.Content);
         Assert.False(model.RawData.ContainsKey("content"));
@@ -60,7 +60,7 @@ public class ContentModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new ContentModel { };
+        var model = new MemoryAddParamsContent { };
 
         model.Validate();
     }
@@ -68,7 +68,7 @@ public class ContentModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new ContentModel
+        var model = new MemoryAddParamsContent
         {
             // Null should be interpreted as omitted for these properties
             Content = null,
@@ -81,7 +81,7 @@ public class ContentModelTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new ContentModel
+        var model = new MemoryAddParamsContent
         {
             // Null should be interpreted as omitted for these properties
             Content = null,

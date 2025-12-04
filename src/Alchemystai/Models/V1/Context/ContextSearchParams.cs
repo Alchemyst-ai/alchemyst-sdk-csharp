@@ -61,11 +61,11 @@ public sealed record class ContextSearchParams : ParamsBase
     /// will be included in each context item in the response. - metadata=false (or
     /// omitted) → metadata will be excluded from the response for better performance.
     /// </summary>
-    public ApiEnum<string, MetadataModel>? Metadata
+    public ApiEnum<string, ContextSearchParamsMetadata>? Metadata
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, MetadataModel>>(
+            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsMetadata>>(
                 this.RawQueryData,
                 "metadata"
             );
@@ -102,7 +102,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// Additional metadata for the search
     /// </summary>
-    public JsonElement? Metadata1
+    public JsonElement? MetadataValue
     {
         get { return ModelBase.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
         init
@@ -119,11 +119,11 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// Search scope
     /// </summary>
-    public ApiEnum<string, ScopeModel>? Scope
+    public ApiEnum<string, ContextSearchParamsScope>? Scope
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, ScopeModel>>(
+            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsScope>>(
                 this.RawBodyData,
                 "scope"
             );
@@ -225,16 +225,16 @@ public sealed record class ContextSearchParams : ParamsBase
 /// will be included in each context item in the response. - metadata=false (or omitted)
 /// → metadata will be excluded from the response for better performance.
 /// </summary>
-[JsonConverter(typeof(MetadataModelConverter))]
-public enum MetadataModel
+[JsonConverter(typeof(ContextSearchParamsMetadataConverter))]
+public enum ContextSearchParamsMetadata
 {
     True,
     False,
 }
 
-sealed class MetadataModelConverter : JsonConverter<MetadataModel>
+sealed class ContextSearchParamsMetadataConverter : JsonConverter<ContextSearchParamsMetadata>
 {
-    public override MetadataModel Read(
+    public override ContextSearchParamsMetadata Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -242,15 +242,15 @@ sealed class MetadataModelConverter : JsonConverter<MetadataModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "true" => MetadataModel.True,
-            "false" => MetadataModel.False,
-            _ => (MetadataModel)(-1),
+            "true" => ContextSearchParamsMetadata.True,
+            "false" => ContextSearchParamsMetadata.False,
+            _ => (ContextSearchParamsMetadata)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        MetadataModel value,
+        ContextSearchParamsMetadata value,
         JsonSerializerOptions options
     )
     {
@@ -258,8 +258,8 @@ sealed class MetadataModelConverter : JsonConverter<MetadataModel>
             writer,
             value switch
             {
-                MetadataModel.True => "true",
-                MetadataModel.False => "false",
+                ContextSearchParamsMetadata.True => "true",
+                ContextSearchParamsMetadata.False => "false",
                 _ => throw new AlchemystAIInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
@@ -316,16 +316,16 @@ sealed class ModeConverter : JsonConverter<Mode>
 /// <summary>
 /// Search scope
 /// </summary>
-[JsonConverter(typeof(ScopeModelConverter))]
-public enum ScopeModel
+[JsonConverter(typeof(ContextSearchParamsScopeConverter))]
+public enum ContextSearchParamsScope
 {
     Internal,
     External,
 }
 
-sealed class ScopeModelConverter : JsonConverter<ScopeModel>
+sealed class ContextSearchParamsScopeConverter : JsonConverter<ContextSearchParamsScope>
 {
-    public override ScopeModel Read(
+    public override ContextSearchParamsScope Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -333,15 +333,15 @@ sealed class ScopeModelConverter : JsonConverter<ScopeModel>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "internal" => ScopeModel.Internal,
-            "external" => ScopeModel.External,
-            _ => (ScopeModel)(-1),
+            "internal" => ContextSearchParamsScope.Internal,
+            "external" => ContextSearchParamsScope.External,
+            _ => (ContextSearchParamsScope)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        ScopeModel value,
+        ContextSearchParamsScope value,
         JsonSerializerOptions options
     )
     {
@@ -349,8 +349,8 @@ sealed class ScopeModelConverter : JsonConverter<ScopeModel>
             writer,
             value switch
             {
-                ScopeModel.Internal => "internal",
-                ScopeModel.External => "external",
+                ContextSearchParamsScope.Internal => "internal",
+                ContextSearchParamsScope.External => "external",
                 _ => throw new AlchemystAIInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
