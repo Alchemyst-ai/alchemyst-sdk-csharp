@@ -15,6 +15,9 @@ public sealed record class ViewRetrieveParams : ParamsBase
 {
     public ViewRetrieveParams() { }
 
+    public ViewRetrieveParams(ViewRetrieveParams viewRetrieveParams)
+        : base(viewRetrieveParams) { }
+
     public ViewRetrieveParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

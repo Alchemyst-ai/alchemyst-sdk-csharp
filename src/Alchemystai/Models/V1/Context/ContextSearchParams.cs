@@ -159,6 +159,12 @@ public sealed record class ContextSearchParams : ParamsBase
 
     public ContextSearchParams() { }
 
+    public ContextSearchParams(ContextSearchParams contextSearchParams)
+        : base(contextSearchParams)
+    {
+        this._rawBodyData = [.. contextSearchParams._rawBodyData];
+    }
+
     public ContextSearchParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,

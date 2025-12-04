@@ -35,6 +35,9 @@ public sealed record class ViewRetrieveResponse : ModelBase
 
     public ViewRetrieveResponse() { }
 
+    public ViewRetrieveResponse(ViewRetrieveResponse viewRetrieveResponse)
+        : base(viewRetrieveResponse) { }
+
     public ViewRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];

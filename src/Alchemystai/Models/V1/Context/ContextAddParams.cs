@@ -120,6 +120,12 @@ public sealed record class ContextAddParams : ParamsBase
 
     public ContextAddParams() { }
 
+    public ContextAddParams(ContextAddParams contextAddParams)
+        : base(contextAddParams)
+    {
+        this._rawBodyData = [.. contextAddParams._rawBodyData];
+    }
+
     public ContextAddParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -260,6 +266,9 @@ public sealed record class Document : ModelBase
 
     public Document() { }
 
+    public Document(Document document)
+        : base(document) { }
+
     public Document(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -389,6 +398,9 @@ public sealed record class Metadata : ModelBase
     }
 
     public Metadata() { }
+
+    public Metadata(Metadata metadata)
+        : base(metadata) { }
 
     public Metadata(IReadOnlyDictionary<string, JsonElement> rawData)
     {

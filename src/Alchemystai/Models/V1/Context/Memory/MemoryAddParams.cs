@@ -63,6 +63,12 @@ public sealed record class MemoryAddParams : ParamsBase
 
     public MemoryAddParams() { }
 
+    public MemoryAddParams(MemoryAddParams memoryAddParams)
+        : base(memoryAddParams)
+    {
+        this._rawBodyData = [.. memoryAddParams._rawBodyData];
+    }
+
     public MemoryAddParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -151,6 +157,9 @@ public sealed record class MemoryAddParamsContent : ModelBase
     }
 
     public MemoryAddParamsContent() { }
+
+    public MemoryAddParamsContent(MemoryAddParamsContent memoryAddParamsContent)
+        : base(memoryAddParamsContent) { }
 
     public MemoryAddParamsContent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
