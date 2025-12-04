@@ -31,6 +31,7 @@ public sealed record class ContextSearchResponse : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Contexts ?? [])
@@ -54,6 +55,7 @@ public sealed record class ContextSearchResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ContextSearchResponseFromRaw.FromRawUnchecked"/>
     public static ContextSearchResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -64,6 +66,7 @@ public sealed record class ContextSearchResponse : ModelBase
 
 class ContextSearchResponseFromRaw : IFromRaw<ContextSearchResponse>
 {
+    /// <inheritdoc/>
     public ContextSearchResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ContextSearchResponse.FromRawUnchecked(rawData);
@@ -147,6 +150,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Content;
@@ -171,6 +175,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ContextSearchResponseContextFromRaw.FromRawUnchecked"/>
     public static ContextSearchResponseContext FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -181,6 +186,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
 
 class ContextSearchResponseContextFromRaw : IFromRaw<ContextSearchResponseContext>
 {
+    /// <inheritdoc/>
     public ContextSearchResponseContext FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => ContextSearchResponseContext.FromRawUnchecked(rawData);

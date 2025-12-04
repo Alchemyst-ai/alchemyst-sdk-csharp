@@ -4,7 +4,7 @@ using Org = Alchemystai.Services.V1.Org;
 
 namespace Alchemystai.Services.V1;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class OrgService : IOrgService
 {
     /// <inheritdoc/>

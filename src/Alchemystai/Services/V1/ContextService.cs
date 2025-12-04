@@ -9,7 +9,7 @@ using Alchemystai.Services.V1.Context;
 
 namespace Alchemystai.Services.V1;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class ContextService : IContextService
 {
     /// <inheritdoc/>

@@ -8,7 +8,7 @@ using Alchemystai.Models.V1.Context.View;
 
 namespace Alchemystai.Services.V1.Context;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class ViewService : IViewService
 {
     /// <inheritdoc/>

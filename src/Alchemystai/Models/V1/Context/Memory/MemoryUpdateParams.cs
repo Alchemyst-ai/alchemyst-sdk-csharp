@@ -82,6 +82,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static MemoryUpdateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -137,6 +138,7 @@ public sealed record class Content : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.ContentValue;
@@ -157,6 +159,7 @@ public sealed record class Content : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ContentFromRaw.FromRawUnchecked"/>
     public static Content FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -165,6 +168,7 @@ public sealed record class Content : ModelBase
 
 class ContentFromRaw : IFromRaw<Content>
 {
+    /// <inheritdoc/>
     public Content FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Content.FromRawUnchecked(rawData);
 }

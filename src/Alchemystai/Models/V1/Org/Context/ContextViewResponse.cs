@@ -24,6 +24,7 @@ public sealed record class ContextViewResponse : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Contexts;
@@ -44,6 +45,7 @@ public sealed record class ContextViewResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="ContextViewResponseFromRaw.FromRawUnchecked"/>
     public static ContextViewResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -54,6 +56,7 @@ public sealed record class ContextViewResponse : ModelBase
 
 class ContextViewResponseFromRaw : IFromRaw<ContextViewResponse>
 {
+    /// <inheritdoc/>
     public ContextViewResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         ContextViewResponse.FromRawUnchecked(rawData);
 }
