@@ -15,6 +15,9 @@ public sealed record class TraceListParams : ParamsBase
 {
     public TraceListParams() { }
 
+    public TraceListParams(TraceListParams traceListParams)
+        : base(traceListParams) { }
+
     public TraceListParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

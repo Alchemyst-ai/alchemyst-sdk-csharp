@@ -57,6 +57,12 @@ public sealed record class MemoryUpdateParams : ParamsBase
 
     public MemoryUpdateParams() { }
 
+    public MemoryUpdateParams(MemoryUpdateParams memoryUpdateParams)
+        : base(memoryUpdateParams)
+    {
+        this._rawBodyData = [.. memoryUpdateParams._rawBodyData];
+    }
+
     public MemoryUpdateParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -145,6 +151,9 @@ public sealed record class Content : ModelBase
     }
 
     public Content() { }
+
+    public Content(Content content)
+        : base(content) { }
 
     public Content(IReadOnlyDictionary<string, JsonElement> rawData)
     {

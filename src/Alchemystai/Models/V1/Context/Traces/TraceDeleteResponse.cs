@@ -35,6 +35,9 @@ public sealed record class TraceDeleteResponse : ModelBase
 
     public TraceDeleteResponse() { }
 
+    public TraceDeleteResponse(TraceDeleteResponse traceDeleteResponse)
+        : base(traceDeleteResponse) { }
+
     public TraceDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];

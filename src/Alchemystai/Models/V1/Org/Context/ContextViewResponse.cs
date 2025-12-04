@@ -32,6 +32,9 @@ public sealed record class ContextViewResponse : ModelBase
 
     public ContextViewResponse() { }
 
+    public ContextViewResponse(ContextViewResponse contextViewResponse)
+        : base(contextViewResponse) { }
+
     public ContextViewResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];

@@ -76,6 +76,12 @@ public sealed record class ContextDeleteParams : ParamsBase
 
     public ContextDeleteParams() { }
 
+    public ContextDeleteParams(ContextDeleteParams contextDeleteParams)
+        : base(contextDeleteParams)
+    {
+        this._rawBodyData = [.. contextDeleteParams._rawBodyData];
+    }
+
     public ContextDeleteParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,

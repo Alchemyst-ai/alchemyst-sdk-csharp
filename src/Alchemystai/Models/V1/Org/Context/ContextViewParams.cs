@@ -29,6 +29,12 @@ public sealed record class ContextViewParams : ParamsBase
 
     public ContextViewParams() { }
 
+    public ContextViewParams(ContextViewParams contextViewParams)
+        : base(contextViewParams)
+    {
+        this._rawBodyData = [.. contextViewParams._rawBodyData];
+    }
+
     public ContextViewParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,

@@ -58,6 +58,12 @@ public sealed record class MemoryDeleteParams : ParamsBase
 
     public MemoryDeleteParams() { }
 
+    public MemoryDeleteParams(MemoryDeleteParams memoryDeleteParams)
+        : base(memoryDeleteParams)
+    {
+        this._rawBodyData = [.. memoryDeleteParams._rawBodyData];
+    }
+
     public MemoryDeleteParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,

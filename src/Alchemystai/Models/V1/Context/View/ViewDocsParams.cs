@@ -15,6 +15,9 @@ public sealed record class ViewDocsParams : ParamsBase
 {
     public ViewDocsParams() { }
 
+    public ViewDocsParams(ViewDocsParams viewDocsParams)
+        : base(viewDocsParams) { }
+
     public ViewDocsParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

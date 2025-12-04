@@ -42,6 +42,9 @@ public sealed record class ContextSearchResponse : ModelBase
 
     public ContextSearchResponse() { }
 
+    public ContextSearchResponse(ContextSearchResponse contextSearchResponse)
+        : base(contextSearchResponse) { }
+
     public ContextSearchResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -161,6 +164,9 @@ public sealed record class ContextSearchResponseContext : ModelBase
     }
 
     public ContextSearchResponseContext() { }
+
+    public ContextSearchResponseContext(ContextSearchResponseContext contextSearchResponseContext)
+        : base(contextSearchResponseContext) { }
 
     public ContextSearchResponseContext(IReadOnlyDictionary<string, JsonElement> rawData)
     {

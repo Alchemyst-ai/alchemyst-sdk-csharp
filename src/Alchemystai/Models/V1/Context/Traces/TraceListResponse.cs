@@ -36,6 +36,9 @@ public sealed record class TraceListResponse : ModelBase
 
     public TraceListResponse() { }
 
+    public TraceListResponse(TraceListResponse traceListResponse)
+        : base(traceListResponse) { }
+
     public TraceListResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
@@ -164,6 +167,9 @@ public sealed record class Trace : ModelBase
     }
 
     public Trace() { }
+
+    public Trace(Trace trace)
+        : base(trace) { }
 
     public Trace(IReadOnlyDictionary<string, JsonElement> rawData)
     {

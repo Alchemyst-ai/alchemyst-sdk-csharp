@@ -17,6 +17,9 @@ public sealed record class TraceDeleteParams : ParamsBase
 
     public TraceDeleteParams() { }
 
+    public TraceDeleteParams(TraceDeleteParams traceDeleteParams)
+        : base(traceDeleteParams) { }
+
     public TraceDeleteParams(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData
