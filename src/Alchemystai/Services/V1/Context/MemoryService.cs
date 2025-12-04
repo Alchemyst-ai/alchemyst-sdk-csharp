@@ -7,7 +7,7 @@ using Alchemystai.Models.V1.Context.Memory;
 
 namespace Alchemystai.Services.V1.Context;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class MemoryService : IMemoryService
 {
     /// <inheritdoc/>

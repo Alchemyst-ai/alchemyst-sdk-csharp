@@ -8,7 +8,7 @@ using Alchemystai.Models.V1.Context.Traces;
 
 namespace Alchemystai.Services.V1.Context;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class TraceService : ITraceService
 {
     /// <inheritdoc/>

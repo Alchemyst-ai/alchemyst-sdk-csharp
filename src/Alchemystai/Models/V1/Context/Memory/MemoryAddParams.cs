@@ -88,6 +88,7 @@ public sealed record class MemoryAddParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static MemoryAddParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -143,6 +144,7 @@ public sealed record class MemoryAddParamsContent : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Content;
@@ -163,6 +165,7 @@ public sealed record class MemoryAddParamsContent : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MemoryAddParamsContentFromRaw.FromRawUnchecked"/>
     public static MemoryAddParamsContent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -173,6 +176,7 @@ public sealed record class MemoryAddParamsContent : ModelBase
 
 class MemoryAddParamsContentFromRaw : IFromRaw<MemoryAddParamsContent>
 {
+    /// <inheritdoc/>
     public MemoryAddParamsContent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => MemoryAddParamsContent.FromRawUnchecked(rawData);

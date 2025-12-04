@@ -145,6 +145,7 @@ public sealed record class ContextAddParams : ParamsBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
     public static ContextAddParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -251,6 +252,7 @@ public sealed record class Document : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Content;
@@ -271,6 +273,7 @@ public sealed record class Document : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="DocumentFromRaw.FromRawUnchecked"/>
     public static Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -279,6 +282,7 @@ public sealed record class Document : ModelBase
 
 class DocumentFromRaw : IFromRaw<Document>
 {
+    /// <inheritdoc/>
     public Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Document.FromRawUnchecked(rawData);
 }
@@ -374,6 +378,7 @@ public sealed record class Metadata : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.FileName;
@@ -398,6 +403,7 @@ public sealed record class Metadata : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="MetadataFromRaw.FromRawUnchecked"/>
     public static Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -406,6 +412,7 @@ public sealed record class Metadata : ModelBase
 
 class MetadataFromRaw : IFromRaw<Metadata>
 {
+    /// <inheritdoc/>
     public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Metadata.FromRawUnchecked(rawData);
 }

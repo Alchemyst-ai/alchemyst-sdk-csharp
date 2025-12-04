@@ -27,6 +27,7 @@ public sealed record class TraceDeleteResponse : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Trace;
@@ -47,6 +48,7 @@ public sealed record class TraceDeleteResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="TraceDeleteResponseFromRaw.FromRawUnchecked"/>
     public static TraceDeleteResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -57,6 +59,7 @@ public sealed record class TraceDeleteResponse : ModelBase
 
 class TraceDeleteResponseFromRaw : IFromRaw<TraceDeleteResponse>
 {
+    /// <inheritdoc/>
     public TraceDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         TraceDeleteResponse.FromRawUnchecked(rawData);
 }

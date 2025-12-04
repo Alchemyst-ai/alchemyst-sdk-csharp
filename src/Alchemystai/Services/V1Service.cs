@@ -4,7 +4,7 @@ using Alchemystai.Services.V1;
 
 namespace Alchemystai.Services;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class V1Service : IV1Service
 {
     /// <inheritdoc/>

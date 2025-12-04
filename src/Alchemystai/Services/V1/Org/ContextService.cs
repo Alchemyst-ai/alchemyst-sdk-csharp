@@ -7,7 +7,7 @@ using Alchemystai.Models.V1.Org.Context;
 
 namespace Alchemystai.Services.V1.Org;
 
-/// <inheritdoc />
+/// <inheritdoc/>
 public sealed class ContextService : global::Alchemystai.Services.V1.Org.IContextService
 {
     /// <inheritdoc/>

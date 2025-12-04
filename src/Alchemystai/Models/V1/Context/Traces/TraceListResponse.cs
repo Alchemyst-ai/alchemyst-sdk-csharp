@@ -25,6 +25,7 @@ public sealed record class TraceListResponse : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         foreach (var item in this.Traces ?? [])
@@ -48,6 +49,7 @@ public sealed record class TraceListResponse : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="TraceListResponseFromRaw.FromRawUnchecked"/>
     public static TraceListResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
@@ -58,6 +60,7 @@ public sealed record class TraceListResponse : ModelBase
 
 class TraceListResponseFromRaw : IFromRaw<TraceListResponse>
 {
+    /// <inheritdoc/>
     public TraceListResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         TraceListResponse.FromRawUnchecked(rawData);
 }
@@ -149,6 +152,7 @@ public sealed record class Trace : ModelBase
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this._ID;
@@ -174,6 +178,7 @@ public sealed record class Trace : ModelBase
     }
 #pragma warning restore CS8618
 
+    /// <inheritdoc cref="TraceFromRaw.FromRawUnchecked"/>
     public static Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
@@ -182,6 +187,7 @@ public sealed record class Trace : ModelBase
 
 class TraceFromRaw : IFromRaw<Trace>
 {
+    /// <inheritdoc/>
     public Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Trace.FromRawUnchecked(rawData);
 }
