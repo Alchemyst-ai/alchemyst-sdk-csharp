@@ -1,33 +1,74 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
 using Alchemystai.Exceptions;
-using Alchemystai.Services.V1;
+using Alchemystai.Services;
 
 namespace Alchemystai;
 
+/// <inheritdoc/>
 public sealed class AlchemystAIClient : IAlchemystAIClient
 {
-    public HttpClient HttpClient { get; init; } = new();
+    static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
 
-    Lazy<Uri> _baseUrl = new(() =>
-        new Uri(
-            Environment.GetEnvironmentVariable("ALCHEMYST_AI_BASE_URL")
-                ?? "https://platform-backend.getalchemystai.com"
-        )
-    );
-    public Uri BaseUrl
+    static Random Random
     {
-        get { return _baseUrl.Value; }
-        init { _baseUrl = new(() => value); }
+        get { return _threadLocalRandom.Value!; }
     }
 
-    Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ALCHEMYST_AI_API_KEY"));
+    readonly ClientOptions _options;
+
+    /// <inheritdoc/>
+    public HttpClient HttpClient
+    {
+        get { return this._options.HttpClient; }
+        init { this._options.HttpClient = value; }
+    }
+
+    /// <inheritdoc/>
+    public Uri BaseUrl
+    {
+        get { return this._options.BaseUrl; }
+        init { this._options.BaseUrl = value; }
+    }
+
+    /// <inheritdoc/>
+    public bool ResponseValidation
+    {
+        get { return this._options.ResponseValidation; }
+        init { this._options.ResponseValidation = value; }
+    }
+
+    /// <inheritdoc/>
+    public int? MaxRetries
+    {
+        get { return this._options.MaxRetries; }
+        init { this._options.MaxRetries = value; }
+    }
+
+    /// <inheritdoc/>
+    public TimeSpan? Timeout
+    {
+        get { return this._options.Timeout; }
+        init { this._options.Timeout = value; }
+    }
+
+    /// <inheritdoc/>
     public string? APIKey
     {
-        get { return _apiKey.Value; }
-        init { _apiKey = new(() => value); }
+        get { return this._options.APIKey; }
+        init { this._options.APIKey = value; }
+    }
+
+    /// <inheritdoc/>
+    public IAlchemystAIClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
+    {
+        return new AlchemystAIClient(modifier(this._options));
     }
 
     readonly Lazy<IV1Service> _v1;
@@ -36,48 +77,198 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
         get { return _v1.Value; }
     }
 
-    public async Task<HttpResponse> Execute<T>(HttpRequest<T> request)
+    /// <inheritdoc/>
+    public async Task<HttpResponse> Execute<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
         where T : ParamsBase
     {
-        using HttpRequestMessage requestMessage = new(request.Method, request.Params.Url(this))
+        var maxRetries = this.MaxRetries ?? ClientOptions.DefaultMaxRetries;
+        var retries = 0;
+        while (true)
+        {
+            HttpResponse? response = null;
+            try
+            {
+                response = await ExecuteOnce(request, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                if (++retries > maxRetries || !ShouldRetry(e))
+                {
+                    throw;
+                }
+            }
+
+            if (response != null && (++retries > maxRetries || !ShouldRetry(response)))
+            {
+                if (response.Message.IsSuccessStatusCode)
+                {
+                    return response;
+                }
+
+                try
+                {
+                    throw AlchemystAIExceptionFactory.CreateApiException(
+                        response.Message.StatusCode,
+                        await response.ReadAsString(cancellationToken).ConfigureAwait(false)
+                    );
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new AlchemystAIIOException("I/O Exception", e);
+                }
+                finally
+                {
+                    response.Dispose();
+                }
+            }
+
+            var backoff = ComputeRetryBackoff(retries, response);
+            response?.Dispose();
+            await Task.Delay(backoff, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    async Task<HttpResponse> ExecuteOnce<T>(
+        HttpRequest<T> request,
+        CancellationToken cancellationToken = default
+    )
+        where T : ParamsBase
+    {
+        using HttpRequestMessage requestMessage = new(
+            request.Method,
+            request.Params.Url(this._options)
+        )
         {
             Content = request.Params.BodyContent(),
         };
-        request.Params.AddHeadersToRequest(requestMessage, this);
+        request.Params.AddHeadersToRequest(requestMessage, this._options);
+        using CancellationTokenSource timeoutCts = new(
+            this.Timeout ?? ClientOptions.DefaultTimeout
+        );
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
+            timeoutCts.Token,
+            cancellationToken
+        );
         HttpResponseMessage responseMessage;
         try
         {
             responseMessage = await this
-                .HttpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead)
+                .HttpClient.SendAsync(
+                    requestMessage,
+                    HttpCompletionOption.ResponseHeadersRead,
+                    cts.Token
+                )
                 .ConfigureAwait(false);
         }
-        catch (HttpRequestException e1)
+        catch (HttpRequestException e)
         {
-            throw new AlchemystAIIOException("I/O exception", e1);
+            throw new AlchemystAIIOException("I/O exception", e);
         }
-        if (!responseMessage.IsSuccessStatusCode)
+        return new() { Message = responseMessage, CancellationToken = cts.Token };
+    }
+
+    static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
+    {
+        TimeSpan? apiBackoff = ParseRetryAfterMsHeader(response) ?? ParseRetryAfterHeader(response);
+        if (apiBackoff != null && apiBackoff < TimeSpan.FromMinutes(1))
         {
-            try
-            {
-                throw AlchemystAIExceptionFactory.CreateApiException(
-                    responseMessage.StatusCode,
-                    await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false)
-                );
-            }
-            catch (HttpRequestException e)
-            {
-                throw new AlchemystAIIOException("I/O Exception", e);
-            }
-            finally
-            {
-                responseMessage.Dispose();
-            }
+            // If the API asks us to wait a certain amount of time (and it's a reasonable amount), then just
+            // do what it says.
+            return (TimeSpan)apiBackoff;
         }
-        return new() { Message = responseMessage };
+
+        // Apply exponential backoff, but not more than the max.
+        var backoffSeconds = Math.Min(0.5 * Math.Pow(2.0, retries - 1), 8.0);
+        var jitter = 1.0 - 0.25 * Random.NextDouble();
+        return TimeSpan.FromSeconds(backoffSeconds * jitter);
+    }
+
+    static TimeSpan? ParseRetryAfterMsHeader(HttpResponse? response)
+    {
+        IEnumerable<string>? headerValues = null;
+        response?.Message.Headers.TryGetValues("Retry-After-Ms", out headerValues);
+        var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
+        if (headerValue == null)
+        {
+            return null;
+        }
+
+        if (float.TryParse(headerValue, out var retryAfterMs))
+        {
+            return TimeSpan.FromMilliseconds(retryAfterMs);
+        }
+
+        return null;
+    }
+
+    static TimeSpan? ParseRetryAfterHeader(HttpResponse? response)
+    {
+        IEnumerable<string>? headerValues = null;
+        response?.Message.Headers.TryGetValues("Retry-After", out headerValues);
+        var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
+        if (headerValue == null)
+        {
+            return null;
+        }
+
+        if (float.TryParse(headerValue, out var retryAfterSeconds))
+        {
+            return TimeSpan.FromSeconds(retryAfterSeconds);
+        }
+        else if (DateTimeOffset.TryParse(headerValue, out var retryAfterDate))
+        {
+            return retryAfterDate - DateTimeOffset.Now;
+        }
+
+        return null;
+    }
+
+    static bool ShouldRetry(HttpResponse response)
+    {
+        if (
+            response.Message.Headers.TryGetValues("X-Should-Retry", out var headerValues)
+            && bool.TryParse(Enumerable.FirstOrDefault(headerValues), out var shouldRetry)
+        )
+        {
+            // If the server explicitly says whether to retry, then we obey.
+            return shouldRetry;
+        }
+
+        return (int)response.Message.StatusCode switch
+        {
+            // Retry on request timeouts
+            408
+            or
+            // Retry on lock timeouts
+            409
+            or
+            // Retry on rate limits
+            429
+            or
+            // Retry internal errors
+            >= 500 => true,
+            _ => false,
+        };
+    }
+
+    static bool ShouldRetry(Exception e)
+    {
+        return e is IOException || e is AlchemystAIIOException;
     }
 
     public AlchemystAIClient()
     {
+        _options = new();
+
         _v1 = new(() => new V1Service(this));
+    }
+
+    public AlchemystAIClient(ClientOptions options)
+        : this()
+    {
+        _options = options;
     }
 }

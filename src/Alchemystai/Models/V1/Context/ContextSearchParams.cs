@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alchemystai.Core;
 using Alchemystai.Exceptions;
-using Alchemystai.Models.V1.Context.ContextSearchParamsProperties;
 
 namespace Alchemystai.Models.V1.Context;
 
@@ -15,7 +17,11 @@ namespace Alchemystai.Models.V1.Context;
 /// </summary>
 public sealed record class ContextSearchParams : ParamsBase
 {
-    public Dictionary<string, JsonElement> BodyProperties { get; set; } = [];
+    readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
+    {
+        get { return this._rawBodyData.Freeze(); }
+    }
 
     /// <summary>
     /// Minimum similarity threshold
@@ -24,29 +30,12 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            if (
-                !this.BodyProperties.TryGetValue(
-                    "minimum_similarity_threshold",
-                    out JsonElement element
-                )
-            )
-                throw new AlchemystAIInvalidDataException(
-                    "'minimum_similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "minimum_similarity_threshold",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.BodyProperties["minimum_similarity_threshold"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNotNullStruct<double>(
+                this.RawBodyData,
+                "minimum_similarity_threshold"
             );
         }
+        init { ModelBase.Set(this._rawBodyData, "minimum_similarity_threshold", value); }
     }
 
     /// <summary>
@@ -54,27 +43,8 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required string Query
     {
-        get
-        {
-            if (!this.BodyProperties.TryGetValue("query", out JsonElement element))
-                throw new AlchemystAIInvalidDataException(
-                    "'query' cannot be null",
-                    new ArgumentOutOfRangeException("query", "Missing required argument")
-                );
-
-            return JsonSerializer.Deserialize<string>(element, ModelBase.SerializerOptions)
-                ?? throw new AlchemystAIInvalidDataException(
-                    "'query' cannot be null",
-                    new ArgumentNullException("query")
-                );
-        }
-        set
-        {
-            this.BodyProperties["query"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
-        }
+        get { return ModelBase.GetNotNullClass<string>(this.RawBodyData, "query"); }
+        init { ModelBase.Set(this._rawBodyData, "query", value); }
     }
 
     /// <summary>
@@ -82,120 +52,317 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required double SimilarityThreshold
     {
+        get { return ModelBase.GetNotNullStruct<double>(this.RawBodyData, "similarity_threshold"); }
+        init { ModelBase.Set(this._rawBodyData, "similarity_threshold", value); }
+    }
+
+    /// <summary>
+    /// Controls whether metadata is included in the response: - metadata=true → metadata
+    /// will be included in each context item in the response. - metadata=false (or
+    /// omitted) → metadata will be excluded from the response for better performance.
+    /// </summary>
+    public ApiEnum<string, ContextSearchParamsMetadata>? Metadata
+    {
         get
         {
-            if (!this.BodyProperties.TryGetValue("similarity_threshold", out JsonElement element))
-                throw new AlchemystAIInvalidDataException(
-                    "'similarity_threshold' cannot be null",
-                    new ArgumentOutOfRangeException(
-                        "similarity_threshold",
-                        "Missing required argument"
-                    )
-                );
-
-            return JsonSerializer.Deserialize<double>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.BodyProperties["similarity_threshold"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsMetadata>>(
+                this.RawQueryData,
+                "metadata"
             );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "metadata", value);
+        }
+    }
+
+    /// <summary>
+    /// Controls the search mode: - mode=fast → prioritizes speed over completeness.
+    /// - mode=standard → performs a comprehensive search (default if omitted).
+    /// </summary>
+    public ApiEnum<string, Mode>? Mode
+    {
+        get { return ModelBase.GetNullableClass<ApiEnum<string, Mode>>(this.RawQueryData, "mode"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "mode", value);
         }
     }
 
     /// <summary>
     /// Additional metadata for the search
     /// </summary>
-    public JsonElement? Metadata
+    public JsonElement? MetadataValue
     {
-        get
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
+        init
         {
-            if (!this.BodyProperties.TryGetValue("metadata", out JsonElement element))
-                return null;
+            if (value == null)
+            {
+                return;
+            }
 
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.BodyProperties["metadata"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "metadata", value);
         }
     }
 
     /// <summary>
     /// Search scope
     /// </summary>
-    public ApiEnum<string, Scope>? Scope
+    public ApiEnum<string, ContextSearchParamsScope>? Scope
     {
         get
         {
-            if (!this.BodyProperties.TryGetValue("scope", out JsonElement element))
-                return null;
-
-            return JsonSerializer.Deserialize<ApiEnum<string, Scope>?>(
-                element,
-                ModelBase.SerializerOptions
+            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsScope>>(
+                this.RawBodyData,
+                "scope"
             );
         }
-        set
+        init
         {
-            this.BodyProperties["scope"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawBodyData, "scope", value);
         }
     }
 
     /// <summary>
     /// The ID of the user making the request
     /// </summary>
+    [Obsolete("deprecated")]
     public string? UserID
     {
-        get
+        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
+        init
         {
-            if (!this.BodyProperties.TryGetValue("user_id", out JsonElement element))
-                return null;
+            if (value == null)
+            {
+                return;
+            }
 
-            return JsonSerializer.Deserialize<string?>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.BodyProperties["user_id"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawBodyData, "user_id", value);
         }
     }
 
-    public override Uri Url(IAlchemystAIClient client)
+    public ContextSearchParams() { }
+
+    public ContextSearchParams(ContextSearchParams contextSearchParams)
+        : base(contextSearchParams)
     {
-        return new UriBuilder(client.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search")
+        this._rawBodyData = [.. contextSearchParams._rawBodyData];
+    }
+
+    public ContextSearchParams(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    ContextSearchParams(
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = [.. rawHeaderData];
+        this._rawQueryData = [.. rawQueryData];
+        this._rawBodyData = [.. rawBodyData];
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    public static ContextSearchParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
+        );
+    }
+
+    public override Uri Url(ClientOptions options)
+    {
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/api/v1/context/search")
         {
-            Query = this.QueryString(client),
+            Query = this.QueryString(options),
         }.Uri;
     }
 
     internal override StringContent? BodyContent()
     {
-        return new(
-            JsonSerializer.Serialize(this.BodyProperties),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
     }
 
-    internal override void AddHeadersToRequest(
-        HttpRequestMessage request,
-        IAlchemystAIClient client
-    )
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
-        ParamsBase.AddDefaultHeaders(request, client);
-        foreach (var item in this.HeaderProperties)
+        ParamsBase.AddDefaultHeaders(request, options);
+        foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
         }
+    }
+}
+
+/// <summary>
+/// Controls whether metadata is included in the response: - metadata=true → metadata
+/// will be included in each context item in the response. - metadata=false (or omitted)
+/// → metadata will be excluded from the response for better performance.
+/// </summary>
+[JsonConverter(typeof(ContextSearchParamsMetadataConverter))]
+public enum ContextSearchParamsMetadata
+{
+    True,
+    False,
+}
+
+sealed class ContextSearchParamsMetadataConverter : JsonConverter<ContextSearchParamsMetadata>
+{
+    public override ContextSearchParamsMetadata Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "true" => ContextSearchParamsMetadata.True,
+            "false" => ContextSearchParamsMetadata.False,
+            _ => (ContextSearchParamsMetadata)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContextSearchParamsMetadata value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContextSearchParamsMetadata.True => "true",
+                ContextSearchParamsMetadata.False => "false",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// Controls the search mode: - mode=fast → prioritizes speed over completeness. -
+/// mode=standard → performs a comprehensive search (default if omitted).
+/// </summary>
+[JsonConverter(typeof(ModeConverter))]
+public enum Mode
+{
+    Fast,
+    Standard,
+}
+
+sealed class ModeConverter : JsonConverter<Mode>
+{
+    public override Mode Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "fast" => Mode.Fast,
+            "standard" => Mode.Standard,
+            _ => (Mode)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Mode value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Mode.Fast => "fast",
+                Mode.Standard => "standard",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
+/// Search scope
+/// </summary>
+[JsonConverter(typeof(ContextSearchParamsScopeConverter))]
+public enum ContextSearchParamsScope
+{
+    Internal,
+    External,
+}
+
+sealed class ContextSearchParamsScopeConverter : JsonConverter<ContextSearchParamsScope>
+{
+    public override ContextSearchParamsScope Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "internal" => ContextSearchParamsScope.Internal,
+            "external" => ContextSearchParamsScope.External,
+            _ => (ContextSearchParamsScope)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContextSearchParamsScope value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContextSearchParamsScope.Internal => "internal",
+                ContextSearchParamsScope.External => "external",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

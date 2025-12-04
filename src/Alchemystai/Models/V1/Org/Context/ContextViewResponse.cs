@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -6,27 +7,24 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Org.Context;
 
-[JsonConverter(typeof(ModelConverter<ContextViewResponse>))]
-public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextViewResponse>
+[JsonConverter(typeof(ModelConverter<ContextViewResponse, ContextViewResponseFromRaw>))]
+public sealed record class ContextViewResponse : ModelBase
 {
     public JsonElement? Contexts
     {
-        get
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "contexts"); }
+        init
         {
-            if (!this.Properties.TryGetValue("contexts", out JsonElement element))
-                return null;
+            if (value == null)
+            {
+                return;
+            }
 
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.Properties["contexts"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "contexts", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Contexts;
@@ -34,16 +32,34 @@ public sealed record class ContextViewResponse : ModelBase, IFromRaw<ContextView
 
     public ContextViewResponse() { }
 
+    public ContextViewResponse(ContextViewResponse contextViewResponse)
+        : base(contextViewResponse) { }
+
+    public ContextViewResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContextViewResponse(Dictionary<string, JsonElement> properties)
+    ContextViewResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        Properties = properties;
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ContextViewResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="ContextViewResponseFromRaw.FromRawUnchecked"/>
+    public static ContextViewResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ContextViewResponseFromRaw : IFromRaw<ContextViewResponse>
+{
+    /// <inheritdoc/>
+    public ContextViewResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        ContextViewResponse.FromRawUnchecked(rawData);
 }

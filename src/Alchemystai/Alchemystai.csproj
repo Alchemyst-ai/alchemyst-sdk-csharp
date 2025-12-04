@@ -1,41 +1,51 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>
-      The official .NET library for the Alchemyst AI C# service API.
-    </Description>
-    <AssemblyTitle>SDK Code Generation Alchemyst AI C#</AssemblyTitle>
+    <!-- Metadata -->
+    <AssemblyTitle>Alchemyst AI C#</AssemblyTitle>
+    <AssemblyName>Alchemystai</AssemblyName>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Authors>Alchemyst AI</Authors>
+    <Company>Alchemyst AI</Company>
+    <Description>The official .NET library for the Alchemyst AI API.</Description>
+    <PackageTags>sdk;api;http;library</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Nullable>enable</Nullable>
-    <VersionPrefix>0.0.1</VersionPrefix>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
-    <!-- Generate an XML documentation file for the project. -->
+    <Copyright>Copyright 2025 Alchemyst AI</Copyright>
+    <PackageProjectUrl>https://docs.getalchemystai.com</PackageProjectUrl>
+    <RepositoryUrl>https://www.github.com/Alchemyst-ai/alchemyst-sdk-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <OutputType>Library</OutputType>
+
+    <!-- Documentation-->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://www.github.com/stainless-sdks/alchemyst-ai-sdk-csharp</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <!-- Disable missing XML documentation warnings -->
+    <!-- Disable missing XML documentation warnings. -->
     <NoWarn>$(NoWarn),1570,1573,1574,1591</NoWarn>
-    <!-- Disable JSON warnings (beta) -->
-    <NoWarn>$(NoWarn),IL2026,IL3050</NoWarn>
+
+    <!-- Source link -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>12</LangVersion>
     <Configurations>Debug;Release</Configurations>
-    <IsTrimmable
-      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
-      >true</IsTrimmable
-    >
-    <IsAotCompatible
-      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))"
-      >true</IsAotCompatible
-    >
+    <BuildPackage>true</BuildPackage>
+    <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ImplicitUsings>disable</ImplicitUsings>
+    <!-- Disable deprecation warnings since we may reference our own deprecated symbols. -->
+    <NoWarn>$(NoWarn),0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <InternalsVisibleTo Include="Alchemystai.Tests"/>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+    <InternalsVisibleTo Include="Alchemystai.Tests"/>
+    <PackageReference Include="System.Text.Json" Version="9.0.9"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.9" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0"/>
   </ItemGroup>
 </Project>

@@ -5,8 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Alchemystai.Core;
 
-sealed class ModelConverter<TModel> : JsonConverter<TModel>
-    where TModel : ModelBase, IFromRaw<TModel>
+sealed class ModelConverter<TModel, TFromRaw> : JsonConverter<TModel>
+    where TModel : ModelBase
+    where TFromRaw : IFromRaw<TModel>, new()
 {
     public override TModel? Read(
         ref Utf8JsonReader reader,
@@ -14,17 +15,18 @@ sealed class ModelConverter<TModel> : JsonConverter<TModel>
         JsonSerializerOptions options
     )
     {
-        Dictionary<string, JsonElement>? properties = JsonSerializer.Deserialize<
-            Dictionary<string, JsonElement>
-        >(ref reader, options);
-        if (properties == null)
+        var rawData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+            ref reader,
+            options
+        );
+        if (rawData == null)
             return null;
 
-        return TModel.FromRawUnchecked(properties);
+        return new TFromRaw().FromRawUnchecked(rawData);
     }
 
     public override void Write(Utf8JsonWriter writer, TModel value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value.Properties, options);
+        JsonSerializer.Serialize(writer, value.RawData, options);
     }
 }

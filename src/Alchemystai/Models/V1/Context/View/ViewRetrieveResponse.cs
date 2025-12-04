@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -6,53 +7,63 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.View;
 
-[JsonConverter(typeof(ModelConverter<ViewRetrieveResponse>))]
-public sealed record class ViewRetrieveResponse : ModelBase, IFromRaw<ViewRetrieveResponse>
+[JsonConverter(typeof(ModelConverter<ViewRetrieveResponse, ViewRetrieveResponseFromRaw>))]
+public sealed record class ViewRetrieveResponse : ModelBase
 {
     /// <summary>
     /// List of context items
     /// </summary>
-    public List<JsonElement>? Context
+    public IReadOnlyList<JsonElement>? Context
     {
-        get
+        get { return ModelBase.GetNullableClass<List<JsonElement>>(this.RawData, "context"); }
+        init
         {
-            if (!this.Properties.TryGetValue("context", out JsonElement element))
-                return null;
+            if (value == null)
+            {
+                return;
+            }
 
-            return JsonSerializer.Deserialize<List<JsonElement>?>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        }
-        set
-        {
-            this.Properties["context"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "context", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
-        foreach (var item in this.Context ?? [])
-        {
-            _ = item;
-        }
+        _ = this.Context;
     }
 
     public ViewRetrieveResponse() { }
 
+    public ViewRetrieveResponse(ViewRetrieveResponse viewRetrieveResponse)
+        : base(viewRetrieveResponse) { }
+
+    public ViewRetrieveResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ViewRetrieveResponse(Dictionary<string, JsonElement> properties)
+    ViewRetrieveResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        Properties = properties;
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ViewRetrieveResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="ViewRetrieveResponseFromRaw.FromRawUnchecked"/>
+    public static ViewRetrieveResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class ViewRetrieveResponseFromRaw : IFromRaw<ViewRetrieveResponse>
+{
+    /// <inheritdoc/>
+    public ViewRetrieveResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => ViewRetrieveResponse.FromRawUnchecked(rawData);
 }

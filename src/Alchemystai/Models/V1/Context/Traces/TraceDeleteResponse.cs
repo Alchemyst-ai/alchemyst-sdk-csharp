@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
@@ -6,30 +7,27 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.Traces;
 
-[JsonConverter(typeof(ModelConverter<TraceDeleteResponse>))]
-public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDeleteResponse>
+[JsonConverter(typeof(ModelConverter<TraceDeleteResponse, TraceDeleteResponseFromRaw>))]
+public sealed record class TraceDeleteResponse : ModelBase
 {
     /// <summary>
     /// The deleted trace data
     /// </summary>
     public JsonElement? Trace
     {
-        get
+        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "trace"); }
+        init
         {
-            if (!this.Properties.TryGetValue("trace", out JsonElement element))
-                return null;
+            if (value == null)
+            {
+                return;
+            }
 
-            return JsonSerializer.Deserialize<JsonElement?>(element, ModelBase.SerializerOptions);
-        }
-        set
-        {
-            this.Properties["trace"] = JsonSerializer.SerializeToElement(
-                value,
-                ModelBase.SerializerOptions
-            );
+            ModelBase.Set(this._rawData, "trace", value);
         }
     }
 
+    /// <inheritdoc/>
     public override void Validate()
     {
         _ = this.Trace;
@@ -37,16 +35,34 @@ public sealed record class TraceDeleteResponse : ModelBase, IFromRaw<TraceDelete
 
     public TraceDeleteResponse() { }
 
+    public TraceDeleteResponse(TraceDeleteResponse traceDeleteResponse)
+        : base(traceDeleteResponse) { }
+
+    public TraceDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = [.. rawData];
+    }
+
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    TraceDeleteResponse(Dictionary<string, JsonElement> properties)
+    TraceDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
     {
-        Properties = properties;
+        this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static TraceDeleteResponse FromRawUnchecked(Dictionary<string, JsonElement> properties)
+    /// <inheritdoc cref="TraceDeleteResponseFromRaw.FromRawUnchecked"/>
+    public static TraceDeleteResponse FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
-        return new(properties);
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+}
+
+class TraceDeleteResponseFromRaw : IFromRaw<TraceDeleteResponse>
+{
+    /// <inheritdoc/>
+    public TraceDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
+        TraceDeleteResponse.FromRawUnchecked(rawData);
 }
