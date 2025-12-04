@@ -123,7 +123,7 @@ public sealed record class MemoryUpdateParams : ParamsBase
 [JsonConverter(typeof(ModelConverter<Content, ContentFromRaw>))]
 public sealed record class Content : ModelBase
 {
-    public string? Content1
+    public string? ContentValue
     {
         get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
         init
@@ -139,7 +139,7 @@ public sealed record class Content : ModelBase
 
     public override void Validate()
     {
-        _ = this.Content1;
+        _ = this.ContentValue;
     }
 
     public Content() { }

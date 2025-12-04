@@ -24,9 +24,15 @@ public sealed record class MemoryAddParams : ParamsBase
     /// <summary>
     /// Array of content objects with additional properties allowed
     /// </summary>
-    public IReadOnlyList<ContentModel>? Contents
+    public IReadOnlyList<MemoryAddParamsContent>? Contents
     {
-        get { return ModelBase.GetNullableClass<List<ContentModel>>(this.RawBodyData, "contents"); }
+        get
+        {
+            return ModelBase.GetNullableClass<List<MemoryAddParamsContent>>(
+                this.RawBodyData,
+                "contents"
+            );
+        }
         init
         {
             if (value == null)
@@ -120,8 +126,8 @@ public sealed record class MemoryAddParams : ParamsBase
     }
 }
 
-[JsonConverter(typeof(ModelConverter<ContentModel, ContentModelFromRaw>))]
-public sealed record class ContentModel : ModelBase
+[JsonConverter(typeof(ModelConverter<MemoryAddParamsContent, MemoryAddParamsContentFromRaw>))]
+public sealed record class MemoryAddParamsContent : ModelBase
 {
     public string? Content
     {
@@ -142,29 +148,32 @@ public sealed record class ContentModel : ModelBase
         _ = this.Content;
     }
 
-    public ContentModel() { }
+    public MemoryAddParamsContent() { }
 
-    public ContentModel(IReadOnlyDictionary<string, JsonElement> rawData)
+    public MemoryAddParamsContent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    ContentModel(FrozenDictionary<string, JsonElement> rawData)
+    MemoryAddParamsContent(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = [.. rawData];
     }
 #pragma warning restore CS8618
 
-    public static ContentModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
+    public static MemoryAddParamsContent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
 }
 
-class ContentModelFromRaw : IFromRaw<ContentModel>
+class MemoryAddParamsContentFromRaw : IFromRaw<MemoryAddParamsContent>
 {
-    public ContentModel FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        ContentModel.FromRawUnchecked(rawData);
+    public MemoryAddParamsContent FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => MemoryAddParamsContent.FromRawUnchecked(rawData);
 }
