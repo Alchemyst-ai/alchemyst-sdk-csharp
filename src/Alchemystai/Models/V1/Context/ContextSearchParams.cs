@@ -26,6 +26,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// Minimum similarity threshold
     /// </summary>
+    [Obsolete("deprecated")]
     public required double MinimumSimilarityThreshold
     {
         get

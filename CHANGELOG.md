@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (2025-12-05)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** api update ([3043e27](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/3043e274c76c349ec6604ee4bf33725e2ebdd793))
+* **client:** add x-stainless-retry-count ([ca4f4a1](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/ca4f4a126c3ade07f59eb6e6dab771ee4c27b0dc))
+
 ## 0.1.0 (2025-12-04)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.0.1...v0.1.0)
