@@ -13,6 +13,40 @@ namespace Alchemystai.Models.V1.Context.View;
 /// </summary>
 public sealed record class ViewRetrieveParams : ParamsBase
 {
+    /// <summary>
+    /// Name of the file to retrieve context for
+    /// </summary>
+    public string? FileName
+    {
+        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "file_name"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "file_name", value);
+        }
+    }
+
+    /// <summary>
+    /// Magic key for context retrieval
+    /// </summary>
+    public string? MagicKey
+    {
+        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "magic_key"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ModelBase.Set(this._rawQueryData, "magic_key", value);
+        }
+    }
+
     public ViewRetrieveParams() { }
 
     public ViewRetrieveParams(ViewRetrieveParams viewRetrieveParams)
