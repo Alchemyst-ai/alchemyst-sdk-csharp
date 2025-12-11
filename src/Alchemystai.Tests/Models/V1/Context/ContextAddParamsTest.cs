@@ -1,8 +1,68 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Alchemystai.Core;
+using Alchemystai.Exceptions;
 using Alchemystai.Models.V1.Context;
 
 namespace Alchemystai.Tests.Models.V1.Context;
+
+public class ContextTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ContextType.Resource)]
+    [InlineData(ContextType.Conversation)]
+    [InlineData(ContextType.Instruction)]
+    public void Validation_Works(ContextType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContextType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContextType>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ContextType.Resource)]
+    [InlineData(ContextType.Conversation)]
+    [InlineData(ContextType.Instruction)]
+    public void SerializationRoundtrip_Works(ContextType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContextType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContextType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContextType>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContextType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
 
 public class DocumentTest : TestBase
 {
@@ -253,5 +313,61 @@ public class MetadataTest : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class ScopeTest : TestBase
+{
+    [Theory]
+    [InlineData(Scope.Internal)]
+    [InlineData(Scope.External)]
+    public void Validation_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Scope.Internal)]
+    [InlineData(Scope.External)]
+    public void SerializationRoundtrip_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
