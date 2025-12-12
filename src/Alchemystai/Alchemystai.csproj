@@ -3,7 +3,7 @@
     <!-- Metadata -->
     <AssemblyTitle>Alchemyst AI C#</AssemblyTitle>
     <AssemblyName>Alchemystai</AssemblyName>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <Authors>Alchemyst AI</Authors>
     <Company>Alchemyst AI</Company>
     <Description>The official .NET library for the Alchemyst AI API.</Description>

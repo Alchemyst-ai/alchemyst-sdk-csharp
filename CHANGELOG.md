@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.0 (2025-12-12)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** api update ([eff2ac6](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/eff2ac6483ad318bf05291db9a4d9174e4a262f3))
+* **api:** api update ([3043e27](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/3043e274c76c349ec6604ee4bf33725e2ebdd793))
+* **client:** add EnvironmentUrl ([d97a605](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/d97a6054b3c8d5926c298d49ee15e6c6bdc410a8))
+* **client:** add x-stainless-retry-count ([ca4f4a1](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/ca4f4a126c3ade07f59eb6e6dab771ee4c27b0dc))
+
+
+### Bug Fixes
+
+* **internal:** add nullability checks for tests ([88867b9](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/88867b90bc319bdf4a97559599d58878569c5d36))
+
+
+### Chores
+
+* **client:** update test dependencies ([13ab600](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/13ab6006c29494c9ac7a04f22e049eaf04fb2896))
+* **internal:** add enum tests ([6cc783b](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/6cc783b73d84312e0464450292718b9d9adb6a60))
+
 ## 0.1.0 (2025-12-04)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.0.1...v0.1.0)
