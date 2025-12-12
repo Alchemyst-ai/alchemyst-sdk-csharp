@@ -8,7 +8,8 @@ public class ContextServiceTest : TestBase
     public async Task View_Works()
     {
         var response = await this.client.V1.Org.Context.View(
-            new() { UserIDs = ["user_123", "user_456"] }
+            new() { UserIDs = ["user_123", "user_456"] },
+            TestContext.Current.CancellationToken
         );
         response.Validate();
     }

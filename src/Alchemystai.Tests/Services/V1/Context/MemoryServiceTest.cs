@@ -7,18 +7,18 @@ public class MemoryServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Update_Works()
     {
-        await this.client.V1.Context.Memory.Update();
+        await this.client.V1.Context.Memory.Update(new(), TestContext.Current.CancellationToken);
     }
 
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Delete_Works()
     {
-        await this.client.V1.Context.Memory.Delete();
+        await this.client.V1.Context.Memory.Delete(new(), TestContext.Current.CancellationToken);
     }
 
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Add_Works()
     {
-        await this.client.V1.Context.Memory.Add();
+        await this.client.V1.Context.Memory.Add(new(), TestContext.Current.CancellationToken);
     }
 }
