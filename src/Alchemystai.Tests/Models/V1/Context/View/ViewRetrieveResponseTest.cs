@@ -16,6 +16,7 @@ public class ViewRetrieveResponseTest : TestBase
 
         List<JsonElement> expectedContext = [JsonSerializer.Deserialize<JsonElement>("{}")];
 
+        Assert.NotNull(model.Context);
         Assert.Equal(expectedContext.Count, model.Context.Count);
         for (int i = 0; i < expectedContext.Count; i++)
         {
@@ -51,6 +52,7 @@ public class ViewRetrieveResponseTest : TestBase
 
         List<JsonElement> expectedContext = [JsonSerializer.Deserialize<JsonElement>("{}")];
 
+        Assert.NotNull(deserialized.Context);
         Assert.Equal(expectedContext.Count, deserialized.Context.Count);
         for (int i = 0; i < expectedContext.Count; i++)
         {

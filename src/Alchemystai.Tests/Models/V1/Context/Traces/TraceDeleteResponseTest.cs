@@ -15,9 +15,8 @@ public class TraceDeleteResponseTest : TestBase
 
         JsonElement expectedTrace = JsonSerializer.Deserialize<JsonElement>("{}");
 
-        Assert.True(
-            model.Trace.HasValue && JsonElement.DeepEquals(expectedTrace, model.Trace.Value)
-        );
+        Assert.NotNull(model.Trace);
+        Assert.True(JsonElement.DeepEquals(expectedTrace, model.Trace.Value));
     }
 
     [Fact]
@@ -48,10 +47,8 @@ public class TraceDeleteResponseTest : TestBase
 
         JsonElement expectedTrace = JsonSerializer.Deserialize<JsonElement>("{}");
 
-        Assert.True(
-            deserialized.Trace.HasValue
-                && JsonElement.DeepEquals(expectedTrace, deserialized.Trace.Value)
-        );
+        Assert.NotNull(deserialized.Trace);
+        Assert.True(JsonElement.DeepEquals(expectedTrace, deserialized.Trace.Value));
     }
 
     [Fact]
