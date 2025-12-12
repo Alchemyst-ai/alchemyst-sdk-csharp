@@ -7,13 +7,13 @@ public class ContextServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Delete_Works()
     {
-        await this.client.V1.Context.Delete();
+        await this.client.V1.Context.Delete(new(), TestContext.Current.CancellationToken);
     }
 
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Add_Works()
     {
-        await this.client.V1.Context.Add();
+        await this.client.V1.Context.Add(new(), TestContext.Current.CancellationToken);
     }
 
     [Fact(Skip = "Prism tests are disabled")]
@@ -25,7 +25,8 @@ public class ContextServiceTest : TestBase
                 MinimumSimilarityThreshold = 0.5,
                 Query = "What did the customer ask about pricing for the Scale plan?",
                 SimilarityThreshold = 0.8,
-            }
+            },
+            TestContext.Current.CancellationToken
         );
         response.Validate();
     }
