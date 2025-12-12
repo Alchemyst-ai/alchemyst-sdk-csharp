@@ -39,6 +39,7 @@ public class TraceListResponseTest : TestBase
             },
         ];
 
+        Assert.NotNull(model.Traces);
         Assert.Equal(expectedTraces.Count, model.Traces.Count);
         for (int i = 0; i < expectedTraces.Count; i++)
         {
@@ -107,6 +108,7 @@ public class TraceListResponseTest : TestBase
             },
         ];
 
+        Assert.NotNull(deserialized.Traces);
         Assert.Equal(expectedTraces.Count, deserialized.Traces.Count);
         for (int i = 0; i < expectedTraces.Count; i++)
         {
@@ -203,7 +205,8 @@ public class TraceTest : TestBase
 
         Assert.Equal(expected_ID, model._ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
-        Assert.True(model.Data.HasValue && JsonElement.DeepEquals(expectedData, model.Data.Value));
+        Assert.NotNull(model.Data);
+        Assert.True(JsonElement.DeepEquals(expectedData, model.Data.Value));
         Assert.Equal(expectedType, model.Type);
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedUserID, model.UserID);
@@ -254,10 +257,8 @@ public class TraceTest : TestBase
 
         Assert.Equal(expected_ID, deserialized._ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
-        Assert.True(
-            deserialized.Data.HasValue
-                && JsonElement.DeepEquals(expectedData, deserialized.Data.Value)
-        );
+        Assert.NotNull(deserialized.Data);
+        Assert.True(JsonElement.DeepEquals(expectedData, deserialized.Data.Value));
         Assert.Equal(expectedType, deserialized.Type);
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedUserID, deserialized.UserID);

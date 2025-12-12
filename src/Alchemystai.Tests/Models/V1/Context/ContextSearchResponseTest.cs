@@ -37,6 +37,7 @@ public class ContextSearchResponseTest : TestBase
             },
         ];
 
+        Assert.NotNull(model.Contexts);
         Assert.Equal(expectedContexts.Count, model.Contexts.Count);
         for (int i = 0; i < expectedContexts.Count; i++)
         {
@@ -102,6 +103,7 @@ public class ContextSearchResponseTest : TestBase
             },
         ];
 
+        Assert.NotNull(deserialized.Contexts);
         Assert.Equal(expectedContexts.Count, deserialized.Contexts.Count);
         for (int i = 0; i < expectedContexts.Count; i++)
         {
@@ -195,10 +197,8 @@ public class ContextSearchResponseContextTest : TestBase
 
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
-        Assert.True(
-            model.Metadata.HasValue
-                && JsonElement.DeepEquals(expectedMetadata, model.Metadata.Value)
-        );
+        Assert.NotNull(model.Metadata);
+        Assert.True(JsonElement.DeepEquals(expectedMetadata, model.Metadata.Value));
         Assert.Equal(expectedScore, model.Score);
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
@@ -245,10 +245,8 @@ public class ContextSearchResponseContextTest : TestBase
 
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
-        Assert.True(
-            deserialized.Metadata.HasValue
-                && JsonElement.DeepEquals(expectedMetadata, deserialized.Metadata.Value)
-        );
+        Assert.NotNull(deserialized.Metadata);
+        Assert.True(JsonElement.DeepEquals(expectedMetadata, deserialized.Metadata.Value));
         Assert.Equal(expectedScore, deserialized.Score);
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
