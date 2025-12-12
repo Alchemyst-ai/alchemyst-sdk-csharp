@@ -23,19 +23,16 @@ public struct ClientOptions()
     /// </summary>
     public HttpClient HttpClient { get; set; } = new();
 
-    Lazy<Uri> _baseUrl = new(() =>
-        new Uri(
-            Environment.GetEnvironmentVariable("ALCHEMYST_AI_BASE_URL")
-                ?? "https://platform-backend.getalchemystai.com"
-        )
+    Lazy<string> _baseUrl = new(() =>
+        Environment.GetEnvironmentVariable("ALCHEMYST_AI_BASE_URL") ?? EnvironmentUrl.Production
     );
 
     /// <summary>
     /// The base URL to use for every request.
     ///
-    /// <para>Defaults to the production environment: https://platform-backend.getalchemystai.com</para>
+    /// <para>Defaults to the production environment: <see cref="EnvironmentUrl.Production"/></para>
     /// </summary>
-    public Uri BaseUrl
+    public string BaseUrl
     {
         readonly get { return _baseUrl.Value; }
         set { _baseUrl = new(() => value); }
