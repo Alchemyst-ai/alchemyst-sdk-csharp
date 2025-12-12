@@ -175,6 +175,7 @@ public class MetadataTest : TestBase
         Assert.Equal(expectedFileName, model.FileName);
         Assert.Equal(expectedFileSize, model.FileSize);
         Assert.Equal(expectedFileType, model.FileType);
+        Assert.NotNull(model.GroupName);
         Assert.Equal(expectedGroupName.Count, model.GroupName.Count);
         for (int i = 0; i < expectedGroupName.Count; i++)
         {
@@ -226,6 +227,7 @@ public class MetadataTest : TestBase
         Assert.Equal(expectedFileName, deserialized.FileName);
         Assert.Equal(expectedFileSize, deserialized.FileSize);
         Assert.Equal(expectedFileType, deserialized.FileType);
+        Assert.NotNull(deserialized.GroupName);
         Assert.Equal(expectedGroupName.Count, deserialized.GroupName.Count);
         for (int i = 0; i < expectedGroupName.Count; i++)
         {
