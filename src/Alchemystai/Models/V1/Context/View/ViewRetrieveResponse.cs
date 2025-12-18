@@ -7,15 +7,15 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.View;
 
-[JsonConverter(typeof(ModelConverter<ViewRetrieveResponse, ViewRetrieveResponseFromRaw>))]
-public sealed record class ViewRetrieveResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ViewRetrieveResponse, ViewRetrieveResponseFromRaw>))]
+public sealed record class ViewRetrieveResponse : JsonModel
 {
     /// <summary>
     /// List of context items
     /// </summary>
     public IReadOnlyList<JsonElement>? Context
     {
-        get { return ModelBase.GetNullableClass<List<JsonElement>>(this.RawData, "context"); }
+        get { return JsonModel.GetNullableClass<List<JsonElement>>(this.RawData, "context"); }
         init
         {
             if (value == null)
@@ -23,7 +23,7 @@ public sealed record class ViewRetrieveResponse : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "context", value);
+            JsonModel.Set(this._rawData, "context", value);
         }
     }
 
@@ -60,7 +60,7 @@ public sealed record class ViewRetrieveResponse : ModelBase
     }
 }
 
-class ViewRetrieveResponseFromRaw : IFromRaw<ViewRetrieveResponse>
+class ViewRetrieveResponseFromRaw : IFromRawJson<ViewRetrieveResponse>
 {
     /// <inheritdoc/>
     public ViewRetrieveResponse FromRawUnchecked(

@@ -31,7 +31,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, ContextType>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, ContextType>>(
                 this.RawBodyData,
                 "context_type"
             );
@@ -43,7 +43,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "context_type", value);
+            JsonModel.Set(this._rawBodyData, "context_type", value);
         }
     }
 
@@ -52,7 +52,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public IReadOnlyList<Document>? Documents
     {
-        get { return ModelBase.GetNullableClass<List<Document>>(this.RawBodyData, "documents"); }
+        get { return JsonModel.GetNullableClass<List<Document>>(this.RawBodyData, "documents"); }
         init
         {
             if (value == null)
@@ -60,7 +60,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "documents", value);
+            JsonModel.Set(this._rawBodyData, "documents", value);
         }
     }
 
@@ -69,7 +69,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public Metadata? Metadata
     {
-        get { return ModelBase.GetNullableClass<Metadata>(this.RawBodyData, "metadata"); }
+        get { return JsonModel.GetNullableClass<Metadata>(this.RawBodyData, "metadata"); }
         init
         {
             if (value == null)
@@ -77,7 +77,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "metadata", value);
+            JsonModel.Set(this._rawBodyData, "metadata", value);
         }
     }
 
@@ -88,7 +88,7 @@ public sealed record class ContextAddParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, Scope>>(this.RawBodyData, "scope");
+            return JsonModel.GetNullableClass<ApiEnum<string, Scope>>(this.RawBodyData, "scope");
         }
         init
         {
@@ -97,7 +97,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "scope", value);
+            JsonModel.Set(this._rawBodyData, "scope", value);
         }
     }
 
@@ -106,7 +106,7 @@ public sealed record class ContextAddParams : ParamsBase
     /// </summary>
     public string? Source
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "source"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "source"); }
         init
         {
             if (value == null)
@@ -114,7 +114,7 @@ public sealed record class ContextAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "source", value);
+            JsonModel.Set(this._rawBodyData, "source", value);
         }
     }
 
@@ -151,7 +151,7 @@ public sealed record class ContextAddParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static ContextAddParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -173,9 +173,13 @@ public sealed record class ContextAddParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -238,15 +242,15 @@ sealed class ContextTypeConverter : JsonConverter<ContextType>
     }
 }
 
-[JsonConverter(typeof(ModelConverter<Document, DocumentFromRaw>))]
-public sealed record class Document : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Document, DocumentFromRaw>))]
+public sealed record class Document : JsonModel
 {
     /// <summary>
     /// The content of the document
     /// </summary>
     public string? Content
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -254,7 +258,7 @@ public sealed record class Document : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "content", value);
+            JsonModel.Set(this._rawData, "content", value);
         }
     }
 
@@ -289,7 +293,7 @@ public sealed record class Document : ModelBase
     }
 }
 
-class DocumentFromRaw : IFromRaw<Document>
+class DocumentFromRaw : IFromRawJson<Document>
 {
     /// <inheritdoc/>
     public Document FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
@@ -299,15 +303,15 @@ class DocumentFromRaw : IFromRaw<Document>
 /// <summary>
 /// Additional metadata for the context
 /// </summary>
-[JsonConverter(typeof(ModelConverter<Metadata, MetadataFromRaw>))]
-public sealed record class Metadata : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Metadata, MetadataFromRaw>))]
+public sealed record class Metadata : JsonModel
 {
     /// <summary>
     /// Name of the file
     /// </summary>
     public string? FileName
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "fileName"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "fileName"); }
         init
         {
             if (value == null)
@@ -315,7 +319,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "fileName", value);
+            JsonModel.Set(this._rawData, "fileName", value);
         }
     }
 
@@ -324,7 +328,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public double? FileSize
     {
-        get { return ModelBase.GetNullableStruct<double>(this.RawData, "fileSize"); }
+        get { return JsonModel.GetNullableStruct<double>(this.RawData, "fileSize"); }
         init
         {
             if (value == null)
@@ -332,7 +336,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "fileSize", value);
+            JsonModel.Set(this._rawData, "fileSize", value);
         }
     }
 
@@ -341,7 +345,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? FileType
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "fileType"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "fileType"); }
         init
         {
             if (value == null)
@@ -349,7 +353,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "fileType", value);
+            JsonModel.Set(this._rawData, "fileType", value);
         }
     }
 
@@ -358,7 +362,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public IReadOnlyList<string>? GroupName
     {
-        get { return ModelBase.GetNullableClass<List<string>>(this.RawData, "groupName"); }
+        get { return JsonModel.GetNullableClass<List<string>>(this.RawData, "groupName"); }
         init
         {
             if (value == null)
@@ -366,7 +370,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "groupName", value);
+            JsonModel.Set(this._rawData, "groupName", value);
         }
     }
 
@@ -375,7 +379,7 @@ public sealed record class Metadata : ModelBase
     /// </summary>
     public string? LastModified
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "lastModified"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "lastModified"); }
         init
         {
             if (value == null)
@@ -383,7 +387,7 @@ public sealed record class Metadata : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "lastModified", value);
+            JsonModel.Set(this._rawData, "lastModified", value);
         }
     }
 
@@ -422,7 +426,7 @@ public sealed record class Metadata : ModelBase
     }
 }
 
-class MetadataFromRaw : IFromRaw<Metadata>
+class MetadataFromRaw : IFromRawJson<Metadata>
 {
     /// <inheritdoc/>
     public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

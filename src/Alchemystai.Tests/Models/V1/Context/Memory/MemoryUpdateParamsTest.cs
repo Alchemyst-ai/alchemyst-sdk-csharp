@@ -31,8 +31,8 @@ public class ContentTest : TestBase
     {
         var model = new Content { ContentValue = "content" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Content>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Content>(element);
         Assert.NotNull(deserialized);
 
         string expectedContentValue = "content";

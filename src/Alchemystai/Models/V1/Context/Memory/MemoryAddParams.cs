@@ -28,7 +28,7 @@ public sealed record class MemoryAddParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<List<MemoryAddParamsContent>>(
+            return JsonModel.GetNullableClass<List<MemoryAddParamsContent>>(
                 this.RawBodyData,
                 "contents"
             );
@@ -40,7 +40,7 @@ public sealed record class MemoryAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "contents", value);
+            JsonModel.Set(this._rawBodyData, "contents", value);
         }
     }
 
@@ -49,7 +49,7 @@ public sealed record class MemoryAddParams : ParamsBase
     /// </summary>
     public string? MemoryID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
         init
         {
             if (value == null)
@@ -57,7 +57,7 @@ public sealed record class MemoryAddParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "memoryId", value);
+            JsonModel.Set(this._rawBodyData, "memoryId", value);
         }
     }
 
@@ -94,7 +94,7 @@ public sealed record class MemoryAddParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static MemoryAddParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -118,9 +118,13 @@ public sealed record class MemoryAddParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -133,12 +137,12 @@ public sealed record class MemoryAddParams : ParamsBase
     }
 }
 
-[JsonConverter(typeof(ModelConverter<MemoryAddParamsContent, MemoryAddParamsContentFromRaw>))]
-public sealed record class MemoryAddParamsContent : ModelBase
+[JsonConverter(typeof(JsonModelConverter<MemoryAddParamsContent, MemoryAddParamsContentFromRaw>))]
+public sealed record class MemoryAddParamsContent : JsonModel
 {
     public string? Content
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -146,7 +150,7 @@ public sealed record class MemoryAddParamsContent : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "content", value);
+            JsonModel.Set(this._rawData, "content", value);
         }
     }
 
@@ -183,7 +187,7 @@ public sealed record class MemoryAddParamsContent : ModelBase
     }
 }
 
-class MemoryAddParamsContentFromRaw : IFromRaw<MemoryAddParamsContent>
+class MemoryAddParamsContentFromRaw : IFromRawJson<MemoryAddParamsContent>
 {
     /// <inheritdoc/>
     public MemoryAddParamsContent FromRawUnchecked(

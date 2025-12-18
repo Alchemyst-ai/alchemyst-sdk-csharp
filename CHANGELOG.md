@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.3.0 (2025-12-18)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* **client:** add multipart form data support ([55049d2](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/55049d26edd9ff2a2d034f25e752f87368a6d94b))
+
+
+### Chores
+
+* **client:** improve object instantiation ([d3ba3e4](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/d3ba3e4687a5c8c22a8a6b14a62a67405cb8bc5e))
+* **internal:** use `Random.Shared` in newer .NET versions ([64d1d25](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/64d1d25d73e03e2bbddc10c244e5d36688924dee))
+
+
+### Documentation
+
+* add contributing.md ([a817ba3](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/commit/a817ba348e16370de8ee8a8aa5ea9f0edcdb01e8))
+
 ## 0.2.0 (2025-12-12)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/Alchemyst-ai/alchemyst-sdk-csharp/compare/v0.1.0...v0.2.0)
