@@ -31,8 +31,8 @@ public class MemoryAddParamsContentTest : TestBase
     {
         var model = new MemoryAddParamsContent { Content = "content" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<MemoryAddParamsContent>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<MemoryAddParamsContent>(element);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";

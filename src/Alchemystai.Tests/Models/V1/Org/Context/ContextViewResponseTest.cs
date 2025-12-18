@@ -41,8 +41,8 @@ public class ContextViewResponseTest : TestBase
             Contexts = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContextViewResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ContextViewResponse>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedContexts = JsonSerializer.Deserialize<JsonElement>("{}");

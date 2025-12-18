@@ -46,8 +46,8 @@ public class ViewRetrieveResponseTest : TestBase
             Context = [JsonSerializer.Deserialize<JsonElement>("{}")],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ViewRetrieveResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ViewRetrieveResponse>(element);
         Assert.NotNull(deserialized);
 
         List<JsonElement> expectedContext = [JsonSerializer.Deserialize<JsonElement>("{}")];

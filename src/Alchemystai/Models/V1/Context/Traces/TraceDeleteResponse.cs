@@ -7,15 +7,15 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.Traces;
 
-[JsonConverter(typeof(ModelConverter<TraceDeleteResponse, TraceDeleteResponseFromRaw>))]
-public sealed record class TraceDeleteResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TraceDeleteResponse, TraceDeleteResponseFromRaw>))]
+public sealed record class TraceDeleteResponse : JsonModel
 {
     /// <summary>
     /// The deleted trace data
     /// </summary>
     public JsonElement? Trace
     {
-        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "trace"); }
+        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawData, "trace"); }
         init
         {
             if (value == null)
@@ -23,7 +23,7 @@ public sealed record class TraceDeleteResponse : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "trace", value);
+            JsonModel.Set(this._rawData, "trace", value);
         }
     }
 
@@ -60,7 +60,7 @@ public sealed record class TraceDeleteResponse : ModelBase
     }
 }
 
-class TraceDeleteResponseFromRaw : IFromRaw<TraceDeleteResponse>
+class TraceDeleteResponseFromRaw : IFromRawJson<TraceDeleteResponse>
 {
     /// <inheritdoc/>
     public TraceDeleteResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
