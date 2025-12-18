@@ -87,8 +87,8 @@ public class ContextSearchResponseTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContextSearchResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ContextSearchResponse>(element);
         Assert.NotNull(deserialized);
 
         List<ContextSearchResponseContext> expectedContexts =
@@ -233,8 +233,8 @@ public class ContextSearchResponseContextTest : TestBase
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<ContextSearchResponseContext>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<ContextSearchResponseContext>(element);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";

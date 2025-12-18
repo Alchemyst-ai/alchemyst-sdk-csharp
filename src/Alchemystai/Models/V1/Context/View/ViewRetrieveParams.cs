@@ -18,7 +18,7 @@ public sealed record class ViewRetrieveParams : ParamsBase
     /// </summary>
     public string? FileName
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "file_name"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "file_name"); }
         init
         {
             if (value == null)
@@ -26,7 +26,7 @@ public sealed record class ViewRetrieveParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawQueryData, "file_name", value);
+            JsonModel.Set(this._rawQueryData, "file_name", value);
         }
     }
 
@@ -35,7 +35,7 @@ public sealed record class ViewRetrieveParams : ParamsBase
     /// </summary>
     public string? MagicKey
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawQueryData, "magic_key"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "magic_key"); }
         init
         {
             if (value == null)
@@ -43,7 +43,7 @@ public sealed record class ViewRetrieveParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawQueryData, "magic_key", value);
+            JsonModel.Set(this._rawQueryData, "magic_key", value);
         }
     }
 
@@ -73,7 +73,7 @@ public sealed record class ViewRetrieveParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static ViewRetrieveParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData

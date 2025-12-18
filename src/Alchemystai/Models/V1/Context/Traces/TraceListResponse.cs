@@ -8,12 +8,12 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context.Traces;
 
-[JsonConverter(typeof(ModelConverter<TraceListResponse, TraceListResponseFromRaw>))]
-public sealed record class TraceListResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<TraceListResponse, TraceListResponseFromRaw>))]
+public sealed record class TraceListResponse : JsonModel
 {
     public IReadOnlyList<Trace>? Traces
     {
-        get { return ModelBase.GetNullableClass<List<Trace>>(this.RawData, "traces"); }
+        get { return JsonModel.GetNullableClass<List<Trace>>(this.RawData, "traces"); }
         init
         {
             if (value == null)
@@ -21,7 +21,7 @@ public sealed record class TraceListResponse : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "traces", value);
+            JsonModel.Set(this._rawData, "traces", value);
         }
     }
 
@@ -61,19 +61,19 @@ public sealed record class TraceListResponse : ModelBase
     }
 }
 
-class TraceListResponseFromRaw : IFromRaw<TraceListResponse>
+class TraceListResponseFromRaw : IFromRawJson<TraceListResponse>
 {
     /// <inheritdoc/>
     public TraceListResponse FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         TraceListResponse.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(ModelConverter<Trace, TraceFromRaw>))]
-public sealed record class Trace : ModelBase
+[JsonConverter(typeof(JsonModelConverter<Trace, TraceFromRaw>))]
+public sealed record class Trace : JsonModel
 {
     public string? _ID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "_id"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "_id"); }
         init
         {
             if (value == null)
@@ -81,13 +81,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "_id", value);
+            JsonModel.Set(this._rawData, "_id", value);
         }
     }
 
     public DateTimeOffset? CreatedAt
     {
-        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
+        get { return JsonModel.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
         init
         {
             if (value == null)
@@ -95,13 +95,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "createdAt", value);
+            JsonModel.Set(this._rawData, "createdAt", value);
         }
     }
 
     public JsonElement? Data
     {
-        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "data"); }
+        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawData, "data"); }
         init
         {
             if (value == null)
@@ -109,13 +109,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "data", value);
+            JsonModel.Set(this._rawData, "data", value);
         }
     }
 
     public string? Type
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "type"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "type"); }
         init
         {
             if (value == null)
@@ -123,13 +123,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "type", value);
+            JsonModel.Set(this._rawData, "type", value);
         }
     }
 
     public DateTimeOffset? UpdatedAt
     {
-        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
+        get { return JsonModel.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
         init
         {
             if (value == null)
@@ -137,13 +137,13 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "updatedAt", value);
+            JsonModel.Set(this._rawData, "updatedAt", value);
         }
     }
 
     public string? UserID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "userId"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "userId"); }
         init
         {
             if (value == null)
@@ -151,7 +151,7 @@ public sealed record class Trace : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "userId", value);
+            JsonModel.Set(this._rawData, "userId", value);
         }
     }
 
@@ -191,7 +191,7 @@ public sealed record class Trace : ModelBase
     }
 }
 
-class TraceFromRaw : IFromRaw<Trace>
+class TraceFromRaw : IFromRawJson<Trace>
 {
     /// <inheritdoc/>
     public Trace FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>

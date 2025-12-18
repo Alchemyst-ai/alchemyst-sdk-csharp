@@ -23,8 +23,8 @@ public sealed record class ContextViewParams : ParamsBase
     [Obsolete("deprecated")]
     public required IReadOnlyList<string> UserIDs
     {
-        get { return ModelBase.GetNotNullClass<List<string>>(this.RawBodyData, "userIds"); }
-        init { ModelBase.Set(this._rawBodyData, "userIds", value); }
+        get { return JsonModel.GetNotNullClass<List<string>>(this.RawBodyData, "userIds"); }
+        init { JsonModel.Set(this._rawBodyData, "userIds", value); }
     }
 
     public ContextViewParams() { }
@@ -60,7 +60,7 @@ public sealed record class ContextViewParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static ContextViewParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -82,9 +82,13 @@ public sealed record class ContextViewParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

@@ -41,8 +41,8 @@ public class TraceDeleteResponseTest : TestBase
             Trace = JsonSerializer.Deserialize<JsonElement>("{}"),
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TraceDeleteResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<TraceDeleteResponse>(element);
         Assert.NotNull(deserialized);
 
         JsonElement expectedTrace = JsonSerializer.Deserialize<JsonElement>("{}");

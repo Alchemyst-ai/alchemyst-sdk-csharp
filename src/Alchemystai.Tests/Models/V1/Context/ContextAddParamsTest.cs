@@ -92,8 +92,8 @@ public class DocumentTest : TestBase
     {
         var model = new Document { Content = "content" };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Document>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Document>(element);
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
@@ -214,8 +214,8 @@ public class MetadataTest : TestBase
             LastModified = "lastModified",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Metadata>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Metadata>(element);
         Assert.NotNull(deserialized);
 
         string expectedFileName = "fileName";

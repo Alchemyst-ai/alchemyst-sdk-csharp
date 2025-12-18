@@ -25,8 +25,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public bool? ByDoc
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawBodyData, "by_doc"); }
-        init { ModelBase.Set(this._rawBodyData, "by_doc", value); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawBodyData, "by_doc"); }
+        init { JsonModel.Set(this._rawBodyData, "by_doc", value); }
     }
 
     /// <summary>
@@ -34,8 +34,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public bool? ByID
     {
-        get { return ModelBase.GetNullableStruct<bool>(this.RawBodyData, "by_id"); }
-        init { ModelBase.Set(this._rawBodyData, "by_id", value); }
+        get { return JsonModel.GetNullableStruct<bool>(this.RawBodyData, "by_id"); }
+        init { JsonModel.Set(this._rawBodyData, "by_id", value); }
     }
 
     /// <summary>
@@ -43,8 +43,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public string? OrganizationID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
-        init { ModelBase.Set(this._rawBodyData, "organization_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
+        init { JsonModel.Set(this._rawBodyData, "organization_id", value); }
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public sealed record class ContextDeleteParams : ParamsBase
     /// </summary>
     public string? Source
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "source"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "source"); }
         init
         {
             if (value == null)
@@ -60,7 +60,7 @@ public sealed record class ContextDeleteParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "source", value);
+            JsonModel.Set(this._rawBodyData, "source", value);
         }
     }
 
@@ -70,8 +70,8 @@ public sealed record class ContextDeleteParams : ParamsBase
     [Obsolete("deprecated")]
     public string? UserID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
-        init { ModelBase.Set(this._rawBodyData, "user_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "user_id"); }
+        init { JsonModel.Set(this._rawBodyData, "user_id", value); }
     }
 
     public ContextDeleteParams() { }
@@ -107,7 +107,7 @@ public sealed record class ContextDeleteParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static ContextDeleteParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -129,9 +129,13 @@ public sealed record class ContextDeleteParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

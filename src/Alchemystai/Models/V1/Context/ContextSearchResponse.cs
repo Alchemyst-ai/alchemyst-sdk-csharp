@@ -8,14 +8,14 @@ using Alchemystai.Core;
 
 namespace Alchemystai.Models.V1.Context;
 
-[JsonConverter(typeof(ModelConverter<ContextSearchResponse, ContextSearchResponseFromRaw>))]
-public sealed record class ContextSearchResponse : ModelBase
+[JsonConverter(typeof(JsonModelConverter<ContextSearchResponse, ContextSearchResponseFromRaw>))]
+public sealed record class ContextSearchResponse : JsonModel
 {
     public IReadOnlyList<ContextSearchResponseContext>? Contexts
     {
         get
         {
-            return ModelBase.GetNullableClass<List<ContextSearchResponseContext>>(
+            return JsonModel.GetNullableClass<List<ContextSearchResponseContext>>(
                 this.RawData,
                 "contexts"
             );
@@ -27,7 +27,7 @@ public sealed record class ContextSearchResponse : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "contexts", value);
+            JsonModel.Set(this._rawData, "contexts", value);
         }
     }
 
@@ -67,7 +67,7 @@ public sealed record class ContextSearchResponse : ModelBase
     }
 }
 
-class ContextSearchResponseFromRaw : IFromRaw<ContextSearchResponse>
+class ContextSearchResponseFromRaw : IFromRawJson<ContextSearchResponse>
 {
     /// <inheritdoc/>
     public ContextSearchResponse FromRawUnchecked(
@@ -76,13 +76,13 @@ class ContextSearchResponseFromRaw : IFromRaw<ContextSearchResponse>
 }
 
 [JsonConverter(
-    typeof(ModelConverter<ContextSearchResponseContext, ContextSearchResponseContextFromRaw>)
+    typeof(JsonModelConverter<ContextSearchResponseContext, ContextSearchResponseContextFromRaw>)
 )]
-public sealed record class ContextSearchResponseContext : ModelBase
+public sealed record class ContextSearchResponseContext : JsonModel
 {
     public string? Content
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawData, "content"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "content"); }
         init
         {
             if (value == null)
@@ -90,13 +90,13 @@ public sealed record class ContextSearchResponseContext : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "content", value);
+            JsonModel.Set(this._rawData, "content", value);
         }
     }
 
     public DateTimeOffset? CreatedAt
     {
-        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
+        get { return JsonModel.GetNullableStruct<DateTimeOffset>(this.RawData, "createdAt"); }
         init
         {
             if (value == null)
@@ -104,7 +104,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "createdAt", value);
+            JsonModel.Set(this._rawData, "createdAt", value);
         }
     }
 
@@ -113,7 +113,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
     /// </summary>
     public JsonElement? Metadata
     {
-        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawData, "metadata"); }
+        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawData, "metadata"); }
         init
         {
             if (value == null)
@@ -121,13 +121,13 @@ public sealed record class ContextSearchResponseContext : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "metadata", value);
+            JsonModel.Set(this._rawData, "metadata", value);
         }
     }
 
     public double? Score
     {
-        get { return ModelBase.GetNullableStruct<double>(this.RawData, "score"); }
+        get { return JsonModel.GetNullableStruct<double>(this.RawData, "score"); }
         init
         {
             if (value == null)
@@ -135,13 +135,13 @@ public sealed record class ContextSearchResponseContext : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "score", value);
+            JsonModel.Set(this._rawData, "score", value);
         }
     }
 
     public DateTimeOffset? UpdatedAt
     {
-        get { return ModelBase.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
+        get { return JsonModel.GetNullableStruct<DateTimeOffset>(this.RawData, "updatedAt"); }
         init
         {
             if (value == null)
@@ -149,7 +149,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
                 return;
             }
 
-            ModelBase.Set(this._rawData, "updatedAt", value);
+            JsonModel.Set(this._rawData, "updatedAt", value);
         }
     }
 
@@ -190,7 +190,7 @@ public sealed record class ContextSearchResponseContext : ModelBase
     }
 }
 
-class ContextSearchResponseContextFromRaw : IFromRaw<ContextSearchResponseContext>
+class ContextSearchResponseContextFromRaw : IFromRawJson<ContextSearchResponseContext>
 {
     /// <inheritdoc/>
     public ContextSearchResponseContext FromRawUnchecked(

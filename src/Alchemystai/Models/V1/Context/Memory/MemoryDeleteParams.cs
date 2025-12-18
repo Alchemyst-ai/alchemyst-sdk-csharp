@@ -25,7 +25,7 @@ public sealed record class MemoryDeleteParams : ParamsBase
     /// </summary>
     public string? MemoryID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
         init
         {
             if (value == null)
@@ -33,7 +33,7 @@ public sealed record class MemoryDeleteParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "memoryId", value);
+            JsonModel.Set(this._rawBodyData, "memoryId", value);
         }
     }
 
@@ -42,8 +42,8 @@ public sealed record class MemoryDeleteParams : ParamsBase
     /// </summary>
     public string? OrganizationID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
-        init { ModelBase.Set(this._rawBodyData, "organization_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
+        init { JsonModel.Set(this._rawBodyData, "organization_id", value); }
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ public sealed record class MemoryDeleteParams : ParamsBase
     [Obsolete("deprecated")]
     public string? UserID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
-        init { ModelBase.Set(this._rawBodyData, "user_id", value); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "user_id"); }
+        init { JsonModel.Set(this._rawBodyData, "user_id", value); }
     }
 
     public MemoryDeleteParams() { }
@@ -89,7 +89,7 @@ public sealed record class MemoryDeleteParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static MemoryDeleteParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -113,9 +113,13 @@ public sealed record class MemoryDeleteParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

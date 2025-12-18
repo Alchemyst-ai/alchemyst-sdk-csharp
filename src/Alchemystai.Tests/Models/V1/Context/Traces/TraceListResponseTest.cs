@@ -91,8 +91,8 @@ public class TraceListResponseTest : TestBase
             ],
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<TraceListResponse>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<TraceListResponse>(element);
         Assert.NotNull(deserialized);
 
         List<Trace> expectedTraces =
@@ -244,8 +244,8 @@ public class TraceTest : TestBase
             UserID = "userId",
         };
 
-        string json = JsonSerializer.Serialize(model);
-        var deserialized = JsonSerializer.Deserialize<Trace>(json);
+        string element = JsonSerializer.Serialize(model);
+        var deserialized = JsonSerializer.Deserialize<Trace>(element);
         Assert.NotNull(deserialized);
 
         string expected_ID = "_id";

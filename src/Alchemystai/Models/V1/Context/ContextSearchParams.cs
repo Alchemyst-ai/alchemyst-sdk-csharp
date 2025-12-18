@@ -30,12 +30,12 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNotNullStruct<double>(
+            return JsonModel.GetNotNullStruct<double>(
                 this.RawBodyData,
                 "minimum_similarity_threshold"
             );
         }
-        init { ModelBase.Set(this._rawBodyData, "minimum_similarity_threshold", value); }
+        init { JsonModel.Set(this._rawBodyData, "minimum_similarity_threshold", value); }
     }
 
     /// <summary>
@@ -43,8 +43,8 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required string Query
     {
-        get { return ModelBase.GetNotNullClass<string>(this.RawBodyData, "query"); }
-        init { ModelBase.Set(this._rawBodyData, "query", value); }
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "query"); }
+        init { JsonModel.Set(this._rawBodyData, "query", value); }
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public required double SimilarityThreshold
     {
-        get { return ModelBase.GetNotNullStruct<double>(this.RawBodyData, "similarity_threshold"); }
-        init { ModelBase.Set(this._rawBodyData, "similarity_threshold", value); }
+        get { return JsonModel.GetNotNullStruct<double>(this.RawBodyData, "similarity_threshold"); }
+        init { JsonModel.Set(this._rawBodyData, "similarity_threshold", value); }
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsMetadata>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, ContextSearchParamsMetadata>>(
                 this.RawQueryData,
                 "metadata"
             );
@@ -77,7 +77,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawQueryData, "metadata", value);
+            JsonModel.Set(this._rawQueryData, "metadata", value);
         }
     }
 
@@ -87,7 +87,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public ApiEnum<string, Mode>? Mode
     {
-        get { return ModelBase.GetNullableClass<ApiEnum<string, Mode>>(this.RawQueryData, "mode"); }
+        get { return JsonModel.GetNullableClass<ApiEnum<string, Mode>>(this.RawQueryData, "mode"); }
         init
         {
             if (value == null)
@@ -95,7 +95,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawQueryData, "mode", value);
+            JsonModel.Set(this._rawQueryData, "mode", value);
         }
     }
 
@@ -104,7 +104,7 @@ public sealed record class ContextSearchParams : ParamsBase
     /// </summary>
     public JsonElement? MetadataValue
     {
-        get { return ModelBase.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
+        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
         init
         {
             if (value == null)
@@ -112,7 +112,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "metadata", value);
+            JsonModel.Set(this._rawBodyData, "metadata", value);
         }
     }
 
@@ -123,7 +123,7 @@ public sealed record class ContextSearchParams : ParamsBase
     {
         get
         {
-            return ModelBase.GetNullableClass<ApiEnum<string, ContextSearchParamsScope>>(
+            return JsonModel.GetNullableClass<ApiEnum<string, ContextSearchParamsScope>>(
                 this.RawBodyData,
                 "scope"
             );
@@ -135,7 +135,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "scope", value);
+            JsonModel.Set(this._rawBodyData, "scope", value);
         }
     }
 
@@ -145,7 +145,7 @@ public sealed record class ContextSearchParams : ParamsBase
     [Obsolete("deprecated")]
     public string? UserID
     {
-        get { return ModelBase.GetNullableClass<string>(this.RawBodyData, "user_id"); }
+        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "user_id"); }
         init
         {
             if (value == null)
@@ -153,7 +153,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            ModelBase.Set(this._rawBodyData, "user_id", value);
+            JsonModel.Set(this._rawBodyData, "user_id", value);
         }
     }
 
@@ -190,7 +190,7 @@ public sealed record class ContextSearchParams : ParamsBase
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="IFromRaw.FromRawUnchecked"/>
+    /// <inheritdoc cref="IFromRawJson.FromRawUnchecked"/>
     public static ContextSearchParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawHeaderData,
         IReadOnlyDictionary<string, JsonElement> rawQueryData,
@@ -212,9 +212,13 @@ public sealed record class ContextSearchParams : ParamsBase
         }.Uri;
     }
 
-    internal override StringContent? BodyContent()
+    internal override HttpContent? BodyContent()
     {
-        return new(JsonSerializer.Serialize(this.RawBodyData), Encoding.UTF8, "application/json");
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData),
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
