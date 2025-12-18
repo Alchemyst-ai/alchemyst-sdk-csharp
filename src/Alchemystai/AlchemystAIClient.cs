@@ -269,6 +269,8 @@ public sealed class AlchemystAIClient : IAlchemystAIClient
         return e is IOException || e is AlchemystAIIOException;
     }
 
+    public void Dispose() => this.HttpClient.Dispose();
+
     public AlchemystAIClient()
     {
         _options = new();
