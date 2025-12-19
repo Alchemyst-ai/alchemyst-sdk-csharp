@@ -12,6 +12,7 @@ namespace Alchemystai.Models.V1.Org.Context;
 /// <summary>
 /// View organization context
 /// </summary>
+[Obsolete("Required params are deprecated: userIds")]
 public sealed record class ContextViewParams : ParamsBase
 {
     readonly FreezableDictionary<string, JsonElement> _rawBodyData = [];
