@@ -24,6 +24,8 @@ public class ContextSearchParamsMetadataTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
     }
 
@@ -80,6 +82,8 @@ public class ModeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
     }
 
@@ -136,6 +140,8 @@ public class ContextSearchParamsScopeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
     }
 

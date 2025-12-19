@@ -26,6 +26,8 @@ public class ContextTypeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
     }
 
@@ -337,6 +339,8 @@ public class ScopeTest : TestBase
             JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
             ModelBase.SerializerOptions
         );
+
+        Assert.NotNull(value);
         Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
     }
 
