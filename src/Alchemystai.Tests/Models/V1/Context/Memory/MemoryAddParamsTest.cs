@@ -1,7 +1,73 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using Alchemystai.Models.V1.Context.Memory;
 
 namespace Alchemystai.Tests.Models.V1.Context.Memory;
+
+public class MemoryAddParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new MemoryAddParams
+        {
+            Contents =
+            [
+                new() { Content = "Customer asked about pricing for the Scale plan." },
+                new()
+                {
+                    Content = "Explained the Scale plan pricing and shared the pricing page link.",
+                },
+            ],
+            MemoryID = "support-thread-TCK-1234",
+        };
+
+        List<MemoryAddParamsContent> expectedContents =
+        [
+            new() { Content = "Customer asked about pricing for the Scale plan." },
+            new()
+            {
+                Content = "Explained the Scale plan pricing and shared the pricing page link.",
+            },
+        ];
+        string expectedMemoryID = "support-thread-TCK-1234";
+
+        Assert.NotNull(parameters.Contents);
+        Assert.Equal(expectedContents.Count, parameters.Contents.Count);
+        for (int i = 0; i < expectedContents.Count; i++)
+        {
+            Assert.Equal(expectedContents[i], parameters.Contents[i]);
+        }
+        Assert.Equal(expectedMemoryID, parameters.MemoryID);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new MemoryAddParams { };
+
+        Assert.Null(parameters.Contents);
+        Assert.False(parameters.RawBodyData.ContainsKey("contents"));
+        Assert.Null(parameters.MemoryID);
+        Assert.False(parameters.RawBodyData.ContainsKey("memoryId"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new MemoryAddParams
+        {
+            // Null should be interpreted as omitted for these properties
+            Contents = null,
+            MemoryID = null,
+        };
+
+        Assert.Null(parameters.Contents);
+        Assert.False(parameters.RawBodyData.ContainsKey("contents"));
+        Assert.Null(parameters.MemoryID);
+        Assert.False(parameters.RawBodyData.ContainsKey("memoryId"));
+    }
+}
 
 public class MemoryAddParamsContentTest : TestBase
 {

@@ -6,6 +6,98 @@ using Alchemystai.Models.V1.Context;
 
 namespace Alchemystai.Tests.Models.V1.Context;
 
+public class ContextAddParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new ContextAddParams
+        {
+            ContextType = ContextType.Resource,
+            Documents = [new() { Content = "Customer asked about pricing for the Scale plan." }],
+            Metadata = new()
+            {
+                FileName = "support_thread_TCK-1234.txt",
+                FileSize = 2048,
+                FileType = "text/plain",
+                GroupName = ["support", "pricing"],
+                LastModified = "2025-01-10T12:34:56.000Z",
+            },
+            Scope = Scope.Internal,
+            Source = "support-inbox",
+        };
+
+        ApiEnum<string, ContextType> expectedContextType = ContextType.Resource;
+        List<Document> expectedDocuments =
+        [
+            new() { Content = "Customer asked about pricing for the Scale plan." },
+        ];
+        Metadata expectedMetadata = new()
+        {
+            FileName = "support_thread_TCK-1234.txt",
+            FileSize = 2048,
+            FileType = "text/plain",
+            GroupName = ["support", "pricing"],
+            LastModified = "2025-01-10T12:34:56.000Z",
+        };
+        ApiEnum<string, Scope> expectedScope = Scope.Internal;
+        string expectedSource = "support-inbox";
+
+        Assert.Equal(expectedContextType, parameters.ContextType);
+        Assert.NotNull(parameters.Documents);
+        Assert.Equal(expectedDocuments.Count, parameters.Documents.Count);
+        for (int i = 0; i < expectedDocuments.Count; i++)
+        {
+            Assert.Equal(expectedDocuments[i], parameters.Documents[i]);
+        }
+        Assert.Equal(expectedMetadata, parameters.Metadata);
+        Assert.Equal(expectedScope, parameters.Scope);
+        Assert.Equal(expectedSource, parameters.Source);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new ContextAddParams { };
+
+        Assert.Null(parameters.ContextType);
+        Assert.False(parameters.RawBodyData.ContainsKey("context_type"));
+        Assert.Null(parameters.Documents);
+        Assert.False(parameters.RawBodyData.ContainsKey("documents"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Scope);
+        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
+        Assert.Null(parameters.Source);
+        Assert.False(parameters.RawBodyData.ContainsKey("source"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new ContextAddParams
+        {
+            // Null should be interpreted as omitted for these properties
+            ContextType = null,
+            Documents = null,
+            Metadata = null,
+            Scope = null,
+            Source = null,
+        };
+
+        Assert.Null(parameters.ContextType);
+        Assert.False(parameters.RawBodyData.ContainsKey("context_type"));
+        Assert.Null(parameters.Documents);
+        Assert.False(parameters.RawBodyData.ContainsKey("documents"));
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Scope);
+        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
+        Assert.Null(parameters.Source);
+        Assert.False(parameters.RawBodyData.ContainsKey("source"));
+    }
+}
+
 public class ContextTypeTest : TestBase
 {
     [Theory]

@@ -5,6 +5,96 @@ using Alchemystai.Models.V1.Context;
 
 namespace Alchemystai.Tests.Models.V1.Context;
 
+public class ContextSearchParamsTest : TestBase
+{
+    [Fact]
+    public void FieldRoundtrip_Works()
+    {
+        var parameters = new ContextSearchParams
+        {
+            MinimumSimilarityThreshold = 0.5,
+            Query = "What did the customer ask about pricing for the Scale plan?",
+            SimilarityThreshold = 0.8,
+            Metadata = ContextSearchParamsMetadata.True,
+            Mode = Mode.Fast,
+            MetadataValue = JsonSerializer.Deserialize<JsonElement>("{}"),
+            Scope = ContextSearchParamsScope.Internal,
+            UserID = "user123",
+        };
+
+        double expectedMinimumSimilarityThreshold = 0.5;
+        string expectedQuery = "What did the customer ask about pricing for the Scale plan?";
+        double expectedSimilarityThreshold = 0.8;
+        ApiEnum<string, ContextSearchParamsMetadata> expectedMetadata =
+            ContextSearchParamsMetadata.True;
+        ApiEnum<string, Mode> expectedMode = Mode.Fast;
+        JsonElement expectedMetadataValue = JsonSerializer.Deserialize<JsonElement>("{}");
+        ApiEnum<string, ContextSearchParamsScope> expectedScope = ContextSearchParamsScope.Internal;
+        string expectedUserID = "user123";
+
+        Assert.Equal(expectedMinimumSimilarityThreshold, parameters.MinimumSimilarityThreshold);
+        Assert.Equal(expectedQuery, parameters.Query);
+        Assert.Equal(expectedSimilarityThreshold, parameters.SimilarityThreshold);
+        Assert.Equal(expectedMetadata, parameters.Metadata);
+        Assert.Equal(expectedMode, parameters.Mode);
+        Assert.NotNull(parameters.MetadataValue);
+        Assert.True(JsonElement.DeepEquals(expectedMetadataValue, parameters.MetadataValue.Value));
+        Assert.Equal(expectedScope, parameters.Scope);
+        Assert.Equal(expectedUserID, parameters.UserID);
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
+    {
+        var parameters = new ContextSearchParams
+        {
+            MinimumSimilarityThreshold = 0.5,
+            Query = "What did the customer ask about pricing for the Scale plan?",
+            SimilarityThreshold = 0.8,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawQueryData.ContainsKey("metadata"));
+        Assert.Null(parameters.Mode);
+        Assert.False(parameters.RawQueryData.ContainsKey("mode"));
+        Assert.Null(parameters.MetadataValue);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Scope);
+        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
+        Assert.Null(parameters.UserID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
+    }
+
+    [Fact]
+    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
+    {
+        var parameters = new ContextSearchParams
+        {
+            MinimumSimilarityThreshold = 0.5,
+            Query = "What did the customer ask about pricing for the Scale plan?",
+            SimilarityThreshold = 0.8,
+
+            // Null should be interpreted as omitted for these properties
+            Metadata = null,
+            Mode = null,
+            MetadataValue = null,
+            Scope = null,
+            UserID = null,
+        };
+
+        Assert.Null(parameters.Metadata);
+        Assert.False(parameters.RawQueryData.ContainsKey("metadata"));
+        Assert.Null(parameters.Mode);
+        Assert.False(parameters.RawQueryData.ContainsKey("mode"));
+        Assert.Null(parameters.MetadataValue);
+        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.Scope);
+        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
+        Assert.Null(parameters.UserID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
+    }
+}
+
 public class ContextSearchParamsMetadataTest : TestBase
 {
     [Theory]
