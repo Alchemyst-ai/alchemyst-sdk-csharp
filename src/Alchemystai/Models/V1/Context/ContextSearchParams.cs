@@ -102,9 +102,9 @@ public sealed record class ContextSearchParams : ParamsBase
     /// <summary>
     /// Additional metadata for the search
     /// </summary>
-    public JsonElement? MetadataValue
+    public JsonElement? BodyMetadata
     {
-        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawBodyData, "metadata"); }
+        get { return JsonModel.GetNullableStruct<JsonElement>(this.RawBodyData, "body_metadata"); }
         init
         {
             if (value == null)
@@ -112,7 +112,7 @@ public sealed record class ContextSearchParams : ParamsBase
                 return;
             }
 
-            JsonModel.Set(this._rawBodyData, "metadata", value);
+            JsonModel.Set(this._rawBodyData, "body_metadata", value);
         }
     }
 

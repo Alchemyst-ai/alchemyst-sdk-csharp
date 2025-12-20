@@ -17,7 +17,7 @@ public class ContextSearchParamsTest : TestBase
             SimilarityThreshold = 0.8,
             Metadata = ContextSearchParamsMetadata.True,
             Mode = Mode.Fast,
-            MetadataValue = JsonSerializer.Deserialize<JsonElement>("{}"),
+            BodyMetadata = JsonSerializer.Deserialize<JsonElement>("{}"),
             Scope = ContextSearchParamsScope.Internal,
             UserID = "user123",
         };
@@ -28,7 +28,7 @@ public class ContextSearchParamsTest : TestBase
         ApiEnum<string, ContextSearchParamsMetadata> expectedMetadata =
             ContextSearchParamsMetadata.True;
         ApiEnum<string, Mode> expectedMode = Mode.Fast;
-        JsonElement expectedMetadataValue = JsonSerializer.Deserialize<JsonElement>("{}");
+        JsonElement expectedBodyMetadata = JsonSerializer.Deserialize<JsonElement>("{}");
         ApiEnum<string, ContextSearchParamsScope> expectedScope = ContextSearchParamsScope.Internal;
         string expectedUserID = "user123";
 
@@ -37,8 +37,8 @@ public class ContextSearchParamsTest : TestBase
         Assert.Equal(expectedSimilarityThreshold, parameters.SimilarityThreshold);
         Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedMode, parameters.Mode);
-        Assert.NotNull(parameters.MetadataValue);
-        Assert.True(JsonElement.DeepEquals(expectedMetadataValue, parameters.MetadataValue.Value));
+        Assert.NotNull(parameters.BodyMetadata);
+        Assert.True(JsonElement.DeepEquals(expectedBodyMetadata, parameters.BodyMetadata.Value));
         Assert.Equal(expectedScope, parameters.Scope);
         Assert.Equal(expectedUserID, parameters.UserID);
     }
@@ -57,8 +57,8 @@ public class ContextSearchParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("metadata"));
         Assert.Null(parameters.Mode);
         Assert.False(parameters.RawQueryData.ContainsKey("mode"));
-        Assert.Null(parameters.MetadataValue);
-        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.BodyMetadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("body_metadata"));
         Assert.Null(parameters.Scope);
         Assert.False(parameters.RawBodyData.ContainsKey("scope"));
         Assert.Null(parameters.UserID);
@@ -77,7 +77,7 @@ public class ContextSearchParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             Metadata = null,
             Mode = null,
-            MetadataValue = null,
+            BodyMetadata = null,
             Scope = null,
             UserID = null,
         };
@@ -86,8 +86,8 @@ public class ContextSearchParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("metadata"));
         Assert.Null(parameters.Mode);
         Assert.False(parameters.RawQueryData.ContainsKey("mode"));
-        Assert.Null(parameters.MetadataValue);
-        Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
+        Assert.Null(parameters.BodyMetadata);
+        Assert.False(parameters.RawBodyData.ContainsKey("body_metadata"));
         Assert.Null(parameters.Scope);
         Assert.False(parameters.RawBodyData.ContainsKey("scope"));
         Assert.Null(parameters.UserID);
