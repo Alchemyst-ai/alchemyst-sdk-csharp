@@ -9,10 +9,44 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context.Traces;
 
 /// <summary>
-/// Retrieves a list of traces for the authenticated user
+/// Returns paginated traces for the authenticated user within their organization.
 /// </summary>
 public sealed record class TraceListParams : ParamsBase
 {
+    /// <summary>
+    /// Number of traces per page
+    /// </summary>
+    public long? Limit
+    {
+        get { return JsonModel.GetNullableStruct<long>(this.RawQueryData, "limit"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawQueryData, "limit", value);
+        }
+    }
+
+    /// <summary>
+    /// Page number for pagination
+    /// </summary>
+    public long? Page
+    {
+        get { return JsonModel.GetNullableStruct<long>(this.RawQueryData, "page"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawQueryData, "page", value);
+        }
+    }
+
     public TraceListParams() { }
 
     public TraceListParams(TraceListParams traceListParams)

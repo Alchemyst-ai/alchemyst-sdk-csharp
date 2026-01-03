@@ -10,55 +10,38 @@ public class MemoryDeleteParamsTest : TestBase
         var parameters = new MemoryDeleteParams
         {
             MemoryID = "support-thread-TCK-1234",
-            OrganizationID = "organization_id",
+            OrganizationID = "org_01HXYZABC",
+            ByDoc = true,
+            ByID = false,
             UserID = "user_id",
         };
 
         string expectedMemoryID = "support-thread-TCK-1234";
-        string expectedOrganizationID = "organization_id";
+        string expectedOrganizationID = "org_01HXYZABC";
+        bool expectedByDoc = true;
+        bool expectedByID = false;
         string expectedUserID = "user_id";
 
         Assert.Equal(expectedMemoryID, parameters.MemoryID);
         Assert.Equal(expectedOrganizationID, parameters.OrganizationID);
+        Assert.Equal(expectedByDoc, parameters.ByDoc);
+        Assert.Equal(expectedByID, parameters.ByID);
         Assert.Equal(expectedUserID, parameters.UserID);
-    }
-
-    [Fact]
-    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
-    {
-        var parameters = new MemoryDeleteParams
-        {
-            OrganizationID = "organization_id",
-            UserID = "user_id",
-        };
-
-        Assert.Null(parameters.MemoryID);
-        Assert.False(parameters.RawBodyData.ContainsKey("memoryId"));
-    }
-
-    [Fact]
-    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
-    {
-        var parameters = new MemoryDeleteParams
-        {
-            OrganizationID = "organization_id",
-            UserID = "user_id",
-
-            // Null should be interpreted as omitted for these properties
-            MemoryID = null,
-        };
-
-        Assert.Null(parameters.MemoryID);
-        Assert.False(parameters.RawBodyData.ContainsKey("memoryId"));
     }
 
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new MemoryDeleteParams { MemoryID = "support-thread-TCK-1234" };
+        var parameters = new MemoryDeleteParams
+        {
+            MemoryID = "support-thread-TCK-1234",
+            OrganizationID = "org_01HXYZABC",
+        };
 
-        Assert.Null(parameters.OrganizationID);
-        Assert.False(parameters.RawBodyData.ContainsKey("organization_id"));
+        Assert.Null(parameters.ByDoc);
+        Assert.False(parameters.RawBodyData.ContainsKey("by_doc"));
+        Assert.Null(parameters.ByID);
+        Assert.False(parameters.RawBodyData.ContainsKey("by_id"));
         Assert.Null(parameters.UserID);
         Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
     }
@@ -69,13 +52,17 @@ public class MemoryDeleteParamsTest : TestBase
         var parameters = new MemoryDeleteParams
         {
             MemoryID = "support-thread-TCK-1234",
+            OrganizationID = "org_01HXYZABC",
 
-            OrganizationID = null,
+            ByDoc = null,
+            ByID = null,
             UserID = null,
         };
 
-        Assert.Null(parameters.OrganizationID);
-        Assert.False(parameters.RawBodyData.ContainsKey("organization_id"));
+        Assert.Null(parameters.ByDoc);
+        Assert.False(parameters.RawBodyData.ContainsKey("by_doc"));
+        Assert.Null(parameters.ByID);
+        Assert.False(parameters.RawBodyData.ContainsKey("by_id"));
         Assert.Null(parameters.UserID);
         Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
     }

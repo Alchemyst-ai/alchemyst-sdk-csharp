@@ -15,6 +15,8 @@ public class ContextAddParamsTest : TestBase
         {
             ContextType = ContextType.Resource,
             Documents = [new() { Content = "Customer asked about pricing for the Scale plan." }],
+            Scope = Scope.Internal,
+            Source = "support-inbox",
             Metadata = new()
             {
                 FileName = "support_thread_TCK-1234.txt",
@@ -23,8 +25,6 @@ public class ContextAddParamsTest : TestBase
                 GroupName = ["support", "pricing"],
                 LastModified = "2025-01-10T12:34:56.000Z",
             },
-            Scope = Scope.Internal,
-            Source = "support-inbox",
         };
 
         ApiEnum<string, ContextType> expectedContextType = ContextType.Resource;
@@ -32,6 +32,8 @@ public class ContextAddParamsTest : TestBase
         [
             new() { Content = "Customer asked about pricing for the Scale plan." },
         ];
+        ApiEnum<string, Scope> expectedScope = Scope.Internal;
+        string expectedSource = "support-inbox";
         Metadata expectedMetadata = new()
         {
             FileName = "support_thread_TCK-1234.txt",
@@ -40,36 +42,31 @@ public class ContextAddParamsTest : TestBase
             GroupName = ["support", "pricing"],
             LastModified = "2025-01-10T12:34:56.000Z",
         };
-        ApiEnum<string, Scope> expectedScope = Scope.Internal;
-        string expectedSource = "support-inbox";
 
         Assert.Equal(expectedContextType, parameters.ContextType);
-        Assert.NotNull(parameters.Documents);
         Assert.Equal(expectedDocuments.Count, parameters.Documents.Count);
         for (int i = 0; i < expectedDocuments.Count; i++)
         {
             Assert.Equal(expectedDocuments[i], parameters.Documents[i]);
         }
-        Assert.Equal(expectedMetadata, parameters.Metadata);
         Assert.Equal(expectedScope, parameters.Scope);
         Assert.Equal(expectedSource, parameters.Source);
+        Assert.Equal(expectedMetadata, parameters.Metadata);
     }
 
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new ContextAddParams { };
+        var parameters = new ContextAddParams
+        {
+            ContextType = ContextType.Resource,
+            Documents = [new() { Content = "Customer asked about pricing for the Scale plan." }],
+            Scope = Scope.Internal,
+            Source = "support-inbox",
+        };
 
-        Assert.Null(parameters.ContextType);
-        Assert.False(parameters.RawBodyData.ContainsKey("context_type"));
-        Assert.Null(parameters.Documents);
-        Assert.False(parameters.RawBodyData.ContainsKey("documents"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
-        Assert.Null(parameters.Scope);
-        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
-        Assert.Null(parameters.Source);
-        Assert.False(parameters.RawBodyData.ContainsKey("source"));
     }
 
     [Fact]
@@ -77,24 +74,17 @@ public class ContextAddParamsTest : TestBase
     {
         var parameters = new ContextAddParams
         {
+            ContextType = ContextType.Resource,
+            Documents = [new() { Content = "Customer asked about pricing for the Scale plan." }],
+            Scope = Scope.Internal,
+            Source = "support-inbox",
+
             // Null should be interpreted as omitted for these properties
-            ContextType = null,
-            Documents = null,
             Metadata = null,
-            Scope = null,
-            Source = null,
         };
 
-        Assert.Null(parameters.ContextType);
-        Assert.False(parameters.RawBodyData.ContainsKey("context_type"));
-        Assert.Null(parameters.Documents);
-        Assert.False(parameters.RawBodyData.ContainsKey("documents"));
         Assert.Null(parameters.Metadata);
         Assert.False(parameters.RawBodyData.ContainsKey("metadata"));
-        Assert.Null(parameters.Scope);
-        Assert.False(parameters.RawBodyData.ContainsKey("scope"));
-        Assert.Null(parameters.Source);
-        Assert.False(parameters.RawBodyData.ContainsKey("source"));
     }
 }
 
@@ -243,6 +233,64 @@ public class DocumentTest : TestBase
         };
 
         model.Validate();
+    }
+}
+
+public class ScopeTest : TestBase
+{
+    [Theory]
+    [InlineData(Scope.Internal)]
+    [InlineData(Scope.External)]
+    public void Validation_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Scope.Internal)]
+    [InlineData(Scope.External)]
+    public void SerializationRoundtrip_Works(Scope rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Scope> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -409,63 +457,5 @@ public class MetadataTest : TestBase
         };
 
         model.Validate();
-    }
-}
-
-public class ScopeTest : TestBase
-{
-    [Theory]
-    [InlineData(Scope.Internal)]
-    [InlineData(Scope.External)]
-    public void Validation_Works(Scope rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Scope> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AlchemystAIInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Scope.Internal)]
-    [InlineData(Scope.External)]
-    public void SerializationRoundtrip_Works(Scope rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Scope> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
-            JsonSerializer.Deserialize<JsonElement>("\"invalid value\""),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Scope>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

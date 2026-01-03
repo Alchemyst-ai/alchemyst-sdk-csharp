@@ -9,7 +9,7 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context.Traces;
 
 /// <summary>
-/// Deletes a data trace for the authenticated user with the specified trace ID
+/// Deletes a data trace for the authenticated user with the specified trace ID.
 /// </summary>
 public sealed record class TraceDeleteParams : ParamsBase
 {

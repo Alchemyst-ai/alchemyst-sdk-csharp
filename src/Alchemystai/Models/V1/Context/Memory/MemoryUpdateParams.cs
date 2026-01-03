@@ -24,35 +24,19 @@ public sealed record class MemoryUpdateParams : ParamsBase
     /// <summary>
     /// Array of updated content objects
     /// </summary>
-    public IReadOnlyList<Content>? Contents
+    public required IReadOnlyList<Content> Contents
     {
-        get { return JsonModel.GetNullableClass<List<Content>>(this.RawBodyData, "contents"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "contents", value);
-        }
+        get { return JsonModel.GetNotNullClass<List<Content>>(this.RawBodyData, "contents"); }
+        init { JsonModel.Set(this._rawBodyData, "contents", value); }
     }
 
     /// <summary>
     /// The ID of the memory to update
     /// </summary>
-    public string? MemoryID
+    public required string MemoryID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "memoryId", value);
-        }
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "memoryId"); }
+        init { JsonModel.Set(this._rawBodyData, "memoryId", value); }
     }
 
     public MemoryUpdateParams() { }
@@ -134,6 +118,26 @@ public sealed record class MemoryUpdateParams : ParamsBase
 [JsonConverter(typeof(JsonModelConverter<Content, ContentFromRaw>))]
 public sealed record class Content : JsonModel
 {
+    /// <summary>
+    /// Unique ID for the message
+    /// </summary>
+    public string? ID
+    {
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "id"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawData, "id", value);
+        }
+    }
+
+    /// <summary>
+    /// The content of the memory entry
+    /// </summary>
     public string? ContentValue
     {
         get { return JsonModel.GetNullableClass<string>(this.RawData, "content"); }
@@ -148,10 +152,71 @@ public sealed record class Content : JsonModel
         }
     }
 
+    /// <summary>
+    /// Creation timestamp
+    /// </summary>
+    public string? CreatedAt
+    {
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "createdAt"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawData, "createdAt", value);
+        }
+    }
+
+    /// <summary>
+    /// Additional metadata for the memory entry
+    /// </summary>
+    public IReadOnlyDictionary<string, JsonElement>? Metadata
+    {
+        get
+        {
+            return JsonModel.GetNullableClass<Dictionary<string, JsonElement>>(
+                this.RawData,
+                "metadata"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawData, "metadata", value);
+        }
+    }
+
+    /// <summary>
+    /// Role of the message (e.g., user, assistant)
+    /// </summary>
+    public string? Role
+    {
+        get { return JsonModel.GetNullableClass<string>(this.RawData, "role"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawData, "role", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.ID;
         _ = this.ContentValue;
+        _ = this.CreatedAt;
+        _ = this.Metadata;
+        _ = this.Role;
     }
 
     public Content() { }

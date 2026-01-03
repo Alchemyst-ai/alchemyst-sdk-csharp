@@ -9,10 +9,27 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context.View;
 
 /// <summary>
-/// Fetches documents view for authenticated user with optional organization context
+/// Fetches documents view for authenticated user with optional organization context.
 /// </summary>
 public sealed record class ViewDocsParams : ParamsBase
 {
+    /// <summary>
+    /// Optional magic key for special access or filtering
+    /// </summary>
+    public string? MagicKey
+    {
+        get { return JsonModel.GetNullableClass<string>(this.RawQueryData, "magic_key"); }
+        init
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            JsonModel.Set(this._rawQueryData, "magic_key", value);
+        }
+    }
+
     public ViewDocsParams() { }
 
     public ViewDocsParams(ViewDocsParams viewDocsParams)

@@ -42,6 +42,8 @@ ContextAddParams parameters = new()
     [
         new() { Content = "The content of the document" }
     ],
+    Scope = Scope.Internal,
+    Source = "platform.api.context.add",
     Metadata = new()
     {
         FileName = "notes.txt",
@@ -49,8 +51,6 @@ ContextAddParams parameters = new()
         LastModified = "2025-10-01T18:42:40.419Z",
         FileSize = 1024,
     },
-    Scope = Scope.Internal,
-    Source = "platform.api.context.add",
 };
 
 var response = await client.V1.Context.Add(parameters);
@@ -114,7 +114,7 @@ The `WithOptions` method does not affect the original client or service.
 
 To send a request to the Alchemyst AI API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a C# class.
 
-For example, `client.V1.Context.Add` should be called with an instance of `ContextAddParams`, and it will return an instance of `Task<JsonElement>`.
+For example, `client.V1.Context.Add` should be called with an instance of `ContextAddParams`, and it will return an instance of `Task<ContextAddResponse>`.
 
 ## Error handling
 
@@ -221,7 +221,7 @@ By default, the SDK will not throw an exception in this case. It will throw `Alc
 If you would prefer to check that the response is completely well-typed upfront, then either call `Validate`:
 
 ```csharp
-var response = client.V1.Context.Search(parameters);
+var response = client.V1.Context.Add(parameters);
 response.Validate();
 ```
 
@@ -242,7 +242,7 @@ var response = await client
     .WithOptions(options =>
         options with { ResponseValidation = true }
     )
-    .V1.Context.Search(parameters);
+    .V1.Context.Add(parameters);
 
 Console.WriteLine(response);
 ```

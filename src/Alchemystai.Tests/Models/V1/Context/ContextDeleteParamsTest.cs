@@ -9,70 +9,39 @@ public class ContextDeleteParamsTest : TestBase
     {
         var parameters = new ContextDeleteParams
         {
+            OrganizationID = "org_01HXYZABC",
+            Source = "support-inbox",
             ByDoc = true,
             ByID = false,
-            OrganizationID = "organization_id",
-            Source = "support-inbox",
             UserID = "user_id",
         };
 
+        string expectedOrganizationID = "org_01HXYZABC";
+        string expectedSource = "support-inbox";
         bool expectedByDoc = true;
         bool expectedByID = false;
-        string expectedOrganizationID = "organization_id";
-        string expectedSource = "support-inbox";
         string expectedUserID = "user_id";
 
-        Assert.Equal(expectedByDoc, parameters.ByDoc);
-        Assert.Equal(expectedByID, parameters.ByID);
         Assert.Equal(expectedOrganizationID, parameters.OrganizationID);
         Assert.Equal(expectedSource, parameters.Source);
+        Assert.Equal(expectedByDoc, parameters.ByDoc);
+        Assert.Equal(expectedByID, parameters.ByID);
         Assert.Equal(expectedUserID, parameters.UserID);
-    }
-
-    [Fact]
-    public void OptionalNonNullableParamsUnsetAreNotSet_Works()
-    {
-        var parameters = new ContextDeleteParams
-        {
-            ByDoc = true,
-            ByID = false,
-            OrganizationID = "organization_id",
-            UserID = "user_id",
-        };
-
-        Assert.Null(parameters.Source);
-        Assert.False(parameters.RawBodyData.ContainsKey("source"));
-    }
-
-    [Fact]
-    public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
-    {
-        var parameters = new ContextDeleteParams
-        {
-            ByDoc = true,
-            ByID = false,
-            OrganizationID = "organization_id",
-            UserID = "user_id",
-
-            // Null should be interpreted as omitted for these properties
-            Source = null,
-        };
-
-        Assert.Null(parameters.Source);
-        Assert.False(parameters.RawBodyData.ContainsKey("source"));
     }
 
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new ContextDeleteParams { Source = "support-inbox" };
+        var parameters = new ContextDeleteParams
+        {
+            OrganizationID = "org_01HXYZABC",
+            Source = "support-inbox",
+        };
 
         Assert.Null(parameters.ByDoc);
         Assert.False(parameters.RawBodyData.ContainsKey("by_doc"));
         Assert.Null(parameters.ByID);
         Assert.False(parameters.RawBodyData.ContainsKey("by_id"));
-        Assert.Null(parameters.OrganizationID);
-        Assert.False(parameters.RawBodyData.ContainsKey("organization_id"));
         Assert.Null(parameters.UserID);
         Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
     }
@@ -82,11 +51,11 @@ public class ContextDeleteParamsTest : TestBase
     {
         var parameters = new ContextDeleteParams
         {
+            OrganizationID = "org_01HXYZABC",
             Source = "support-inbox",
 
             ByDoc = null,
             ByID = null,
-            OrganizationID = null,
             UserID = null,
         };
 
@@ -94,8 +63,6 @@ public class ContextDeleteParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("by_doc"));
         Assert.Null(parameters.ByID);
         Assert.False(parameters.RawBodyData.ContainsKey("by_id"));
-        Assert.Null(parameters.OrganizationID);
-        Assert.False(parameters.RawBodyData.ContainsKey("organization_id"));
         Assert.Null(parameters.UserID);
         Assert.False(parameters.RawBodyData.ContainsKey("user_id"));
     }

@@ -10,7 +10,8 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context;
 
 /// <summary>
-/// Deletes context data based on provided parameters
+/// This endpoint deletes context data based on the provided parameters. It returns
+/// a success or error response depending on the result from the context processor.
 /// </summary>
 public sealed record class ContextDeleteParams : ParamsBase
 {
@@ -18,6 +19,24 @@ public sealed record class ContextDeleteParams : ParamsBase
     public IReadOnlyDictionary<string, JsonElement> RawBodyData
     {
         get { return this._rawBodyData.Freeze(); }
+    }
+
+    /// <summary>
+    /// Organization ID
+    /// </summary>
+    public required string OrganizationID
+    {
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "organization_id"); }
+        init { JsonModel.Set(this._rawBodyData, "organization_id", value); }
+    }
+
+    /// <summary>
+    /// Source identifier for the context
+    /// </summary>
+    public required string Source
+    {
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "source"); }
+        init { JsonModel.Set(this._rawBodyData, "source", value); }
     }
 
     /// <summary>
@@ -36,32 +55,6 @@ public sealed record class ContextDeleteParams : ParamsBase
     {
         get { return JsonModel.GetNullableStruct<bool>(this.RawBodyData, "by_id"); }
         init { JsonModel.Set(this._rawBodyData, "by_id", value); }
-    }
-
-    /// <summary>
-    /// Optional organization ID
-    /// </summary>
-    public string? OrganizationID
-    {
-        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
-        init { JsonModel.Set(this._rawBodyData, "organization_id", value); }
-    }
-
-    /// <summary>
-    /// Source identifier for the context
-    /// </summary>
-    public string? Source
-    {
-        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "source"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "source", value);
-        }
     }
 
     /// <summary>

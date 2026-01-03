@@ -4,7 +4,7 @@
     <Company>Alchemyst AI</Company>
     <PackageTags>sdk;api;http;library</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Copyright>Copyright 2025 Alchemyst AI</Copyright>
+    <Copyright>Copyright 2026 Alchemyst AI</Copyright>
     <PackageProjectUrl>https://docs.getalchemystai.com</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/Alchemyst-ai/alchemyst-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

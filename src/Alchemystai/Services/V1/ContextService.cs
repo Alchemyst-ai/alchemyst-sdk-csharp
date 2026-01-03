@@ -48,12 +48,10 @@ public sealed class ContextService : IContextService
 
     /// <inheritdoc/>
     public async Task<JsonElement> Delete(
-        ContextDeleteParams? parameters = null,
+        ContextDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<ContextDeleteParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -66,13 +64,11 @@ public sealed class ContextService : IContextService
     }
 
     /// <inheritdoc/>
-    public async Task<JsonElement> Add(
-        ContextAddParams? parameters = null,
+    public async Task<ContextAddResponse> Add(
+        ContextAddParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<ContextAddParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -81,25 +77,8 @@ public sealed class ContextService : IContextService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
-    }
-
-    /// <inheritdoc/>
-    public async Task<ContextSearchResponse> Search(
-        ContextSearchParams parameters,
-        CancellationToken cancellationToken = default
-    )
-    {
-        HttpRequest<ContextSearchParams> request = new()
-        {
-            Method = HttpMethod.Post,
-            Params = parameters,
-        };
-        using var response = await this
-            ._client.Execute(request, cancellationToken)
-            .ConfigureAwait(false);
         var deserializedResponse = await response
-            .Deserialize<ContextSearchResponse>(cancellationToken)
+            .Deserialize<ContextAddResponse>(cancellationToken)
             .ConfigureAwait(false);
         if (this._client.ResponseValidation)
         {

@@ -27,41 +27,43 @@ public sealed record class ContextAddParams : ParamsBase
     /// <summary>
     /// Type of context being added
     /// </summary>
-    public ApiEnum<string, ContextType>? ContextType
+    public required ApiEnum<string, ContextType> ContextType
     {
         get
         {
-            return JsonModel.GetNullableClass<ApiEnum<string, ContextType>>(
+            return JsonModel.GetNotNullClass<ApiEnum<string, ContextType>>(
                 this.RawBodyData,
                 "context_type"
             );
         }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "context_type", value);
-        }
+        init { JsonModel.Set(this._rawBodyData, "context_type", value); }
     }
 
     /// <summary>
     /// Array of documents with content and additional metadata
     /// </summary>
-    public IReadOnlyList<Document>? Documents
+    public required IReadOnlyList<Document> Documents
     {
-        get { return JsonModel.GetNullableClass<List<Document>>(this.RawBodyData, "documents"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
+        get { return JsonModel.GetNotNullClass<List<Document>>(this.RawBodyData, "documents"); }
+        init { JsonModel.Set(this._rawBodyData, "documents", value); }
+    }
 
-            JsonModel.Set(this._rawBodyData, "documents", value);
-        }
+    /// <summary>
+    /// Scope of the context
+    /// </summary>
+    public required ApiEnum<string, Scope> Scope
+    {
+        get { return JsonModel.GetNotNullClass<ApiEnum<string, Scope>>(this.RawBodyData, "scope"); }
+        init { JsonModel.Set(this._rawBodyData, "scope", value); }
+    }
+
+    /// <summary>
+    /// The source of the context data
+    /// </summary>
+    public required string Source
+    {
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "source"); }
+        init { JsonModel.Set(this._rawBodyData, "source", value); }
     }
 
     /// <summary>
@@ -78,43 +80,6 @@ public sealed record class ContextAddParams : ParamsBase
             }
 
             JsonModel.Set(this._rawBodyData, "metadata", value);
-        }
-    }
-
-    /// <summary>
-    /// Scope of the context
-    /// </summary>
-    public ApiEnum<string, Scope>? Scope
-    {
-        get
-        {
-            return JsonModel.GetNullableClass<ApiEnum<string, Scope>>(this.RawBodyData, "scope");
-        }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "scope", value);
-        }
-    }
-
-    /// <summary>
-    /// The source of the context data
-    /// </summary>
-    public string? Source
-    {
-        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "source"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "source", value);
         }
     }
 
@@ -301,6 +266,49 @@ class DocumentFromRaw : IFromRawJson<Document>
 }
 
 /// <summary>
+/// Scope of the context
+/// </summary>
+[JsonConverter(typeof(ScopeConverter))]
+public enum Scope
+{
+    Internal,
+    External,
+}
+
+sealed class ScopeConverter : JsonConverter<Scope>
+{
+    public override Scope Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "internal" => Scope.Internal,
+            "external" => Scope.External,
+            _ => (Scope)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, Scope value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                Scope.Internal => "internal",
+                Scope.External => "external",
+                _ => throw new AlchemystAIInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+/// <summary>
 /// Additional metadata for the context
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<Metadata, MetadataFromRaw>))]
@@ -431,47 +439,4 @@ class MetadataFromRaw : IFromRawJson<Metadata>
     /// <inheritdoc/>
     public Metadata FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         Metadata.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Scope of the context
-/// </summary>
-[JsonConverter(typeof(ScopeConverter))]
-public enum Scope
-{
-    Internal,
-    External,
-}
-
-sealed class ScopeConverter : JsonConverter<Scope>
-{
-    public override Scope Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "internal" => Scope.Internal,
-            "external" => Scope.External,
-            _ => (Scope)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Scope value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Scope.Internal => "internal",
-                Scope.External => "external",
-                _ => throw new AlchemystAIInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

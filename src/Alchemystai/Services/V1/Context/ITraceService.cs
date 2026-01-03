@@ -21,7 +21,7 @@ public interface ITraceService
     ITraceService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Retrieves a list of traces for the authenticated user
+    /// Returns paginated traces for the authenticated user within their organization.
     /// </summary>
     Task<TraceListResponse> List(
         TraceListParams? parameters = null,
@@ -29,7 +29,7 @@ public interface ITraceService
     );
 
     /// <summary>
-    /// Deletes a data trace for the authenticated user with the specified trace ID
+    /// Deletes a data trace for the authenticated user with the specified trace ID.
     /// </summary>
     Task<TraceDeleteResponse> Delete(
         TraceDeleteParams parameters,

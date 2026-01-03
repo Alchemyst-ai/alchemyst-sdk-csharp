@@ -22,9 +22,6 @@ public abstract record class ModelBase
         {
             new ApiEnumConverter<string, ContextType>(),
             new ApiEnumConverter<string, Scope>(),
-            new ApiEnumConverter<string, ContextSearchParamsMetadata>(),
-            new ApiEnumConverter<string, Mode>(),
-            new ApiEnumConverter<string, ContextSearchParamsScope>(),
         },
     };
 

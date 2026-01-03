@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
@@ -51,7 +50,7 @@ public sealed class ViewService : IViewService
     }
 
     /// <inheritdoc/>
-    public async Task<JsonElement> Docs(
+    public async Task<ViewDocsResponse> Docs(
         ViewDocsParams? parameters = null,
         CancellationToken cancellationToken = default
     )
@@ -66,6 +65,13 @@ public sealed class ViewService : IViewService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
-        return await response.Deserialize<JsonElement>(cancellationToken).ConfigureAwait(false);
+        var deserializedResponse = await response
+            .Deserialize<ViewDocsResponse>(cancellationToken)
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            deserializedResponse.Validate();
+        }
+        return deserializedResponse;
     }
 }

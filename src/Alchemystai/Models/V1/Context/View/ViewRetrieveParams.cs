@@ -9,7 +9,7 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context.View;
 
 /// <summary>
-/// Gets the context information for the authenticated user
+/// Gets the context information for the authenticated user.
 /// </summary>
 public sealed record class ViewRetrieveParams : ParamsBase
 {

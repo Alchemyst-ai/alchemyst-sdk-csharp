@@ -10,7 +10,7 @@ using Alchemystai.Core;
 namespace Alchemystai.Models.V1.Context.Memory;
 
 /// <summary>
-/// Deletes memory context data based on provided parameters
+/// Deletes memory context data based on provided parameters.
 /// </summary>
 public sealed record class MemoryDeleteParams : ParamsBase
 {
@@ -23,27 +23,37 @@ public sealed record class MemoryDeleteParams : ParamsBase
     /// <summary>
     /// The ID of the memory to delete
     /// </summary>
-    public string? MemoryID
+    public required string MemoryID
     {
-        get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "memoryId"); }
-        init
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            JsonModel.Set(this._rawBodyData, "memoryId", value);
-        }
+        get { return JsonModel.GetNotNullClass<string>(this.RawBodyData, "memoryId"); }
+        init { JsonModel.Set(this._rawBodyData, "memoryId", value); }
     }
 
     /// <summary>
-    /// Optional organization ID
+    /// Organization ID
     /// </summary>
-    public string? OrganizationID
+    public required string? OrganizationID
     {
         get { return JsonModel.GetNullableClass<string>(this.RawBodyData, "organization_id"); }
         init { JsonModel.Set(this._rawBodyData, "organization_id", value); }
+    }
+
+    /// <summary>
+    /// Delete by document flag
+    /// </summary>
+    public bool? ByDoc
+    {
+        get { return JsonModel.GetNullableStruct<bool>(this.RawBodyData, "by_doc"); }
+        init { JsonModel.Set(this._rawBodyData, "by_doc", value); }
+    }
+
+    /// <summary>
+    /// Delete by ID flag
+    /// </summary>
+    public bool? ByID
+    {
+        get { return JsonModel.GetNullableStruct<bool>(this.RawBodyData, "by_id"); }
+        init { JsonModel.Set(this._rawBodyData, "by_id", value); }
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Alchemystai.Core;
@@ -22,7 +21,7 @@ public interface IViewService
     IViewService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Gets the context information for the authenticated user
+    /// Gets the context information for the authenticated user.
     /// </summary>
     Task<ViewRetrieveResponse> Retrieve(
         ViewRetrieveParams? parameters = null,
@@ -30,9 +29,9 @@ public interface IViewService
     );
 
     /// <summary>
-    /// Fetches documents view for authenticated user with optional organization context
+    /// Fetches documents view for authenticated user with optional organization context.
     /// </summary>
-    Task<JsonElement> Docs(
+    Task<ViewDocsResponse> Docs(
         ViewDocsParams? parameters = null,
         CancellationToken cancellationToken = default
     );

@@ -24,13 +24,11 @@ public sealed class MemoryService : IMemoryService
     }
 
     /// <inheritdoc/>
-    public async Task Update(
-        MemoryUpdateParams? parameters = null,
+    public async Task<MemoryUpdateResponse> Update(
+        MemoryUpdateParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<MemoryUpdateParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -39,16 +37,22 @@ public sealed class MemoryService : IMemoryService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
+        var memory = await response
+            .Deserialize<MemoryUpdateResponse>(cancellationToken)
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            memory.Validate();
+        }
+        return memory;
     }
 
     /// <inheritdoc/>
     public async Task Delete(
-        MemoryDeleteParams? parameters = null,
+        MemoryDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<MemoryDeleteParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -60,13 +64,11 @@ public sealed class MemoryService : IMemoryService
     }
 
     /// <inheritdoc/>
-    public async Task Add(
-        MemoryAddParams? parameters = null,
+    public async Task<MemoryAddResponse> Add(
+        MemoryAddParams parameters,
         CancellationToken cancellationToken = default
     )
     {
-        parameters ??= new();
-
         HttpRequest<MemoryAddParams> request = new()
         {
             Method = HttpMethod.Post,
@@ -75,5 +77,13 @@ public sealed class MemoryService : IMemoryService
         using var response = await this
             ._client.Execute(request, cancellationToken)
             .ConfigureAwait(false);
+        var deserializedResponse = await response
+            .Deserialize<MemoryAddResponse>(cancellationToken)
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            deserializedResponse.Validate();
+        }
+        return deserializedResponse;
     }
 }

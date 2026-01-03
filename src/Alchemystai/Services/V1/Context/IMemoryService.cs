@@ -23,21 +23,21 @@ public interface IMemoryService
     /// <summary>
     /// This endpoint updates memory context data.
     /// </summary>
-    Task Update(
-        MemoryUpdateParams? parameters = null,
+    Task<MemoryUpdateResponse> Update(
+        MemoryUpdateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
-    /// Deletes memory context data based on provided parameters
+    /// Deletes memory context data based on provided parameters.
     /// </summary>
-    Task Delete(
-        MemoryDeleteParams? parameters = null,
-        CancellationToken cancellationToken = default
-    );
+    Task Delete(MemoryDeleteParams parameters, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This endpoint adds memory context data, fetching chat history if needed.
     /// </summary>
-    Task Add(MemoryAddParams? parameters = null, CancellationToken cancellationToken = default);
+    Task<MemoryAddResponse> Add(
+        MemoryAddParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }

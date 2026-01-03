@@ -17,6 +17,10 @@ public class ViewServiceTest : TestBase
     [Fact(Skip = "Prism tests are disabled")]
     public async Task Docs_Works()
     {
-        await this.client.V1.Context.View.Docs(new(), TestContext.Current.CancellationToken);
+        var response = await this.client.V1.Context.View.Docs(
+            new(),
+            TestContext.Current.CancellationToken
+        );
+        response.Validate();
     }
 }

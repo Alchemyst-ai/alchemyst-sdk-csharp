@@ -29,10 +29,11 @@ public interface IContextService
     IMemoryService Memory { get; }
 
     /// <summary>
-    /// Deletes context data based on provided parameters
+    /// This endpoint deletes context data based on the provided parameters. It returns
+    /// a success or error response depending on the result from the context processor.
     /// </summary>
     Task<JsonElement> Delete(
-        ContextDeleteParams? parameters = null,
+        ContextDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
@@ -41,17 +42,8 @@ public interface IContextService
     /// further handling. It returns a success or error response depending on the
     /// result from the context processor.
     /// </summary>
-    Task<JsonElement> Add(
-        ContextAddParams? parameters = null,
-        CancellationToken cancellationToken = default
-    );
-
-    /// <summary>
-    /// This endpoint sends a search request to the context processor to retrieve
-    /// relevant context data based on the provided query.
-    /// </summary>
-    Task<ContextSearchResponse> Search(
-        ContextSearchParams parameters,
+    Task<ContextAddResponse> Add(
+        ContextAddParams parameters,
         CancellationToken cancellationToken = default
     );
 }
