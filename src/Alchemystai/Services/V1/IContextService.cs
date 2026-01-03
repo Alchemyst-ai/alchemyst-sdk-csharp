@@ -46,4 +46,13 @@ public interface IContextService
         ContextAddParams parameters,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// This endpoint sends a search request to the context processor to retrieve
+    /// relevant context data based on the provided query.
+    /// </summary>
+    Task<ContextSearchResponse> Search(
+        ContextSearchParams parameters,
+        CancellationToken cancellationToken = default
+    );
 }

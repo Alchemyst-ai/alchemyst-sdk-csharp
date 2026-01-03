@@ -86,4 +86,28 @@ public sealed class ContextService : IContextService
         }
         return deserializedResponse;
     }
+
+    /// <inheritdoc/>
+    public async Task<ContextSearchResponse> Search(
+        ContextSearchParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        HttpRequest<ContextSearchParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+        };
+        using var response = await this
+            ._client.Execute(request, cancellationToken)
+            .ConfigureAwait(false);
+        var deserializedResponse = await response
+            .Deserialize<ContextSearchResponse>(cancellationToken)
+            .ConfigureAwait(false);
+        if (this._client.ResponseValidation)
+        {
+            deserializedResponse.Validate();
+        }
+        return deserializedResponse;
+    }
 }

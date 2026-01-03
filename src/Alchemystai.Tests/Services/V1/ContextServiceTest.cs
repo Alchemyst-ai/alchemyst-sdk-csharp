@@ -32,4 +32,19 @@ public class ContextServiceTest : TestBase
         );
         response.Validate();
     }
+
+    [Fact(Skip = "Prism tests are disabled")]
+    public async Task Search_Works()
+    {
+        var response = await this.client.V1.Context.Search(
+            new()
+            {
+                MinimumSimilarityThreshold = 0.5,
+                Query = "What did the customer ask about pricing for the Scale plan?",
+                SimilarityThreshold = 0.8,
+            },
+            TestContext.Current.CancellationToken
+        );
+        response.Validate();
+    }
 }
